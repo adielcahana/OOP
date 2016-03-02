@@ -1,11 +1,13 @@
-
 public class Sort {
+    /**
+    * @author adiel cahana <adielcahana@gmail.com>
+    * @version 1.0
+    * @since 2016-03-02 */
     public static void swap(int[] arr, int idx1, int idx2) {
         int temp = arr[idx1];
         arr[idx1] = arr[idx2];
         arr[idx2] = temp;
     }
-
     public static int partition(int[] arr, int first, int last) {
         int pivot = (first + last) / 2;
         int i = first, j = last - 2;
