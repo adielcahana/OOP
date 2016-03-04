@@ -1,0 +1,20 @@
+# 201568425
+# cahanaa1 
+
+
+compile:
+
+	mkdir bin
+	javac -d bin src/HelloWorld.java
+
+run:
+
+	java -cp bin HelloWorld
+
+check:
+
+	java -jar checkstyle-5.7-all.jar -c biuoop.xml /*.java
+
+zip:
+	
+	zip ass0 -r src bin makefile
