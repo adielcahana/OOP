@@ -15,6 +15,10 @@ public class BubbleSort {
 	public static void main(String[] args) {
 		int i = 0, j = 0;
 		String[] newArgs = new String[args.length - 1];
+		while (i < newArgs.length) {
+            newArgs[i] = args[i + 1];
+            i++;
+        }
 		int[] arrToSort = DescribeNumbers.stringsToInts(newArgs);
 		int size = arrToSort.length;
 		for (i = 0; i < size - 1; i++) {
@@ -33,14 +37,13 @@ public class BubbleSort {
         } else { //if (args[0].equals("desc"))
             i = size;
             while (i > 0) {
-                System.out.print(arrToSort[i] + " ");
+                System.out.print(arrToSort[i - 1] + " ");
                 i--;
             }
         }
 		System.out.println();
-
 	}
-
+	
 	/**
 	 * Swap between to 2 index in array.
 	 * <p>
