@@ -2,8 +2,9 @@ public class BubbleSort {
 
 	public static void main(String[] args) {
 		int i = 0, j = 0;
+		//  asc/desc צריך להתייחס לארגומנט של 
 		String[] newArgs = new String[args.length - 1];
-		int[] arrToSort = DescribeNumbers.stringsToInts(newArgs);
+		int[] arrToSort = DescribeNumbers.stringsToInts(args);
 		int size = arrToSort.length;
 		for (i = 0; i < size - 1; i++) {
 			for (j = 0; j < size - i - 1; j++) {
@@ -14,7 +15,6 @@ public class BubbleSort {
 		}
 		for (i = 0; i < size; i++) {
 			System.out.print(arrToSort[i] + " ");
-			i--;
 		}
 		System.out.println();
 	}
