@@ -1,10 +1,21 @@
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-03-03
+ */
 public class BubbleSort {
 
+	/**
+	 * Get an array and sort it asc or desc.
+	 * <p>
+	 * Get a string array with asc/desc and numbers,
+	 *  make it int array and sort it with BubbleSort.
+	 * <p>
+	 * @param args - string array of numbers.*/
 	public static void main(String[] args) {
 		int i = 0, j = 0;
-		//  asc/desc צריך להתייחס לארגומנט של 
 		String[] newArgs = new String[args.length - 1];
-		int[] arrToSort = DescribeNumbers.stringsToInts(args);
+		int[] arrToSort = DescribeNumbers.stringsToInts(newArgs);
 		int size = arrToSort.length;
 		for (i = 0; i < size - 1; i++) {
 			for (j = 0; j < size - i - 1; j++) {
@@ -13,18 +24,43 @@ public class BubbleSort {
 				}
 			}
 		}
-		for (i = 0; i < size; i++) {
-			System.out.print(arrToSort[i] + " ");
-		}
+		if (args[0].equals("asc")) {
+            i = 0;
+            while (i < size) {
+                System.out.print(arrToSort[i] + " ");
+                i++;
+            }
+        } else { //if (args[0].equals("desc"))
+            i = size;
+            while (i > 0) {
+                System.out.print(arrToSort[i] + " ");
+                i--;
+            }
+        }
 		System.out.println();
+
 	}
 
+	/**
+	 * Swap between to 2 index in array.
+	 * <p>
+	 * Get a string array and swap between 2 index by use in a temporary integer.
+	 * <p>
+	 * @param varaible - int array and 2 index.
+	 */
 	public static void swap(int[] arr, int idx1, int idx2) {
 		int temp = arr[idx1];
 		arr[idx1] = arr[idx2];
 		arr[idx2] = temp;
 	}
 
+	/**
+	 * compare between to 2 integers.
+	 * <p>
+	 * Get 2 integers and compare between them.
+	 * <p>
+	 * @param varaible - 2 integers.
+	 * @return integer. */
 	public static int compare(int x, int y) {
 		if (x > y)
 			return 1;
