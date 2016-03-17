@@ -13,8 +13,8 @@ public class Line {
 	   public Line(double x1, double y1, double x2, double y2) {
 		   this.start.x = x1;
 		   this.start.y = y1;
-		   this.end.getX();
-		   this.end.getY();
+		   this.end.x = x2;
+		   this.end = y2;
 	   }
 
 	   // Return the length of the line
