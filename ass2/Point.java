@@ -2,19 +2,17 @@ package ass2;
 
 public class Point {
 
-	double x;
-	double y;
+	private double x;
+	private double y;
 
 	public Point(double x, double y) {
 		
 		this.x = x;
 		this.y = y;
-	}
+    }
 	
 	public double distance(Point other) {
-        double distance = Math.sqrt(((this.x - other.x) *(this.x - other.x)) + ((this.y - other.y)*(this.y - other.y)));   
-		
-		return distance;
+        return Math.sqrt(((this.x - other.x) *(this.x - other.x)) + ((this.y - other.y)*(this.y - other.y)));
 	}
 	
 	public boolean equals(Point other) { 

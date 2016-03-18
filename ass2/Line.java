@@ -8,13 +8,11 @@ public class Line {
         public Line(Point start, Point end) {
            this.start = start;
            this.end = end;
-           this.middle = middle();
 	   }
 	   public Line(double x1, double y1, double x2, double y2) {
-		   this.start.x = x1;
-		   this.start.y = y1;
-		   this.end.x = x2;
-		   this.end = y2;
+		   this.start = new Point(x1,y1);
+		   this.end = new Point(x2,y2);
+		   this.middle = new Point((x2+x1)/2,(y2+y1)/2);
 	   }
 
 	   // Return the length of the line
@@ -25,35 +23,52 @@ public class Line {
 
 	   // Returns the middle point of the line
 	public Point middle() {
-           this.middle.x = end.x - start.x;
-           this.middle.y = end.y - start.y;
 		return middle;
 	   }
 
 	   // Returns the start point of the line
-	   public Point start() { 
-		   this.start.getX();
-		   this.start.getY();
+	   public Point start() {
 		   return start;
 	   }
 
 	   // Returns the end point of the line
 	   public Point end() {
-		   this.end.getX();
-		   this.end.getY();
 		   return end;
 	   }
 
 	   // Returns true if the lines intersect, false otherwise
 	   public boolean isIntersecting(Line other) {
-	   }
+		   Point intersection = intersectionWith(other);
+		   if (intersection != null){
+			   return true;
+		   }
+		   else{
+		   return false;
+	       }
+    }
 
 	   // Returns the intersection point if the lines intersect,
 	   // and null otherwise.
 	   public Point intersectionWith(Line other) {
+			   Point intersection;
+			   double m1, m2, X, Y;
+			   m1 = (this.end.getY() - this.start.getY()) / (this.end.getX() - this.start.getX());
+			   m2 = (other.end.getY() - other.start.getY()) / (other.end.getX() - other.start.getX());
+			   X = other.start.getY() - this.start.getY() - m2 * other.start.getX() + m1 * this.start.getX();
+			   Y = X + this.start.getY()- m1 * this.start.getX();
+			   intersection = new Point(X,Y);
+		if (intersection.getX()> this.start.getX() && intersection.getX() < this.end.getX())
+		{
+			return intersection;
+		}
+		   else{
+		   return null;
 	   }
+	}
 
 	   // equals -- return true is the lines are equal, false otherwise
-	   public boolean equals(Line other) { }
+	   public boolean equals(Line other) {
+		   return false;
+	   }
 
 	}
