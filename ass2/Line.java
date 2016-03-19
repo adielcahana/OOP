@@ -66,6 +66,12 @@ public class Line {
 
 	   // equals -- return true is the lines are equal, false otherwise
 	   public boolean equals(Line other) {
+		   if (other == null){
+			   return false;
+		   }
+		   if (this.length() == other.length()){
+			   return true;
+		   }
 		   return false;
 	   }
 
