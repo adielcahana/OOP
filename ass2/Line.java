@@ -50,15 +50,13 @@ public class Line {
 	   // Returns the intersection point if the lines intersect,
 	   // and null otherwise.
 	   public Point intersectionWith(Line other) {
-			   Point intersection;
 			   double m1, m2, X, Y;
-			   m1 = (this.end.getY() - this.start.getY()) / (this.end.getX() - this.start.getX());
-			   m2 = (other.end.getY() - other.start.getY()) / (other.end.getX() - other.start.getX());
-			   X = other.start.getY() - this.start.getY() - m2 * other.start.getX() + m1 * this.start.getX();
-			   Y = X + this.start.getY()- m1 * this.start.getX();
-			   intersection = new Point(X,Y);
-		if (intersection.getX()> this.start.getX() && intersection.getX() < this.end.getX())
-		{
+			   m1 = (this.start.getY() - this.end.getY()) / (this.start.getX() - this.end.getX());
+			   m2 = (other.start.getY() - other.end.getY()) / (other.start.getX() - other.end.getX());
+			   X = (other.start.getY() - this.start.getY() - m2 * other.start.getX() + m1 * this.start.getX()) / (m1-m2);
+			   Y = m1*X + this.start.getY()- m1 * this.start.getX();
+			   Point intersection = new Point(X,Y);
+		if (intersection.getX()< this.start.getX() && intersection.getX() > this.end.getX() || intersection.getX() > this.start.getX() && intersection.getX() < this.end.getX()){
 			return intersection;
 		}
 		   else{

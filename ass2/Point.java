@@ -12,10 +12,16 @@ public class Point {
     }
 	
 	public double distance(Point other) {
+		if (other == null){
+			return 0;
+		}
         return Math.sqrt(((this.x - other.x) *(this.x - other.x)) + ((this.y - other.y)*(this.y - other.y)));
 	}
 	
 	public boolean equals(Point other) { 
+		if (other == null){
+			return false;
+		}
 		double distance = distance(other);
 		if (distance == 0){
 		return true;
