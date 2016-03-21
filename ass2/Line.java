@@ -70,12 +70,15 @@ public class Line {
 			   b1 = this.start.getY() - m1 * this.start.getX();
 			   b2 = other.start.getY() - m2 * other.start.getX();
 			   
-			   if (Double.isInfinite(m1)) {
+			   if (m1 == m2){
+				   return null;
+			   }
+			   else if (Double.isInfinite(m1)) {
 					   x = this.start.getX();
 					   y = m2 * x + b2;
 					   if(!IsInTheDomain(y, this.start.getY(), this.end.getY())){
 						   return null;
-				   }
+				    }
 				}
 			   else if (Double.isInfinite(m2)) {
 					   x = other.start.getX();
@@ -84,24 +87,16 @@ public class Line {
 						   return null;
 					   }
 				}
-			   else if(m1 == m2){
-			      if ((this.start.equals(other.start)) || (this.start.equals(other.end))){
-			    	  y = this.start.getY();
-			    	  x = this.start.getX();
-			      }
-			      else if (this.end.equals(other.start) || (this.end.equals(other.end))){
-			    	  y = this.end.getY();
-			    	  x = this.end.getX();
-			   }
-			      else{
-			    	  return null;
-			      }
-			   }
 			   
 			   else{
                x = (b2 - b1) / (m1 - m2);
                y = m1 * x + b1;
-               if (!(x > this.start.getX() && x < this.end.getX() || x < this.start.getX() && x > this.end.getX())){
+               double x1Start,x1End,x2Start,x2End;
+               x1Start = this.start.getX();
+               x1End = this.end.getX();
+               x2Start = other.start.getX();
+               x2End = other.end.getX();
+               if (!(((x >= x1Start && x <= x1End) || (x <= x1Start && x >= x1End)) && ((x >= x2End && x <= x2Start) || (x <= x2End && x >= x2Start)))){
             	   return null;
 			       }
                }
