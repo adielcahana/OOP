@@ -1,7 +1,7 @@
 package ass2;
 
 public class Velocity {
-	private double dx;
+    private double dx;
 	private double dy;
 	   // constructor
 	   public Velocity(double dx, double dy) {
@@ -9,22 +9,25 @@ public class Velocity {
 		   this.dy = dy;
 	   }
 
-	   // Take a point with position (x,y) and return a new point
-	   // with position (x+dx, y+dy)
-	   public Point applyToPoint(Point p) {
-		   return new Point(p.getX()+ this.dx, p.getY()+ this.dy);
+	   public double getDx(){
+		   return this.dx;
 	   }
- 
+
+	   public double getDy(){
+		   return this.dy;
+	   }
+
+	   // Take a point with position (x,y) and return a new point
+	   // with position (x + dx, y + dy)
+	   public Point applyToPoint(Point p) {
+		   return new Point(p.getX() + this.dx, p.getY() + this.dy);
+	   }
+
 	   public static Velocity fromAngleAndSpeed(double angle, double speed) {
 		      double dx = speed * Math.cos(angle);
 		      double dy = speed * Math.sin(angle);
 		      return new Velocity(dx, dy);
 		   }
-	   
-	   public Velocity changeDirection() {
-		      double speed = Math.sqrt((this.dx) * (this.dx) + (this.dy) * (this.dy));
-		      double currAngle = Math.acos((dx) / (speed));
-		      Velocity v = Velocity.fromAngleAndSpeed(currAngle * -1, speed);
-			  return v;
-		   }
+
+
 }
