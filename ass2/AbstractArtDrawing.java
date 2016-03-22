@@ -1,5 +1,6 @@
 package ass2;
 import biuoop.GUI;
+import biuoop.Sleeper;
 import biuoop.DrawSurface;
 
 import java.util.Random;
@@ -83,7 +84,8 @@ public class AbstractArtDrawing {
 	}
 
 	public static void main(String[] args) {
-		AbstractArtDrawing art = new AbstractArtDrawing(500, 500, 10);
-		art.drawGraph();
+		//AbstractArtDrawing art = new AbstractArtDrawing(500, 500, 10);
+		//art.drawGraph();
+	      
 		}
 }
