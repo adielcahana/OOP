@@ -8,6 +8,9 @@ public class Ball {
     private java.awt.Color color;
     private Velocity velocity;
 
+    ;
+    private Point frameEdge;
+
      // constructor
        public Ball(Point center, int r, java.awt.Color color) {
            this.center = center;
@@ -17,6 +20,16 @@ public class Ball {
        }
        public Ball(int x, int y, int r, java.awt.Color color) {
            this(new Point(x, y), r, color);
+       }
+       
+       public Ball(Point center, int r, java.awt.Color color, Point frameEdge) {
+    	   this(center, r, color);
+    	   this.frameEdge = frameEdge;
+       }
+       
+       public Ball(int x, int y, int r, java.awt.Color color, Point frameEdge) {
+           this(new Point(x, y), r, color);
+           this.frameEdge = frameEdge;
        }
        // accessors
        public int getX() {
@@ -51,10 +64,22 @@ public class Ball {
        }
 
        public void moveOneStep() {
+    	   Point BackUpCenter = new Point(this.center.getX(), this.center.getY());
            this.center = this.getVelocity().applyToPoint(this.center);
+           if (this.isInFrame() == false) {
+        	   this.StayInFrame(BackUpCenter);
+           }
        }
        
-       public void isInFrame(int width, int height) {
-           
+       private boolean isInFrame() {
+           return ((this.center.getX() + this.radius <= this.frameEdge.getX()) //upper bound
+             && (this.center.getX() - this.radius >= 0)
+             && (this.center.getY() + this.radius <= this.frameEdge.getY())
+             && (this.center.getY() - this.radius >= 0));
+       }
+       
+       private void StayInFrame(Point BackUpCenter) {
+    	   this.velocity = this.velocity.changeDirection();
+    	   this.center = this.getVelocity().applyToPoint(BackUpCenter);
        }
 }

@@ -20,4 +20,11 @@ public class Velocity {
 		      double dy = speed * Math.sin(angle);
 		      return new Velocity(dx, dy);
 		   }
+	   
+	   public Velocity changeDirection() {
+		      double speed = Math.sqrt((this.dx) * (this.dx) + (this.dy) * (this.dy));
+		      double currAngle = Math.acos((dx) / (speed));
+		      Velocity v = Velocity.fromAngleAndSpeed(currAngle * -1, speed);
+			  return v;
+		   }
 }
