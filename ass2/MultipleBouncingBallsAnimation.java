@@ -6,11 +6,13 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
 
-import java.awt.Color;
-
+/**
+* @author Ori Engelberg <turht50@gmail.com>
+* @version 1.0
+* @since 2016-03-24 */
 public class MultipleBouncingBallsAnimation {
-	        
-	public static int[] stringsToInts(String[] numbers) {
+
+    public static int[] stringsToInts(String[] numbers) {
         int size = numbers.length;
         int[] intNums = new int[size];
         int i = 0;
@@ -20,29 +22,47 @@ public class MultipleBouncingBallsAnimation {
         }
         return intNums;
     }
-	
-	public static void main(String[] args){
-		Random rand = new Random();
-		Sleeper sleeper = new Sleeper();
-		GUI gui = new GUI("title",400,400);
-		int argsSize = args.length;
-		int i;
-		int[] sizes = stringsToInts(args);
-		Ball balls[] = new Ball[argsSize];
-		for (i = 0; i < args.length; i++){
-		balls[i] = new Ball(new Point(rand.nextInt(200),rand.nextInt(200)), sizes[i], java.awt.Color.BLACK, new Point(200, 200));
-		balls[i].setVelocity(argsSize - i +5,argsSize - i +5);
-		}
-		
-		while (true) {
-			{
-		       DrawSurface d = gui.getDrawSurface();
-		    for(i = 0; i < argsSize; i++){
-		    	balls[i].moveOneStep();
-		    	balls[i].drawOn(d);
-		    }
-		    gui.show(d);
-	    	sleeper.sleepFor(50);  // wait for 50 milliseconds.
-		}
-		}
-}}
+
+    public static Ball [] getBallsArray(String[] args, Point upperEdge, Point lowerEdge) {
+        Random rand = new Random();
+        int[] sizes = stringsToInts(args);
+        Ball [] balls = new Ball[sizes.length];
+        int dx = (int)lowerEdge.getX() - (int)upperEdge.getX();
+        int dy = (int)lowerEdge.getY() - (int)upperEdge.getY();
+        for (int i = 0; i < sizes.length; i++) {
+        	Point center = new Point(upperEdge.getX() + 1 + rand.nextInt(dx), upperEdge.getY() + 1 + rand.nextInt(dy));
+            balls[i] = new Ball(center, sizes[i], java.awt.Color.BLACK, lowerEdge, upperEdge);
+            Velocity v = Velocity.fromAngleAndSpeed(rand.nextDouble(), setSpeedBySize(sizes[i]));
+            balls[i].setVelocity(v);
+            }
+        return balls;
+        }
+
+    public static double setSpeedBySize(int size) {
+    	if (size > 50){
+    		size = 50;
+    	}
+    	return 15 - size /4;
+    }
+
+    public static void drawBallArray(Ball [] balls, DrawSurface surface){
+        for (int i = 0; i < balls.length; i++) {
+          	balls[i].moveOneStep();
+            balls[i].drawOn(surface);
+            }
+        }
+    
+    public static void main(String[] args) {
+        GUI gui = new GUI("title", 400, 400);
+        Sleeper sleeper = new Sleeper();
+        Point upperEdge = new Point(0,0);
+        Point lowerEdge = new Point (400, 400);
+        Ball[] balls = getBallsArray(args, upperEdge, lowerEdge);
+    	while (true) {
+        DrawSurface surface = gui.getDrawSurface();
+    	drawBallArray(balls, surface);
+        gui.show(surface);
+        sleeper.sleepFor(50);  // wait for 50 milliseconds.
+    	}
+    }
+}
