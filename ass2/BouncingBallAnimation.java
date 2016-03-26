@@ -4,19 +4,36 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
 
+/**
+* @author Adiel Cahana <adielcahana@gmail.com>
+* @version 1.0
+* @since 2016-03-22 */
 public class BouncingBallAnimation {
-	public static void main(String[] args) {
-		GUI gui = new GUI("title",200,200);
-	    Sleeper sleeper = new Sleeper();
-	    Ball ball = new Ball(50, 50, 30, java.awt.Color.BLACK, new Point(200, 200));
-	    Velocity v = Velocity.fromAngleAndSpeed(270, 4);
-	    ball.setVelocity(v);
-	    while (true) {
-	       ball.moveOneStep();
-	       DrawSurface d = gui.getDrawSurface();
-	       ball.drawOn(d);
-	       gui.show(d);
-	       sleeper.sleepFor(50);  // wait for 50 milliseconds.
-	    }
-	   }
-}
+
+    /**
+     * Draw a bouncing ball.
+     * <p>
+     * Create a ball and a frame and draw the bouncing ball.
+     * <p>
+     * @param args - the string of numbers (the size of the balls). */
+    public static void main(String[] args) {
+        // Create the frame.
+        GUI gui = new GUI("title", 400, 400);
+        Sleeper sleeper = new Sleeper();
+        // Make a new ball and give it velocity.
+        Ball ball = new Ball(50, 50, 30, java.awt.Color.BLACK, new Point(400, 400), new Point(0, 0));
+        Velocity v = Velocity.fromAngleAndSpeed(10, 10);
+        ball.setVelocity(v);
+        // Draw the ball while he move.
+        while (true) {
+            // Move the ball.
+            ball.moveOneStep();
+            DrawSurface d = gui.getDrawSurface();
+            // Draw the ball in the frame.
+            ball.drawOn(d);
+            gui.show(d);
+            // Wait for 50 milliseconds.
+            sleeper.sleepFor(50);
+            }
+        }
+    }
