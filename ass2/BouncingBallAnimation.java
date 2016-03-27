@@ -1,5 +1,3 @@
-package ass2;
-
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
@@ -28,10 +26,10 @@ public class BouncingBallAnimation {
         while (true) {
             // Move the ball.
             ball.moveOneStep();
-            DrawSurface d = gui.getDrawSurface();
+            DrawSurface surface = gui.getDrawSurface();
             // Draw the ball in the frame.
-            ball.drawOn(d);
-            gui.show(d);
+            ball.drawOn(surface);
+            gui.show(surface);
             // Wait for 50 milliseconds.
             sleeper.sleepFor(50);
             }

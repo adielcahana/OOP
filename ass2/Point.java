@@ -1,5 +1,3 @@
-package ass2;
-
 /**
 * @author Ori Engelberg <turht50@gmail.com>
 * @version 1.0

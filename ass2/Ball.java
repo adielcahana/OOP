@@ -1,7 +1,3 @@
-package ass2;
-
-import java.util.Random;
-
 import biuoop.DrawSurface;
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>

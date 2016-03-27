@@ -1,5 +1,3 @@
-package ass2;
-
 import java.util.Random;
 
 import biuoop.DrawSurface;
@@ -25,7 +23,7 @@ public class MultipleBouncingBallsAnimation {
         int[] intNums = new int[size];
         int i = 0;
         while (i < size) {
-        	intNums[i] = Integer.parseInt(numbers[i]);
+            intNums[i] = Integer.parseInt(numbers[i]);
             i++;
         }
         return intNums;
@@ -45,19 +43,38 @@ public class MultipleBouncingBallsAnimation {
         // Cast the string numbers to integers.
         int[] sizes = stringsToInts(numbers);
         Ball [] balls = new Ball[sizes.length];
-        // The frame size.
-        int dx = (int) lowerEdge.getX() - (int) upperEdge.getX();
-        int dy = (int) lowerEdge.getY() - (int) upperEdge.getY();
         // Create an balls array by the size.
         for (int i = 0; i < sizes.length; i++) {
-            Point center = new Point(upperEdge.getX() + 1 + rand.nextInt(dx), upperEdge.getY() + 1 + rand.nextInt(dy));
+            Point center = createCenter(sizes[i], lowerEdge, upperEdge);
             balls[i] = new Ball(center, sizes[i], java.awt.Color.BLACK, lowerEdge, upperEdge);
-            Velocity v = Velocity.fromAngleAndSpeed(rand.nextDouble(), setSpeedBySize(sizes[i]));
+            Velocity v = Velocity.fromAngleAndSpeed((int) rand.nextInt(360), setSpeedBySize(sizes[i]));
             balls[i].setVelocity(v);
             }
         return balls;
         }
 
+    /**
+     * Create the center point of the ball.
+     * <p>
+     * Get the frame boundaries and create a center point that far from the boundaries at least a radius size.
+     * <p>
+     * @param size - the size of the ball.
+     * @param upperEdge - the upper left point of the frame.
+     * @param lowerEdge - the lower right point of the frame.
+     * @return The center point of the ball. */
+    public static Point createCenter(int size, Point lowerEdge, Point upperEdge) {
+        Random rand = new Random();
+        int x1, x2, y1, y2 , dx , dy;
+        x1 = (int) upperEdge.getX() + size;
+        x2 = (int) lowerEdge.getX() - size;
+        y1 = (int) upperEdge.getY() + size;
+        y2 = (int) lowerEdge.getY() - size;
+        // the frame size.
+        dx = x2 - x1;
+        dy = y2 - y1;
+        // new point in the frame boundaries.
+        return new Point(x1 + 1 + rand.nextInt(dx), x1 + 1 + rand.nextInt(dy));
+    }
     /**
      * Give the ball speed that depend by his size.
      * <p>
@@ -82,7 +99,7 @@ public class MultipleBouncingBallsAnimation {
      public static void drawBallArray(Ball [] balls, DrawSurface surface) {
         for (int i = 0; i < balls.length; i++) {
             // Move the ball and draw it.
-        	balls[i].moveOneStep();
+            balls[i].moveOneStep();
             balls[i].drawOn(surface);
             }
         }
@@ -106,7 +123,7 @@ public class MultipleBouncingBallsAnimation {
             drawBallArray(balls, surface);
             gui.show(surface);
          // Wait for 50 milliseconds.
-            sleeper.sleepFor(50);  
+            sleeper.sleepFor(50);
         }
     }
 }

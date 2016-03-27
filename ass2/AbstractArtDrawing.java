@@ -1,4 +1,4 @@
-package ass2;
+
 
 import biuoop.GUI;
 import biuoop.DrawSurface;

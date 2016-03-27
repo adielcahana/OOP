@@ -1,4 +1,3 @@
-package ass2;
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
@@ -19,14 +18,14 @@ public class Velocity {
         * returns the velocity change in x.
         * <p>
         * @return this.dx - the change in x axis */
-       public double getDx(){
+       public double getDx() {
            return this.dx;
        }
        /**
         * returns the velocity change in y.
         * <p>
         * @return this.dy - the change in y axis */
-       public double getDy(){
+       public double getDy() {
            return this.dy;
        }
        /**
