@@ -23,7 +23,7 @@ public class AbstractArtDrawing {
      * @param width - the width of the frame.
      * @param height - the height of the frame.
      * @param numOfLines -  the numbers of lines to draw. */
-    AbstractArtDrawing(int width, int height, int numOfLines) {
+    public AbstractArtDrawing(int width, int height, int numOfLines) {
         this.width = width;
         this.height = height;
         this.numOfLines = numOfLines;
@@ -33,7 +33,7 @@ public class AbstractArtDrawing {
      * Draw a single line.
      * @param l - the line to draw.
      * @param d - the surface to draw. */
-    void drawLine(Line l, DrawSurface d) {
+    public void drawLine(Line l, DrawSurface d) {
         Point start = l.start();
         Point end = l.end();
         d.setColor(Color.BLACK);
@@ -44,7 +44,7 @@ public class AbstractArtDrawing {
      * Draw the point in blue.
      * @param p - the point to draw.
      * @param d - the surface to draw */
-    void drawPoint(Point p, DrawSurface d) {
+    public void drawPoint(Point p, DrawSurface d) {
         //d.setColor(Color.BLUE);
         d.fillCircle((int) p.getX(), (int) p.getY(), 3);
     }
@@ -53,7 +53,7 @@ public class AbstractArtDrawing {
      * Create a random line.
      * Give the line a random start, end points and create a new line.
      * @return the random line that created. */
-    Line generateRandomLine() {
+    public Line generateRandomLine() {
         Point start = generateRandomPoint();
         Point end = generateRandomPoint();
         Line randline = new Line(start, end);
@@ -64,7 +64,7 @@ public class AbstractArtDrawing {
      * Create a random point.
      * Give the point a random x,y values in the frame boundaries and create a new point.
      * @return the random point that created. */
-    Point generateRandomPoint() {
+    public Point generateRandomPoint() {
         Random rand = new Random();
         double x = rand.nextInt(this.width) + 1;
         double y = rand.nextInt(this.height) + 1;
@@ -76,7 +76,7 @@ public class AbstractArtDrawing {
      * Create a list of lines.
      * Create a new list of random lines.
      * @return the line list that created. */
-    Line[] lineList() {
+    public Line[] lineList() {
         Line[] listOfLines = new Line[this.numOfLines];
         Line newLine = null;
         int i = 0 , j;
@@ -102,7 +102,7 @@ public class AbstractArtDrawing {
     /**
      * Draw the lines in a graph.
      * Create a list of random lines and draw the lines and the middle, intersection points in the graph. */
-    void drawGraph() {
+    public void drawGraph() {
         Line[] listOfLines = lineList();
         Point intersectPoint = null;
         // Create the frame.
