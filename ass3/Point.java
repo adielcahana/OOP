@@ -32,6 +32,21 @@ public class Point {
         y2 = other.getY();
         return Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
     }
+    public boolean isInLine(Line line) {
+    	double slope = line.getSlope();
+    	if (Double.isInfinite(slope)) {
+    		if (this.getX() == line.start().getX()) {
+    			return true;
+    		}
+    	}
+    	double b = line.start().getY() - slope * line.start().getX();
+    	if (this.getY() == line.getSlope() * this.getX() + b) {
+    		if (line.isInTheDomain(x, line.start().getX(), line.end().getX(), line.start().getX(), line.end().getX())) {
+    			return true;
+    		}
+    	}
+    		return false;
+    }
 
     /**
      * Compare between 2 points.

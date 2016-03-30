@@ -34,7 +34,7 @@ public class AbstractArtDrawing {
      * Draw a single line.
      * @param l - the line to draw.
      * @param d - the surface to draw. */
-    void drawLine(Line l, DrawSurface d) {
+    public static void drawLine(Line l, DrawSurface d) {
         Point start = l.start();
         Point end = l.end();
         d.setColor(Color.BLACK);
@@ -45,7 +45,7 @@ public class AbstractArtDrawing {
      * Draw the point in blue.
      * @param p - the point to draw.
      * @param d - the surface to draw */
-    void drawPoint(Point p, DrawSurface d) {
+    public static void drawPoint(Point p, DrawSurface d) {
         //d.setColor(Color.BLUE);
         d.fillCircle((int) p.getX(), (int) p.getY(), 3);
     }

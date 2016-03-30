@@ -45,8 +45,8 @@ public class Velocity {
         * @param  speed - velocity vector size.
         * @return new Velocity - the new Velocity */
        public static Velocity fromAngleAndSpeed(double angle, double speed) {
-             double dx = speed * Math.cos(Math.toDegrees(angle));
-             double dy = speed * Math.sin(Math.toDegrees(angle));
+             double dx = speed * Math.cos(Math.toRadians(angle));
+             double dy = speed * Math.sin(Math.toRadians(angle));
              return new Velocity(dx, dy);
        }
 }

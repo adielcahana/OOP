@@ -21,13 +21,10 @@ public class Rectangle {
     public java.util.List intersectionPoints(Line line) {
         List intersectionPoints = new ArrayList();
         Line[] lines = this.madeOfLines();
-        for (int i = 0, j = 0; (i < 4) && (j < 2); i++) {
-            intersectionPoints.add(line.intersectionWith(lines[i]));
-            if (intersectionPoints.get(j) != null) {
-                j++;
-            } else {
-                intersectionPoints.remove(j);
-            }
+        for (int i = 0; i < 4; i++) {
+        	if (line.isIntersecting(lines[i])) {
+                intersectionPoints.add(line.intersectionWith(lines[i]));
+        	}
         }
         return intersectionPoints;
     }
@@ -35,13 +32,15 @@ public class Rectangle {
   //returns line array when the index 0 is the top line,
   //and so on (moving clockwise on the rectangle edges)
     public int pointPlace(Point p) {
-        Line pointLine = new Line(p, p);
         Line[] lines = this.madeOfLines();
         int i = 0;
-        while (!pointLine.isIntersecting(lines[i])) {
+        while (i < 4) {
+        	if(p.isInLine(lines[i])){
+        		break;
+        	}
             i++;
         }
-        return i+1;
+        return i;
     }
 
     public Line[] madeOfLines() {
@@ -49,15 +48,15 @@ public class Rectangle {
         //up
         lines[0] = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
                            this.upperLeft.getX() + width, this.upperLeft.getY());
-        //left
-        lines[1] = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                             this.upperLeft.getX(), this.upperLeft.getY() + height);
         //right
-        lines[2] = new Line(this.upperLeft.getX() + width, this.upperLeft.getY(),
+        lines[1] = new Line(this.upperLeft.getX() + width, this.upperLeft.getY(),
                               this.upperLeft.getX() + width, this.upperLeft.getY() + height);
         //down
-        lines[3] = new Line(this.upperLeft.getX(), this.upperLeft.getY() + height,
+        lines[2] = new Line(this.upperLeft.getX(), this.upperLeft.getY() + height,
                              this.upperLeft.getX() + width, this.upperLeft.getY() + height);
+        //left
+        lines[3] = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                             this.upperLeft.getX(), this.upperLeft.getY() + height);
         return lines;
     }
     // Return the width and height of the rectangle
@@ -67,16 +66,16 @@ public class Rectangle {
     public double getHeight() {
         return this.height;
     }
-
     // Returns the upper-left point of the rectangle.
     public Point getUpperLeft() {
         return this.upperLeft;
     }
-
     public void drawOn(DrawSurface surface, Color color) {
-        surface.setColor(color);
+    	surface.setColor(color);
         surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
                               (int) this.width, (int) this.height);
+        surface.setColor(Color.BLACK);
+        surface.drawRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
+                (int) this.width, (int) this.height);
     }
-
 }

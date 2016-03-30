@@ -140,7 +140,9 @@ public class Ball {
        public void moveOneStep() {
            Line trajectory = enviroment.getTrajectory(this.getCenter(), this.velocity);
            CollisionInfo info = enviroment.getClosestCollision(trajectory);
-           if (info == null) {
+           AbstractArtDrawing.drawLine(trajectory, this.enviroment.d);
+           AbstractArtDrawing.drawPoint(info.collisionPoint(),  this.enviroment.d);
+           if (info != null) {
         	   this.keepInFrame(info);
            }
            this.center = this.getVelocity().applyToPoint(this.center);
@@ -148,8 +150,10 @@ public class Ball {
        /**
         * changes the ball velocity according to its position.*/
        private void keepInFrame(CollisionInfo info) {
-             double speed = Math.sqrt(this.velocity.getDx() * this.velocity.getDx() + this.velocity.getDy() * this.velocity.getDy());
-             if (info.collisionPoint().distance(this.center) <= speed) {
+    	     double dx = getVelocity().getDx();
+    	     double dy = getVelocity().getDy();
+    	     double speed = Math.sqrt(dx*dx + dy*dy);
+             if (info.collisionPoint().distance(this.center) - speed < this.getSize() - 1) {
                  this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
              }
 //           double  dx = this.getVelocity().getDx();
