@@ -5,7 +5,12 @@ import biuoop.DrawSurface;
 public class Block implements Collidable {
     private Rectangle shape;
     private int maxHits;
-    public Block(Point upperLeft, double width, double height, int maxHits) {
+    
+    public int getMaxHits() {
+		return maxHits;
+	}
+
+	public Block(Point upperLeft, double width, double height, int maxHits) {
         this.shape = new Rectangle(upperLeft, width, height);
         this.maxHits = maxHits;
     }
@@ -31,6 +36,7 @@ public class Block implements Collidable {
         if (maxHits > 0) {
             maxHits--;
         }
+        
         switch(hitPlace) {
             case UP:
                 newVelocity = new Velocity(dx, -Math.abs(dy));
@@ -44,6 +50,8 @@ public class Block implements Collidable {
             case LEFT:
                 newVelocity = new Velocity(-Math.abs(dx), dy);
                 break;
+            default:
+            	newVelocity = new Velocity(0.0, 0.0);            	                	
         }
         return newVelocity;
     }
@@ -51,6 +59,6 @@ public class Block implements Collidable {
     	String hits =  Integer.toString(this.maxHits);
         this.shape.drawOn(surface, color);
         surface.setColor(Color.BLACK);
-        surface.drawText((int) (this.shape.getUpperLeft().getX() + this.shape.getWidth()/2),(int) (this.shape.getUpperLeft().getY() + this.shape.getHeight()/2),hits, 20);
+        surface.drawText((int) (this.shape.getUpperLeft().getX() + this.shape.getWidth()/2),(int) (this.shape.getUpperLeft().getY() + this.shape.getHeight()),hits, 20);
     }
 }

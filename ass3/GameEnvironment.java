@@ -24,6 +24,10 @@ public class GameEnvironment {
     }
 
     public static int min(ArrayList numbers) {
+    	if (numbers.isEmpty()) {
+    		return 0;
+    	}
+    	
         double min = (double) numbers.get(0);
         int index = 0;
         int i = 1;
@@ -68,6 +72,11 @@ public class GameEnvironment {
             }
             i++;
         }
+        
+        if (collisionsPoints.isEmpty() || blocks.isEmpty()) {
+        	return null;
+        }
+        
         return new CollisionInfo((Point) collisionsPoints.get(min(distances)), (Collidable) blocks.get(min(distances)));
     }
 
@@ -76,10 +85,10 @@ public class GameEnvironment {
     	Random rand = new Random();
         Sleeper sleeper = new Sleeper();
         GUI gui = new GUI("GAME", 600, 600);
-        Block upFrame = new Block(new Point(0, 0), 600, 10, 0);
-        Block lowFrame = new Block(new Point(0, 590), 600, 10, 0);
-        Block rFrame = new Block(new Point(0, 0), 10, 600, 0);
-        Block lFrame = new Block(new Point(590, 0), 10, 600, 0);
+        Block upFrame = new Block(new Point(0, 0), 600, 10, -1);
+        Block lowFrame = new Block(new Point(0, 590), 600, 10, -1);
+        Block rFrame = new Block(new Point(0, 0), 10, 600, -1);
+        Block lFrame = new Block(new Point(590, 0), 10, 600, -1);
         GameEnvironment enviroment = new GameEnvironment(new Point(600, 600) , new Point(0, 0));
         for (int i = 0; i< 20 ; i++)
         {
@@ -90,7 +99,7 @@ public class GameEnvironment {
         enviroment.addCollidable(rFrame);
         enviroment.addCollidable(lFrame);
         Ball ball = new Ball(new Point(300, 300), 5 , Color.RED, new Point(600, 600), new Point(0, 0), enviroment);
-        ball.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360) +1, 10));
+        ball.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360) +1, 15));
         while (true) {
             DrawSurface surface = gui.getDrawSurface();
             enviroment.d = surface;
@@ -100,6 +109,12 @@ public class GameEnvironment {
             {
             	Block b = (Block) enviroment.collidables.get(i);
             	b.drawOn(surface, Color.YELLOW);
+            	if (b.getMaxHits() == 0) {
+            		enviroment.collidables.remove(i);
+            		i--;
+            	} else {
+                    b.drawOn(surface, Color.YELLOW);
+            	}
             }
             gui.show(surface);
             sleeper.sleepFor(50);  // wait for 50 milliseconds.

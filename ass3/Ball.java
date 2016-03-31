@@ -140,6 +140,11 @@ public class Ball {
        public void moveOneStep() {
            Line trajectory = enviroment.getTrajectory(this.getCenter(), this.velocity);
            CollisionInfo info = enviroment.getClosestCollision(trajectory);
+           
+           if (null == info) {
+        	   return;
+           }
+           
            AbstractArtDrawing.drawLine(trajectory, this.enviroment.d);
            AbstractArtDrawing.drawPoint(info.collisionPoint(),  this.enviroment.d);
            if (info != null) {
@@ -150,29 +155,12 @@ public class Ball {
        /**
         * changes the ball velocity according to its position.*/
        private void keepInFrame(CollisionInfo info) {
-    	     double dx = getVelocity().getDx();
-    	     double dy = getVelocity().getDy();
-    	     double speed = Math.sqrt(dx*dx + dy*dy);
-             if (info.collisionPoint().distance(this.center) - speed < this.getSize() - 1) {
-                 this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
-             }
-//           double  dx = this.getVelocity().getDx();
-//           double dy = this.getVelocity().getDy();
-//           //the ball is near the left boundary
-//           if (this.getCenter().getX() - this.getSize() + dx < this.upperFrameEdge.getX()) {
-//               this.setVelocity(new Velocity(Math.abs(dx), dy));
-//               }
-//           //the ball is near the right boundary
-//           if (this.getCenter().getX() + this.getSize() + dx >= this.lowerFrameEdge.getX()) {
-//               this.setVelocity(new Velocity(-Math.abs(dx), dy));
-//               }
-//           //the ball is near the top boundary
-//           if (this.getCenter().getY() - this.getSize() + dy < this.upperFrameEdge.getY()) {
-//               this.setVelocity(new Velocity(dx, Math.abs(dy)));
-//               }
-//           //the ball is near the bottom boundary
-//           if (this.getCenter().getY() + this.getSize() + dy >= this.lowerFrameEdge.getY()) {
-//               this.setVelocity(new Velocity(dx, -Math.abs(dy)));
-//               }
+           double dx = getVelocity().getDx();
+           double dy = getVelocity().getDy();
+           double speed = Math.sqrt(dx*dx + dy*dy);
+                    
+           if (info.collisionPoint().distance(this.center) - speed < this.getSize()) {
+               this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
           }
+     }
 }

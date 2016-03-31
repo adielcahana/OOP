@@ -32,6 +32,10 @@ public class Rectangle {
   //returns line array when the index 0 is the top line,
   //and so on (moving clockwise on the rectangle edges)
     public int pointPlace(Point p) {
+    	final int UP = 0;
+        final int RIGHT = 1;
+        final int DOWN = 2;
+        final int LEFT = 3;
         Line[] lines = this.madeOfLines();
         int i = 0;
         while (i < 4) {
@@ -40,6 +44,11 @@ public class Rectangle {
         	}
             i++;
         }
+        if ( i==UP) System.out.println("up");
+        if ( i==DOWN) System.out.println("down");
+        if ( i==RIGHT) System.out.println("right");
+        if ( i==LEFT) System.out.println("left");
+        System.out.println(i);
         return i;
     }
 
@@ -50,13 +59,13 @@ public class Rectangle {
                            this.upperLeft.getX() + width, this.upperLeft.getY());
         //right
         lines[1] = new Line(this.upperLeft.getX() + width, this.upperLeft.getY(),
-                              this.upperLeft.getX() + width, this.upperLeft.getY() + height);
+                           this.upperLeft.getX() + width, this.upperLeft.getY() + height);
         //down
         lines[2] = new Line(this.upperLeft.getX(), this.upperLeft.getY() + height,
-                             this.upperLeft.getX() + width, this.upperLeft.getY() + height);
+                           this.upperLeft.getX() + width, this.upperLeft.getY() + height);
         //left
         lines[3] = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                             this.upperLeft.getX(), this.upperLeft.getY() + height);
+                           this.upperLeft.getX(), this.upperLeft.getY() + height);
         return lines;
     }
     // Return the width and height of the rectangle

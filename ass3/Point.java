@@ -37,15 +37,30 @@ public class Point {
     	if (Double.isInfinite(slope)) {
     		if (this.getX() == line.start().getX()) {
     			return true;
+    		} else {
+    			return false;
     		}
     	}
-    	double b = line.start().getY() - slope * line.start().getX();
-    	if (this.getY() == line.getSlope() * this.getX() + b) {
-    		if (line.isInTheDomain(x, line.start().getX(), line.end().getX(), line.start().getX(), line.end().getX())) {
-    			return true;
-    		}
+    	double b;
+    	if (slope == 0.0) {
+    		b = line.start().getY();
+    	} else {
+    	    b = line.start().getY() - slope * line.start().getX();
     	}
-    		return false;
+    	System.out.println("-----------------------------");
+    	System.out.println("this.getY() " + this.getY());
+    	System.out.println("other Y" + slope * this.getX() + b);
+    	System.out.println("slope " + slope);
+    	System.out.println("line.getSlope() " + line.getSlope());
+    	System.out.println("this.getX() " + this.getX());
+    	System.out.println("b " + b);
+    	System.out.println("-----------------------------");
+    	System.out.println();
+    	
+    	if (Math.abs(this.getY() - (slope * this.getX() + b)) < 0.0000001) {
+    		return true;
+    	}
+    	return false;
     }
 
     /**
