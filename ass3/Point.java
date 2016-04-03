@@ -1,3 +1,7 @@
+import java.awt.Color;
+
+import biuoop.DrawSurface;
+
 /**
 * @author Ori Engelberg <turht50@gmail.com>
 * @version 1.0
@@ -34,35 +38,22 @@ public class Point {
     }
     public boolean isInLine(Line line) {
     	double slope = line.getSlope();
-    	if (Double.isInfinite(slope)) {
-    		if (this.getX() == line.start().getX()) {
-    			return true;
-    		} else {
-    			return false;
-    		}
+    	if (Double.isInfinite(slope) && Math.abs(this.getX() - line.start().getX()) < 0.001) {
+    		return this.isInLineSegment(line);
     	}
-    	double b;
-    	if (slope == 0.0) {
-    		b = line.start().getY();
-    	} else {
-    	    b = line.start().getY() - slope * line.start().getX();
+    	double b = line.start().getY() - slope * line.start().getX();
+    	if (Math.abs(this.getY() - slope * this.getX() - b) < 0.001) {
+    		return this.isInLineSegment(line);
     	}
-    	System.out.println("-----------------------------");
-    	System.out.println("this.getY() " + this.getY());
-    	System.out.println("other Y" + slope * this.getX() + b);
-    	System.out.println("slope " + slope);
-    	System.out.println("line.getSlope() " + line.getSlope());
-    	System.out.println("this.getX() " + this.getX());
-    	System.out.println("b " + b);
-    	System.out.println("-----------------------------");
-    	System.out.println();
-    	
-    	if (Math.abs(this.getY() - (slope * this.getX() + b)) < 0.0000001) {
-    		return true;
-    	}
-    	return false;
+        return false;
     }
 
+    public boolean isInLineSegment(Line line) {
+    	return (((this.x >= line.start().getX() && x <= line.end().getX()) 
+    			|| (this.x <= line.start().getX() && x >= line.end().getX())) 
+    			&& ((this.y >= line.end().getY() && this.y <= line.start().getY()) 
+                || (this.y <= line.end().getY() && this.y >= line.start().getY())));
+    }
     /**
      * Compare between 2 points.
      * Check if the x values equal and the y values equal.
@@ -72,12 +63,7 @@ public class Point {
         if (other == null) {
             return false;
         }
-        double x1, x2, y1, y2;
-        x1 = this.getX();
-        x2 = other.getX();
-        y1 = this.getY();
-        y2 = other.getY();
-        return (x1 == x2 && y1 == y2);
+        return (this.getX() == other.getX() && this.getY() == other.getY());
     }
 
     /**
@@ -93,4 +79,9 @@ public class Point {
     public double getY() {
         return this.y;
         }
+    
+    public void drawOn(DrawSurface d, Color color) {
+        d.setColor(color);
+        d.fillCircle((int) this.getX(), (int) this.getY(), 3);
+    }
 }

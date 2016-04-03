@@ -37,6 +37,11 @@ public class Velocity {
        public Point applyToPoint(Point point) {
            return new Point(point.getX() + this.dx, point.getY() + this.dy);
        }
+       
+       public double getSpeed() {
+           return Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+       }
+       
        /**
         * Take a point with position (x,y) and return a new point
         * with position (x + dx, y + dy).
@@ -45,8 +50,8 @@ public class Velocity {
         * @param  speed - velocity vector size.
         * @return new Velocity - the new Velocity */
        public static Velocity fromAngleAndSpeed(double angle, double speed) {
-             double dx = speed * Math.cos(Math.toRadians(angle));
-             double dy = speed * Math.sin(Math.toRadians(angle));
+             double dx = speed * Math.cos(Math.toRadians(angle - 90));
+             double dy = speed * Math.sin(Math.toRadians(angle - 90));
              return new Velocity(dx, dy);
        }
 }

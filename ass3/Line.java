@@ -1,4 +1,8 @@
+import java.awt.Color;
+import java.util.Collections;
 import java.util.List;
+
+import biuoop.DrawSurface;
 
 /**
 * @author Ori Engelberg <turht50@gmail.com>
@@ -76,7 +80,7 @@ public class Line {
            dx = this.start.getX() - this.end.getX();
            dy = this.start.getY() - this.end.getY();
            return (dy / dx);
-           }
+        }
 
         /**
          * Check intersection between 2 lines.
@@ -96,53 +100,42 @@ public class Line {
          * @param other - another line to check the intersection.
          * @return the intersection point, if the lines don't intersected returns null.  */
         public Point intersectionWith(Line other) {
-            double x, y, m1, m2, b1, b2;
+            double x, y;
             // find the m and b to create the equation y = m * x -b.
-            m1 = this.getSlope();
-            m2 = other.getSlope();
-            b1 = this.start.getY() - m1 * this.start.getX();
-            b2 = other.start.getY() - m2 * other.start.getX();
-            // If the slopes equal there is't intersection.
-            if (m1 == m2) {
+            Double m1 = this.getSlope();
+            Double m2 = other.getSlope();
+            double b1 = this.start.getY() - m1 * this.start.getX();
+            double b2 = other.start.getY() - m2 * other.start.getX();
+            Point intersection = null;
+            // If the slopes equal there isn't intersection.
+            if (m1.equals(m2)) { 
                 return null;
-            } else if (Double.isInfinite(m1)) {
-                // If one of the slopes in Infinity then the x value is known and we find the y value.
+            } else if (m1.isInfinite()) {
+                // If one of the slopes is Infinity then the x value is known and we find the y value.
                 x = this.start.getX();
                 y = m2 * x + b2;
+                intersection = new Point(x, y);
                 // If no intersection return null.
-                if (!isInTheDomain(y, this.start.getY(), this.end.getY(), other.start.getY(), other.end.getY())) {
+                if (!(intersection.isInLineSegment(this) && intersection.isInLineSegment(other))) {
                     return null;
-                    }
-            } else if (Double.isInfinite(m2)) {
-                    x = other.start.getX();
-                    y = m1 * x + b1;
-                if (!isInTheDomain(y, this.start.getY(), this.end.getY(), other.start.getY(), other.end.getY())) {
+                }
+            } else if ( m2.isInfinite()) {
+                x = other.start.getX();
+                y = m1 * x + b1;
+                intersection = new Point(x, y);
+                if (!(intersection.isInLineSegment(this) && intersection.isInLineSegment(other))) {
                     return null;
-                    }
-               } else {
+                }
+            } else {
                // In other cases find the x and y of the intersection and check if this is in the both lines.
                x = (b2 - b1) / (m1 - m2);
                y = m1 * x + b1;
-               if (!isInTheDomain(x, this.start.getX(), this.end.getX(), other.start.getX(), other.end.getX())) {
+               intersection = new Point(x, y);
+               if (!(intersection.isInLineSegment(this) && intersection.isInLineSegment(other))) {
                    return null;
-                   }
                }
-            // Create the intersection point.
-            Point intersection = new Point(x, y);
-            return intersection;
             }
-
-        /**
-         * Check intersection between 2 lines.
-         * @param x - the x/y value of the intersection point.
-         * @param x1Start - the x/y value of the start point of the line.
-         * @param x1End - the x/y value of the end point of the line.
-         * @param x2Start - the x/y value of the start point of the other line.
-         * @param x2End - the x/y value of the end point of the other line.
-         * @return true if the intersection in the both lines domains.  */
-    boolean isInTheDomain(double x, double x1Start, double x1End, double x2Start, double x2End) {
-        return (((x >= x1Start && x <= x1End) || (x <= x1Start && x >= x1End))
-                   && ((x >= x2End && x <= x2Start) || (x <= x2End && x >= x2Start)));
+            return intersection;
         }
     // If this line does not intersect with the rectangle, return null.
     // Otherwise, return the closest intersection point to the
@@ -150,17 +143,12 @@ public class Line {
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         List intersections = rect.intersectionPoints(this);
         if (intersections.isEmpty()) {
+        	System.out.println("Error: no intersections");
             return null;
-        } else if (intersections.size() == 1) {
-            return (Point) intersections.get(0);
-        } else {
-            double dist1 = this.start().distance((Point) intersections.get(0));
-            double dist2 = this.start().distance((Point) intersections.get(1));
-            if (dist1 <= dist2) {
-                return (Point) intersections.get(0);
-            }
-            return (Point) intersections.get(1);
         }
+        Collections.sort(intersections, new PointByDistanceComparator(this.start()));
+        System.out.println("there is intersections");
+        return (Point) intersections.get(0);
     }
     /**
      * Check if 2 lines are equal.
@@ -179,5 +167,12 @@ public class Line {
      * @return the slope. */
     public double getSlope() {
         return slope;
+    }
+
+    public void drawOn(DrawSurface d, Color color) {
+        Point start = this.start();
+        Point end = this.end();
+        d.setColor(color);
+        d.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }
 }

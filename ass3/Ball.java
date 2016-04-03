@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import biuoop.DrawSurface;
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
@@ -8,8 +10,6 @@ public class Ball {
     private int radius;
     private java.awt.Color color;
     private Velocity velocity;
-    private Point lowerFrameEdge;
-    private Point upperFrameEdge;
     private GameEnvironment enviroment;
 
        /**
@@ -40,13 +40,9 @@ public class Ball {
        * @param center - the change in x axis.
        * @param r - the change in y axis.
        * @param color - the change in y axis.
-       * @param lowerFrameEdge - low right edge
-       * @param upperFrameEdge - upper left edge
        * @param enviroment - the game envitoment*/
-       public Ball(Point center, int r, java.awt.Color color, Point lowerFrameEdge, Point upperFrameEdge, GameEnvironment enviroment) {
+       public Ball(Point center, int r, java.awt.Color color, GameEnvironment enviroment) {
            this(center, r, color);
-           this.upperFrameEdge = upperFrameEdge;
-           this.lowerFrameEdge = lowerFrameEdge;
            this.enviroment = enviroment;
        }
        /**
@@ -56,13 +52,9 @@ public class Ball {
        * @param y - coordinate.
        * @param r - the change in y axis.
        * @param color - the change in y axis.
-       * @param lowerFrameEdge - low right edge
-       * @param upperFrameEdge - upper left edge
        * @param enviroment - the game envitoment*/
-       public Ball(int x, int y, int r, java.awt.Color color, Point lowerFrameEdge, Point upperFrameEdge, GameEnvironment enviroment) {
+       public Ball(int x, int y, int r, java.awt.Color color, GameEnvironment enviroment) {
            this(new Point(x, y), r, color);
-           this.upperFrameEdge = upperFrameEdge;
-           this.lowerFrameEdge = lowerFrameEdge;
            this.enviroment = enviroment;
        }
 
@@ -131,6 +123,18 @@ public class Ball {
        public void setVelocity(double dx, double dy) {
            this.velocity = new Velocity(dx, dy);
        }
+
+       public Line getTrajectory() {
+           double width = this.enviroment.getLowerFrameEdge().getX() - this.enviroment.getUpperFrameEdge().getX();
+           double height = this.enviroment.getLowerFrameEdge().getY() - this.enviroment.getUpperFrameEdge().getY();
+           double dx = this.getVelocity().getDx();
+           double dy = this.getVelocity().getDy();
+           double diagonal = Math.sqrt((width * width) + (height * height));
+           double endX = this.getCenter().getX() + diagonal * dx;
+           double endY = this.getCenter().getY() + diagonal * dy;
+           return new Line(this.getCenter(), new Point(endX, endY));
+       }
+
        /**
         * ball animation step.
         * <p>
@@ -138,29 +142,17 @@ public class Ball {
         * <p>
         * keeps the ball in its boundaries*/
        public void moveOneStep() {
-           Line trajectory = enviroment.getTrajectory(this.getCenter(), this.velocity);
-           CollisionInfo info = enviroment.getClosestCollision(trajectory);
-           
-           if (null == info) {
-        	   return;
-           }
-           
-           AbstractArtDrawing.drawLine(trajectory, this.enviroment.d);
-           AbstractArtDrawing.drawPoint(info.collisionPoint(),  this.enviroment.d);
+           Line trajectory = this.getTrajectory();
+           CollisionInfo info = this.enviroment.getClosestCollision(trajectory);
+           trajectory.drawOn(this.enviroment.getSurface(), Color.BLACK);
            if (info != null) {
-        	   this.keepInFrame(info);
+               info.collisionPoint().drawOn(this.enviroment.getSurface(), Color.RED);
+        	   //if a collision will occcure in the next step, change the ball velocity
+               if (info.collisionPoint().distance(this.center) - this.velocity.getSpeed() <= this.getSize()) {
+                   this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
+              }
            }
            this.center = this.getVelocity().applyToPoint(this.center);
        }
-       /**
-        * changes the ball velocity according to its position.*/
-       private void keepInFrame(CollisionInfo info) {
-           double dx = getVelocity().getDx();
-           double dy = getVelocity().getDy();
-           double speed = Math.sqrt(dx*dx + dy*dy);
-                    
-           if (info.collisionPoint().distance(this.center) - speed < this.getSize()) {
-               this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
-          }
-     }
 }
+
