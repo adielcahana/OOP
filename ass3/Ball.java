@@ -5,7 +5,7 @@ import biuoop.DrawSurface;
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
 * @since 2016-03-25 */
-public class Ball {
+public class Ball implements Sprite {
     private Point center;
     private int radius;
     private java.awt.Color color;
@@ -154,5 +154,14 @@ public class Ball {
            }
            this.center = this.getVelocity().applyToPoint(this.center);
        }
+       
+	public void addToGame(Game game) {
+		game.addSprite(this);
+		
+	}
+
+	public void timePassed() {
+		this.moveOneStep();
+	}
 }
 

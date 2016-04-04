@@ -79,6 +79,9 @@ public class Line {
            double dx, dy;
            dx = this.start.getX() - this.end.getX();
            dy = this.start.getY() - this.end.getY();
+           if (dx == 0){
+        	  return Double.POSITIVE_INFINITY;
+           }
            return (dy / dx);
         }
 
@@ -128,8 +131,8 @@ public class Line {
                 }
             } else {
                // In other cases find the x and y of the intersection and check if this is in the both lines.
-               x = (b2 - b1) / (m1 - m2);
-               y = m1 * x + b1;
+               x = (b1 - b2) / (m2 - m1);
+               y = m2 * x + b2;
                intersection = new Point(x, y);
                if (!(intersection.isInLineSegment(this) && intersection.isInLineSegment(other))) {
                    return null;
@@ -143,11 +146,11 @@ public class Line {
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         List intersections = rect.intersectionPoints(this);
         if (intersections.isEmpty()) {
-        	System.out.println("Error: no intersections");
+        	//System.out.println("Error: no intersections");
             return null;
         }
         Collections.sort(intersections, new PointByDistanceComparator(this.start()));
-        System.out.println("there is intersections");
+        //System.out.println("there is intersections");
         return (Point) intersections.get(0);
     }
     /**

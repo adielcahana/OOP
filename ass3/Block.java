@@ -2,7 +2,7 @@ import java.awt.Color;
 
 import biuoop.DrawSurface;
 
-public class Block implements Collidable {
+public class Block implements Collidable, Sprite {
     private Rectangle shape;
     private int maxHits;
     private Color color;
@@ -57,6 +57,7 @@ public class Block implements Collidable {
         }
         return newVelocity;
     }
+    
     public void drawOn(DrawSurface surface) {
         String hits;
         if (this.maxHits > 0) {
@@ -72,4 +73,12 @@ public class Block implements Collidable {
 //        surface.drawText((int) (this.shape.getUpperLeft().getX() + (this.shape.getWidth() / 2) - 3),
 //                         (int) (this.shape.getUpperLeft().getY() + this.shape.getHeight() - 4), hits, 20);
     }
+
+	public void addToGame(Game game) {
+		game.addCollidable(this);
+		game.addSprite(this);
+	}
+
+	public void timePassed() {
+	}
 }

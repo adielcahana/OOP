@@ -10,6 +10,9 @@ public class SpriteCollection {
 	public void addSprite(Sprite s){
 		this.SpriteCollection.add(s);
 	}
+	public void removeSprite(Sprite s){
+		this.SpriteCollection.remove(s);
+	}
 
 	// call timePassed() on all sprites.
 	public void notifyAllTimePassed(){

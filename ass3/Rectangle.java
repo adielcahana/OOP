@@ -28,6 +28,26 @@ public class Rectangle {
         return intersectionPoints;
     }
 
+    
+    public int divideRectangle(Point p){
+    	double x = upperLeft.getX();
+    	double y = upperLeft.getY();
+    	Line[] lines = new Line[5];
+    	int i;
+    	double divide = width/5;
+    	for(i=0; i < 5; i++){
+    		lines[i] = new Line(new Point(x + (divide*i),y),(new Point(x + (divide*(i + 1)),y)));
+    	}
+    	i = 0;
+        while (i < 5) {
+        	if (p.isInLine(lines[i])) {
+        		break;
+        	}
+            i++;
+        }
+        return i;    	
+    }
+    
   //returns line array when the index 0 is the top line,
   //and so on (moving clockwise on the rectangle edges)
     public int placeInsideMe(Point p) {
