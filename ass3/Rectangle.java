@@ -58,24 +58,21 @@ public class Rectangle {
         	}
             i++;
         }
-        System.out.println("i is " + i);
         return i;
     }
 
     public Line[] myLines() {
+    	double x = this.upperLeft.getX();
+    	double y = this.upperLeft.getY();
         Line[] lines = new Line[4];
         //up
-        lines[0] = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                           this.upperLeft.getX() + width, this.upperLeft.getY());
+        lines[0] = new Line(x, y, x + width, y);
         //right
-        lines[1] = new Line(this.upperLeft.getX() + width, this.upperLeft.getY(),
-                           this.upperLeft.getX() + width, this.upperLeft.getY() + height);
+        lines[1] = new Line(x + width, y, x + width, y + height);
         //down
-        lines[2] = new Line(this.upperLeft.getX(), this.upperLeft.getY() + height,
-                           this.upperLeft.getX() + width, this.upperLeft.getY() + height);
+        lines[2] = new Line(x, y + height, x + width, y + height);
         //left
-        lines[3] = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                           this.upperLeft.getX(), this.upperLeft.getY() + height);
+        lines[3] = new Line(x, y, x, y + height);
         return lines;
     }
     // Return the width and height of the rectangle

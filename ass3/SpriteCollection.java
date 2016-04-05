@@ -1,8 +1,9 @@
 import biuoop.DrawSurface;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SpriteCollection {
-	private ArrayList SpriteCollection;
+	private List SpriteCollection;
 
 	public SpriteCollection(){
 		this.SpriteCollection = new ArrayList();

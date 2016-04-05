@@ -17,7 +17,7 @@ public class Paddle implements Sprite, Collidable {
 		this.leftBoundry = leftBoundry;
 		this.rightBoundry = rightBoundry;
 	}
-	
+
 
 	public void moveLeft() {
 		double x  = this.shape.getUpperLeft().getX();
@@ -61,40 +61,58 @@ public class Paddle implements Sprite, Collidable {
 	}
 
 	public Velocity hit(Point collisionPoint, Velocity currentVelocity) {	
-		final int Left = 0;
-		final int LeftMiddle = 1;
-		final int Middle = 2;
-		final int RightMiddle = 3;
-		final int Right = 4;
-		double dx = currentVelocity.getDx();
+		final int UP = 0;
+		final int RIGHT = 1;
+		final int DOWN = 2;
+		final int LEFT = 3;
+		double  dx = currentVelocity.getDx();
 		double dy = currentVelocity.getDy();
-		double speed = Math.sqrt(dx * dx + dy * dy);
 		Velocity newVelocity = null;
-		int hitPlace = this.shape.divideRectangle(collisionPoint);
+		int hitPlace = this.shape.placeInsideMe(collisionPoint);
 		switch(hitPlace) {
-		case Left:
-			newVelocity = Velocity.fromAngleAndSpeed(300, speed);
+		case UP:
+			final int Left = 0;
+			final int LeftMiddle = 1;
+			final int Middle = 2;
+			final int RightMiddle = 3;
+			final int Right = 4;
+			double speed = Math.sqrt(dx * dx + dy * dy);
+			hitPlace = this.shape.divideRectangle(collisionPoint);
+			switch(hitPlace) {
+			case Left:
+				newVelocity = Velocity.fromAngleAndSpeed(300, speed);
+				break;
+			case LeftMiddle:
+				newVelocity = Velocity.fromAngleAndSpeed(330, speed);
+				break;
+			case Middle:
+				newVelocity = Velocity.fromAngleAndSpeed(0, speed);
+				break;
+			case RightMiddle:
+				newVelocity = Velocity.fromAngleAndSpeed(30, speed);
+				break;
+			case Right:
+				newVelocity = Velocity.fromAngleAndSpeed(60, speed);
+				break;
+			default:
+				System.out.println("Error: no velocity");
+			}
+			System.out.println("11111");
 			break;
-		case LeftMiddle:
-			newVelocity = Velocity.fromAngleAndSpeed(330, speed);
+		case DOWN:
+			newVelocity = new Velocity(dx, Math.abs(dy));
+			System.out.println("22222");
 			break;
-		case Middle:
-			newVelocity = Velocity.fromAngleAndSpeed(0, speed);
+		case RIGHT:
+			newVelocity = new Velocity(Math.abs(dx), dy);
+			System.out.println("33333");
 			break;
-		case RightMiddle:
-			newVelocity = Velocity.fromAngleAndSpeed(30, speed);
-			break;
-		case Right:
-			newVelocity = Velocity.fromAngleAndSpeed(60, speed);
+		case LEFT:
+			newVelocity = new Velocity(-Math.abs(dx), dy);
+			System.out.println("44444");
 			break;
 		default:
-			System.out.println(dx);
-			if (collisionPoint.getX() <= this.shape.getUpperLeft().getX()){
-				newVelocity = new Velocity(-Math.abs(dx), dy);
-			}
-			else{
-				newVelocity = new Velocity(Math.abs(dx), dy);
-			}
+			System.out.println("Error: no velocity");
 		}
 		return newVelocity;
 	}
