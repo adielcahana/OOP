@@ -7,24 +7,28 @@ public class Paddle implements Sprite, Collidable {
 	private biuoop.KeyboardSensor keyboard;
 	private Rectangle shape;
 	private Color color;
+	private double leftBoundry ;
+	private double rightBoundry;
 
-	public Paddle(Point upperLeft, double width, double height, Color color, KeyboardSensor keyboard) {
+	public Paddle(Point upperLeft, double width, double height, Color color, KeyboardSensor keyboard, double leftboundry, double rightBoundry) {
 		this.keyboard = keyboard;
 		this.shape = new Rectangle(upperLeft, width, height);
 		this.color = color;
+		this.leftBoundry = leftBoundry;
+		this.rightBoundry = rightBoundry;
 	}
+	
 
 	public void moveLeft() {
 		double x  = this.shape.getUpperLeft().getX();
 		double y  = this.shape.getUpperLeft().getY();
 		double width = this.shape.getWidth();
 		double height = this.shape.getHeight();
-		double leftBoundry = 0;
 		this.shape = new Rectangle(new Point(x - 5, y), width, height);
-		if (x - 5 > leftBoundry) {
+		if (x - 5 > this.leftBoundry) {
 			this.shape = new Rectangle(new Point(x - 5, y), width, height);
 		} else {
-			this.shape = new Rectangle(new Point(leftBoundry, y), width, height);
+			this.shape = new Rectangle(new Point(this.leftBoundry, y), width, height);
 		}
 	}
 
@@ -33,12 +37,11 @@ public class Paddle implements Sprite, Collidable {
 		double y  = this.shape.getUpperLeft().getY();
 		double width = this.shape.getWidth();
 		double height = this.shape.getHeight();
-		double rightBoundry = 380;
 		this.shape = new Rectangle(new Point(x + 5, y), width, height);
-		if (x + 5 < rightBoundry) {
+		if (x + 5 < this.rightBoundry) {
 			this.shape = new Rectangle(new Point(x + 5, y), width, height);
 		} else {
-			this.shape = new Rectangle(new Point(rightBoundry, y), width, height);
+			this.shape = new Rectangle(new Point(this.rightBoundry - width, y), width, height);
 		}
 	}
 
@@ -87,7 +90,7 @@ public class Paddle implements Sprite, Collidable {
 			newVelocity = Velocity.fromAngleAndSpeed(60, speed);
 			break;
 		default:
-			System.out.println("Error: no velocity");
+			newVelocity = Velocity.fromAngleAndSpeed(90, speed);
 		}
 		return newVelocity;
 	}

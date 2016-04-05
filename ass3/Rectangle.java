@@ -27,7 +27,6 @@ public class Rectangle {
         }
         return intersectionPoints;
     }
-
     
     public int divideRectangle(Point p){
     	double x = upperLeft.getX();
