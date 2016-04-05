@@ -65,7 +65,7 @@ public class Paddle implements Sprite, Collidable {
 		final int RIGHT = 1;
 		final int DOWN = 2;
 		final int LEFT = 3;
-		double  dx = currentVelocity.getDx();
+		double dx = currentVelocity.getDx();
 		double dy = currentVelocity.getDy();
 		Velocity newVelocity = null;
 		int hitPlace = this.shape.placeInsideMe(collisionPoint);
@@ -76,7 +76,7 @@ public class Paddle implements Sprite, Collidable {
 			final int Middle = 2;
 			final int RightMiddle = 3;
 			final int Right = 4;
-			double speed = Math.sqrt(dx * dx + dy * dy);
+			double speed = currentVelocity.getSpeed();
 			hitPlace = this.shape.divideRectangle(collisionPoint);
 			switch(hitPlace) {
 			case Left:
@@ -97,19 +97,15 @@ public class Paddle implements Sprite, Collidable {
 			default:
 				System.out.println("Error: no velocity");
 			}
-			System.out.println("11111");
 			break;
 		case DOWN:
 			newVelocity = new Velocity(dx, Math.abs(dy));
-			System.out.println("22222");
 			break;
 		case RIGHT:
 			newVelocity = new Velocity(Math.abs(dx), dy);
-			System.out.println("33333");
 			break;
 		case LEFT:
 			newVelocity = new Velocity(-Math.abs(dx), dy);
-			System.out.println("44444");
 			break;
 		default:
 			System.out.println("Error: no velocity");

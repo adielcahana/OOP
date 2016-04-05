@@ -144,11 +144,11 @@ public class Ball implements Sprite {
        public void moveOneStep() {
            Line trajectory = this.getTrajectory();
            CollisionInfo info = this.enviroment.getClosestCollision(trajectory);
-           trajectory.drawOn(this.enviroment.getSurface(), Color.BLACK);
+           //trajectory.drawOn(this.enviroment.getSurface(), Color.BLACK);
            if (info != null) {
-               info.collisionPoint().drawOn(this.enviroment.getSurface(), Color.RED);
+               //info.collisionPoint().drawOn(this.enviroment.getSurface(), Color.RED);
         	   //if a collision will occcure in the next step, change the ball velocity
-               if (info.collisionPoint().distance(this.center) - this.velocity.getSpeed() <= this.getSize()) {
+               if (info.collisionPoint().distance(this.center) - this.velocity.getSpeed() * 1.2 <= this.getSize()) {
                    this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
               }
            }

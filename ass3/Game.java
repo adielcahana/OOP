@@ -76,16 +76,15 @@ public class Game {
             long startTime = System.currentTimeMillis(); // timing
             DrawSurface d = gui.getDrawSurface();
             this.environment.setSurface(d);
-            Paddle paddle = (Paddle) this.environment.getCollidable(0);
-            for (int i = 1; environment.getCollidable(i) != null; i++) {
-                Block b = (Block) this.environment.getCollidable(i);
-                //            b.drawOn(surface);
-                if (b.getMaxHits() == 0) {
-                    environment.removeCollidable(i);
-                    sprites.removeSprite(b);
-                    i--;
-                    }
-                }
+//            //for (int i = 1; environment.getCollidable(i) != null; i++) {
+//                //Block b = (Block) this.environment.getCollidable(i);
+//                //            b.drawOn(surface);
+//                if (b.getMaxHits() == 0) {
+//                    environment.removeCollidable(i);
+//                    sprites.removeSprite(b);
+//                    i--;
+//                    }
+//                }
             this.sprites.drawAllOn(d);
             this.sprites.notifyAllTimePassed();
             gui.show(d);
@@ -96,23 +95,18 @@ public class Game {
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
-                }
             }
-
+            //sleeper.sleepFor(100);
+            }
+    }
     public void createFrame() {
         Block upFrame = new Block(new Point(0, 0), 800, 20, -1, Color.GRAY);
         Block lowFrame = new Block(new Point(0, 580), 800, 20, -1, Color.GRAY);
         Block lFrame = new Block(new Point(0, 20), 20, 580, -1, Color.GRAY);
         Block rFrame = new Block(new Point(780, 20), 20, 580, -1, Color.GRAY);
-        upFrame.addToGame(this);
-        lowFrame.addToGame(this);
         lFrame.addToGame(this);
         rFrame.addToGame(this);
-        }
-
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.initialize();
-        game.run();
+        upFrame.addToGame(this);
+        lowFrame.addToGame(this);
         }
     }
