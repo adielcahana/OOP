@@ -10,7 +10,7 @@ public class Paddle implements Sprite, Collidable {
 	private double leftBoundry ;
 	private double rightBoundry;
 
-	public Paddle(Point upperLeft, double width, double height, Color color, KeyboardSensor keyboard, double leftboundry, double rightBoundry) {
+	public Paddle(Point upperLeft, double width, double height, Color color, KeyboardSensor keyboard, double leftBoundry, double rightBoundry) {
 		this.keyboard = keyboard;
 		this.shape = new Rectangle(upperLeft, width, height);
 		this.color = color;
@@ -25,7 +25,7 @@ public class Paddle implements Sprite, Collidable {
 		double width = this.shape.getWidth();
 		double height = this.shape.getHeight();
 		this.shape = new Rectangle(new Point(x - 5, y), width, height);
-		if (x - 5 > this.leftBoundry) {
+		if (x > this.leftBoundry) {
 			this.shape = new Rectangle(new Point(x - 5, y), width, height);
 		} else {
 			this.shape = new Rectangle(new Point(this.leftBoundry, y), width, height);
@@ -38,7 +38,7 @@ public class Paddle implements Sprite, Collidable {
 		double width = this.shape.getWidth();
 		double height = this.shape.getHeight();
 		this.shape = new Rectangle(new Point(x + 5, y), width, height);
-		if (x + 5 < this.rightBoundry) {
+		if (x+ width + 5 < this.rightBoundry) {
 			this.shape = new Rectangle(new Point(x + 5, y), width, height);
 		} else {
 			this.shape = new Rectangle(new Point(this.rightBoundry - width, y), width, height);
@@ -48,11 +48,9 @@ public class Paddle implements Sprite, Collidable {
 	// Sprite
 	public void timePassed() {
 		if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)){
-			System.out.println("the 'left arrow' key is pressed");
 			this.moveLeft();
 		}
 		else if(keyboard.isPressed(KeyboardSensor.RIGHT_KEY)){
-			System.out.println("the 'right arrow' key is pressed");
 			this.moveRight();
 		}
 	}
@@ -90,7 +88,13 @@ public class Paddle implements Sprite, Collidable {
 			newVelocity = Velocity.fromAngleAndSpeed(60, speed);
 			break;
 		default:
-			newVelocity = Velocity.fromAngleAndSpeed(90, speed);
+			System.out.println(dx);
+			if (collisionPoint.getX() <= this.shape.getUpperLeft().getX()){
+				newVelocity = new Velocity(-Math.abs(dx), dy);
+			}
+			else{
+				newVelocity = new Velocity(Math.abs(dx), dy);
+			}
 		}
 		return newVelocity;
 	}
