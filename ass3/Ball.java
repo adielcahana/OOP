@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 import biuoop.DrawSurface;
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
@@ -124,12 +122,19 @@ public class Ball implements Sprite {
            this.velocity = new Velocity(dx, dy);
        }
 
+       /**
+        * computes the ball trajectory.
+        * <p>
+        * @return line representation of the trajectory */
        public Line getTrajectory() {
+           //compute the frame width and length
            double width = this.enviroment.getLowerFrameEdge().getX() - this.enviroment.getUpperFrameEdge().getX();
            double height = this.enviroment.getLowerFrameEdge().getY() - this.enviroment.getUpperFrameEdge().getY();
            double dx = this.getVelocity().getDx();
            double dy = this.getVelocity().getDy();
+           //the frame diagonal is the longest trajectory inside the frame
            double diagonal = Math.sqrt((width * width) + (height * height));
+           // the (x,y) coordinate of the assumed trajectory
            double endX = this.getCenter().getX() + diagonal * dx;
            double endY = this.getCenter().getY() + diagonal * dy;
            return new Line(this.getCenter(), new Point(endX, endY));
@@ -140,28 +145,33 @@ public class Ball implements Sprite {
         * <p>
         * changes the center according to the velocity
         * <p>
-        * keeps the ball in its boundaries*/
+        * keeps the ball moving correctly in the environment*/
        public void moveOneStep() {
            Line trajectory = this.getTrajectory();
            CollisionInfo info = this.enviroment.getClosestCollision(trajectory);
            //trajectory.drawOn(this.enviroment.getSurface(), Color.BLACK);
            if (info != null) {
                //info.collisionPoint().drawOn(this.enviroment.getSurface(), Color.RED);
-        	   //if a collision will occcure in the next step, change the ball velocity
-               if (info.collisionPoint().distance(this.center) - this.velocity.getSpeed() * 1.2 <= this.getSize()) {
+               //if a collision will occcure in the next step, change the ball velocity
+              //checks if the ball next step will pass the collision point
+              if (info.collisionPoint().distance(this.center) - this.velocity.getSpeed() * 1.2 <= this.getSize()) {
                    this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
               }
            }
            this.center = this.getVelocity().applyToPoint(this.center);
        }
-       
-	public void addToGame(Game game) {
-		game.addSprite(this);
-		
-	}
 
-	public void timePassed() {
-		this.moveOneStep();
-	}
+    /**
+     * adds the ball to the game.
+     * <p>
+     * @param game - the game*/
+    public void addToGame(Game game) {
+        game.addSprite(this);
+    }
+    /**
+     * notify the ball that the main animation loop continued.*/
+    public void timePassed() {
+        this.moveOneStep();
+    }
 }
 

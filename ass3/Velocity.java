@@ -37,11 +37,15 @@ public class Velocity {
        public Point applyToPoint(Point point) {
            return new Point(point.getX() + this.dx, point.getY() + this.dy);
        }
-       
+       /**
+        * calculate the velocity speed ( the 'size' of the speed)
+        * and returns it.
+        * <p>
+        * @return speed */
        public double getSpeed() {
            return Math.sqrt(this.dx * this.dx + this.dy * this.dy);
        }
-       
+
        /**
         * Take a point with position (x,y) and return a new point
         * with position (x + dx, y + dy).

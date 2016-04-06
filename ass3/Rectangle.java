@@ -3,67 +3,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biuoop.DrawSurface;
-
+/**
+* @author Adiel Chana <adielcahana@gmail.com>
+* @version 1.0
+* @since 2016-03-27 */
 public class Rectangle {
     private Point upperLeft;
     private double width;
     private double height;
 
-    // Create a new rectangle with location and width/height.
+    /** Create a new rectangle with location and width/height.
+     * <p>
+     * @param upperLeft - coordinate
+     * @param width - width of the rectangle
+     * @param height - height of the rectangle
+     * */
     public Rectangle(Point upperLeft, double width, double height) {
         this.upperLeft = upperLeft;
         this.width = width;
         this.height = height;
     }
-    // Return a (possibly empty) List of intersection points
-    // with the specified line.
+    /** Return a (possibly empty) List of intersection points
+     * with the specified line.
+     * <p>
+     * @param line - the line to check intersection with the rectangle
+     * @return intersection List*/
     public java.util.List intersectionPoints(Line line) {
         List intersectionPoints = new ArrayList();
+        //get all the rectangle lines
         Line[] lines = this.myLines();
+        //check if the line intersect with all the rectangle
         for (int i = 0; i < 4; i++) {
-        	if (line.isIntersecting(lines[i])) {
+            if (line.isIntersecting(lines[i])) {
                 intersectionPoints.add(line.intersectionWith(lines[i]));
-        	}
+            }
         }
         return intersectionPoints;
     }
-    
-    public int divideRectangle(Point p){
-    	double x = upperLeft.getX();
-    	double y = upperLeft.getY();
-    	Line[] lines = new Line[5];
-    	int i;
-    	double divide = width/5;
-    	for(i=0; i < 5; i++){
-    		lines[i] = new Line(new Point(x + (divide*i),y),(new Point(x + (divide*(i + 1)),y)));
-    	}
-    	i = 0;
-        while (i < 5) {
-        	if (p.isInLine(lines[i])) {
-        		break;
-        	}
-            i++;
-        }
-        return i;    	
-    }
-    
-  //returns line array when the index 0 is the top line,
-  //and so on (moving clockwise on the rectangle edges)
+
+    /** returns a numeric representation of the edge
+     * that been hit.
+     * <p>
+     * the numeric logic follows myLines() logic
+     * @param p - the intersection point
+     * @return edge index*/
     public int placeInsideMe(Point p) {
         Line[] lines = this.myLines();
         int i = 0;
+        //check for each of the rectangle lines if p is in it
         while (i < 4) {
-        	if (p.isInLine(lines[i])) {
-        		break;
-        	}
+            if (p.isInLine(lines[i])) {
+                break;
+            }
             i++;
         }
         return i;
     }
-
+    /** returns an array of the rectangle edge.
+     * <p>
+     * the array order is 0 for the upper line and so on
+     * moving clockwise on the rectangle edges
+     * @return lines - the rectangle lines*/
     public Line[] myLines() {
-    	double x = this.upperLeft.getX();
-    	double y = this.upperLeft.getY();
+        double x = this.upperLeft.getX();
+        double y = this.upperLeft.getY();
         Line[] lines = new Line[4];
         //up
         lines[0] = new Line(x, y, x + width, y);
@@ -75,19 +78,33 @@ public class Rectangle {
         lines[3] = new Line(x, y, x, y + height);
         return lines;
     }
-    // Return the width and height of the rectangle
+
+    /** returns the rectangle width.
+     * <p>
+     * @return width*/
     public double getWidth() {
         return this.width;
     }
+
+    /** returns the rectangle height.
+     * <p>
+     * @return width*/
     public double getHeight() {
         return this.height;
     }
-    // Returns the upper-left point of the rectangle.
+
+    /** Returns the upper-left point of the rectangle.
+     * <p>
+     * @return upper left point*/
     public Point getUpperLeft() {
         return this.upperLeft;
     }
+
+    /** draws the rectangle with a black frame on a given DrawSurface.
+     * <p>
+     * @param surface - the DrawSurface*/
     public void drawOn(DrawSurface surface) {
-    	surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
+        surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
                               (int) this.width, (int) this.height);
         surface.setColor(Color.BLACK);
         surface.drawRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
