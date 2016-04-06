@@ -6,7 +6,7 @@ import biuoop.DrawSurface;
 
 /**
 * @author Ori Engelberg <turht50@gmail.com>
-* @version 1.0
+* @version 1.1
 * @since 2016-03-21 */
 public class Line {
     private Point start;
@@ -15,6 +15,7 @@ public class Line {
 
     /**
     * Contractor - Create a start point an end point and the line slope.
+    * <p>
     * @param start - the first point in the line.
     * @param end - the last point in the line. */
         public Line(Point start, Point end) {
@@ -25,6 +26,7 @@ public class Line {
 
         /**
          * Contractor - Create a start point an end point and the line slope.
+         * <p>
          * @param x1 - the x value of the start point.
          * @param y1 - the y value of the start point.
          * @param x2 - the x value of the end point.
@@ -37,6 +39,7 @@ public class Line {
 
        /**
         * Calculate the length of the line.
+        * <p>
         * @return the distance between the first point to the last. */
        public double length() {
            double length = this.start.distance(end);
@@ -46,6 +49,7 @@ public class Line {
        /**
         * Calculate the middle point.
         * Sum the x values of the start and the end points and their y values and create a new point.
+        * <p>
         * @return the middle point of the line. */
        public Point middle() {
            double x1, x2 , y1 , y2;
@@ -59,6 +63,7 @@ public class Line {
 
        /**
         * Initialize the start point.
+        * <p>
         * @return the start point. */
        public Point start() {
            return start;
@@ -66,6 +71,7 @@ public class Line {
 
        /**
         * Initialize the end point.
+        * <p>
         * @return the end point. */
        public Point end() {
            return end;
@@ -74,19 +80,21 @@ public class Line {
        /**
         * Initialize the line slope.
         * Do slope = (y1-y2) / (x1-x2).
+        * <p>
         * @return the line slope. */
         public double slope() {
            double dx, dy;
            dx = this.start.getX() - this.end.getX();
            dy = this.start.getY() - this.end.getY();
-           if (dx == 0){
-        	  return Double.POSITIVE_INFINITY;
+           if (dx == 0) {
+           return Double.POSITIVE_INFINITY;
            }
            return (dy / dx);
         }
 
         /**
          * Check intersection between 2 lines.
+         * <p>
          * @param other - another line to check intersection.
          * @return true if the lines intersected, else return false.  */
         public boolean isIntersecting(Line other) {
@@ -100,6 +108,7 @@ public class Line {
         /**
          * Create the intersection point between the lines.
          * Create 2 equations y = m * x - b and check the where the y values are equal.
+         * <p>
          * @param other - another line to check the intersection.
          * @return the intersection point, if the lines don't intersected returns null.  */
         public Point intersectionWith(Line other) {
@@ -111,7 +120,7 @@ public class Line {
             double b2 = other.start.getY() - m2 * other.start.getX();
             Point intersection = null;
             // If the slopes equal there isn't intersection.
-            if (m1.equals(m2)) { 
+            if (m1.equals(m2)) {
                 return null;
             } else if (m1.isInfinite()) {
                 // If one of the slopes is Infinity then the x value is known and we find the y value.
@@ -122,7 +131,7 @@ public class Line {
                 if (!(intersection.isInLineSegment(this) && intersection.isInLineSegment(other))) {
                     return null;
                 }
-            } else if ( m2.isInfinite()) {
+            } else if (m2.isInfinite()) {
                 x = other.start.getX();
                 y = m1 * x + b1;
                 intersection = new Point(x, y);
@@ -140,21 +149,26 @@ public class Line {
             }
             return intersection;
         }
-    // If this line does not intersect with the rectangle, return null.
-    // Otherwise, return the closest intersection point to the
-    // start of the line.
+
+        /**
+        * Send the closest intersection point to the line.
+        * Sort all the intersection points in array and send the closest intersection point.
+        * <p>
+        * @param rect - the rectangle that it check intersection with.
+        * @return if there is intersection return the closest point else return null.  */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
+        // Create list of the intersection points.
         List intersections = rect.intersectionPoints(this);
         if (intersections.isEmpty()) {
-        	//System.out.println("Error: no intersections");
             return null;
         }
+        // Sort the intersection points.
         Collections.sort(intersections, new PointByDistanceComparator(this.start()));
-        //System.out.println("there is intersections");
         return (Point) intersections.get(0);
     }
     /**
      * Check if 2 lines are equal.
+     * <p>
      * @param other - the other line.
      * @return true if the lines equal, else return false.  */
     public boolean equals(Line other) {
@@ -167,14 +181,17 @@ public class Line {
 
     /**
      * Create a slope to the line.
+     * <p>
      * @return the slope. */
     public double getSlope() {
         return slope;
     }
-
+    /**
+     * Draw a single line.
+     * <p>
+     * @param d - the surface to draw.
+     * @param color - the color of the line. */
     public void drawOn(DrawSurface d, Color color) {
-        Point start = this.start();
-        Point end = this.end();
         d.setColor(color);
         d.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }

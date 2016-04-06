@@ -2,32 +2,44 @@ import biuoop.DrawSurface;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* @author Ori Engelberg <turht50@gmail.com>
+* @version 1.0
+* @since 2016-04-03 */
 public class SpriteCollection {
-	private List SpriteCollection;
+    private List spriteCollection;
 
-	public SpriteCollection(){
-		this.SpriteCollection = new ArrayList();
-	}
-	public void addSprite(Sprite s){
-		this.SpriteCollection.add(s);
-	}
-	public void removeSprite(Sprite s){
-		this.SpriteCollection.remove(s);
-	}
+    /**
+     * Contractor - Create a new array list to the sprites. */
+    public SpriteCollection() {
+        this.spriteCollection = new ArrayList();
+        }
 
-	// call timePassed() on all sprites.
-	public void notifyAllTimePassed(){
-		for (int i = 0; i<this.SpriteCollection.size(); i++){
-			Sprite s = (Sprite) this.SpriteCollection.get(i);
-			s.timePassed();
-		}
-	}
+    /**
+     * Add a sprite to the list of sprites.
+     * <p>
+     * @param s - the sprite that added to the list. */
+    public void addSprite(Sprite s) {
+        this.spriteCollection.add(s);
+        }
 
-	// call drawOn(d) on all sprites.
-	public void drawAllOn(DrawSurface surface){
-		for (int i = 0; i<this.SpriteCollection.size(); i++){
-			Sprite s = (Sprite) this.SpriteCollection.get(i);
-			s.drawOn(surface);
-		}
-	}
-}
+    /**
+     * Notify all the sprites in the list that time passed. */
+    public void notifyAllTimePassed() {
+        for (int i = 0; i < this.spriteCollection.size(); i++) {
+            Sprite s = (Sprite) this.spriteCollection.get(i);
+            s.timePassed();
+            }
+        }
+
+    /**
+     * Draw all the sprites in the list.
+     * <p>
+     * @param surface - the surface of the sprite to draw. */
+    public void drawAllOn(DrawSurface surface) {
+        for (int i = 0; i < this.spriteCollection.size(); i++) {
+            Sprite s = (Sprite) this.spriteCollection.get(i);
+            s.drawOn(surface);
+            }
+        }
+    }

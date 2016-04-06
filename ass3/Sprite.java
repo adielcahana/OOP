@@ -1,10 +1,18 @@
 import biuoop.DrawSurface;
 
+/**
+* @author Ori Engelberg <turht50@gmail.com>
+* @version 1.0
+* @since 2016-04-03 */
 public interface Sprite {
-   
-	// draw the sprite to the screen
+
+    /**
+     * DrawOn the sprite.
+     * <p>
+     * @param sprite - the surface of the sprite to draw.    */
    void drawOn(DrawSurface sprite);
-   
-   // notify the sprite that time has passed
+
+   /**
+    * Notify the sprite that the time passed. */
    void timePassed();
 }
