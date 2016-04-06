@@ -13,21 +13,22 @@ public class Paddle implements Sprite, Collidable {
     private Color color;
     private double leftBoundary;
     private double rightBoundary;
+    private int speed;
 
    /**
     * Contractor - Create the paddle as rectangle with color keyboard sensor and boundaries.
     * <p>
-    * @param upperLeft - the upperLeft point of the paddle
-    * @param width - the width of the paddle.
-    * @param height - the height of the paddle.
+    * @param shape - the rectangle shape of the paddle.
     * @param color - the color of the paddle.
     * @param keyboard - the keyboard sensor of the paddle.
     * @param leftBoundary - the down left boundary of the frame.
-    * @param rightBoundary - the down right boundary of the frame. */
-    public Paddle(Point upperLeft, double width, double height, Color color,
+    * @param rightBoundary - the down right boundary of the frame.
+    * @param speed - the paddle speed. */
+    public Paddle(Rectangle shape, Color color, int speed,
             KeyboardSensor keyboard, double leftBoundary, double rightBoundary) {
+        this.speed = speed;
         this.keyboard = keyboard;
-        this.shape = new Rectangle(upperLeft, width, height);
+        this.shape = shape;
         this.color = color;
         this.leftBoundary = leftBoundary;
         this.rightBoundary = rightBoundary;
@@ -41,10 +42,10 @@ public class Paddle implements Sprite, Collidable {
         double width = this.shape.getWidth();
         double height = this.shape.getHeight();
         // The new upperleft point of the paddle.
-        this.shape = new Rectangle(new Point(x - 5, y), width, height);
+        this.shape = new Rectangle(new Point(x - speed, y), width, height);
         // If the paddle stay in the boundaries after the move, make the move.
         if (x > this.leftBoundary) {
-            this.shape = new Rectangle(new Point(x - 5, y), width, height);
+            this.shape = new Rectangle(new Point(x - speed, y), width, height);
             } else {
                 // Else go to the left boundary.
                 this.shape = new Rectangle(new Point(this.leftBoundary, y), width, height);
@@ -58,10 +59,10 @@ public class Paddle implements Sprite, Collidable {
         double y  = this.shape.getUpperLeft().getY();
         double width = this.shape.getWidth();
         double height = this.shape.getHeight();
-        this.shape = new Rectangle(new Point(x + 5, y), width, height);
+        this.shape = new Rectangle(new Point(x + speed, y), width, height);
      // If the paddle stay in the boundaries after the move, make the move.
-        if (x + width + 5 < this.rightBoundary) {
-            this.shape = new Rectangle(new Point(x + 5, y), width, height);
+        if (x + width + speed < this.rightBoundary) {
+            this.shape = new Rectangle(new Point(x + speed, y), width, height);
             } else {
                 // Else go to the right boundary.
                 this.shape = new Rectangle(new Point(this.rightBoundary - width, y), width, height);
@@ -113,24 +114,24 @@ public class Paddle implements Sprite, Collidable {
             final int middle = 2;
             final int rightMiddle = 3;
             final int upRight = 4;
-            double speed = currentVelocity.getSpeed();
+            double ballSpeed = currentVelocity.getSpeed();
             // Divide the upper part and check where the ball hit.
             hitPlace = this.divideUpPaddle(collisionPoint, 5);
             switch(hitPlace) {
             case upLeft:
-                newVelocity = Velocity.fromAngleAndSpeed(300, speed);
+                newVelocity = Velocity.fromAngleAndSpeed(300, ballSpeed);
                 break;
             case leftMiddle:
-                newVelocity = Velocity.fromAngleAndSpeed(330, speed);
+                newVelocity = Velocity.fromAngleAndSpeed(330, ballSpeed);
                 break;
             case middle:
-                newVelocity = Velocity.fromAngleAndSpeed(0, speed);
+                newVelocity = Velocity.fromAngleAndSpeed(0, ballSpeed);
                 break;
             case rightMiddle:
-                newVelocity = Velocity.fromAngleAndSpeed(30, speed);
+                newVelocity = Velocity.fromAngleAndSpeed(30, ballSpeed);
                 break;
             case upRight:
-                newVelocity = Velocity.fromAngleAndSpeed(60, speed);
+                newVelocity = Velocity.fromAngleAndSpeed(60, ballSpeed);
                 break;
             default:
                 System.out.println("Error: no velocity");

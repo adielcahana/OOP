@@ -53,7 +53,7 @@ public class Game {
         // Create the keyboard sensor for the paddle.
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         // Create the paddle and add it to the game.
-        Paddle paddle = new Paddle(new Point(200, 560), 80, 20, Color.BLACK, keyboard, 20, 780);
+        Paddle paddle = new Paddle(new Rectangle(new Point(200, 560), 80, 20), Color.BLACK, 5, keyboard, 20, 780);
         paddle.addToGame(this);
         // Create the frame & blocks.
         this.createFrame();
