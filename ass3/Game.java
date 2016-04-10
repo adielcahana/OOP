@@ -67,10 +67,10 @@ public class Game {
             List blockList = null;
             // Create the first line of the blocks.
             if (i == 0) {
-                blockList = blockFactory.createBlockRaw(start, 2, colors[i % 6]);
+                blockList = blockFactory.createBlockRaw(start, 2, colors[i]);
             } else {
                 // Create the other block lines.
-                blockList = blockFactory.createBlockRaw(start, 1, colors[i % 6]);
+                blockList = blockFactory.createBlockRaw(start, 1, colors[i]);
                 }
             // Add all the blocks to the games.
             for (int j = 0; j < blockList.size(); j++) {
