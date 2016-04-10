@@ -47,8 +47,8 @@ public class Game {
         Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
         ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 8));
         ball1.addToGame(this);
-        Ball ball2 = new Ball(new Point(570, 570), 5 , Color.BLUE, this.environment);
-        ball2.setVelocity(Velocity.fromAngleAndSpeed(90, 8));
+        Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
+        ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 8));
         ball2.addToGame(this);
         // Create the keyboard sensor for the paddle.
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();

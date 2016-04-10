@@ -42,7 +42,7 @@ public class Paddle implements Sprite, Collidable {
         double width = this.shape.getWidth();
         double height = this.shape.getHeight();
         // The new upperleft point of the paddle.
-        this.shape = new Rectangle(new Point(x - speed, y), width, height);
+        //this.shape = new Rectangle(new Point(x - speed, y), width, height);
         // If the paddle stay in the boundaries after the move, make the move.
         if (x > this.leftBoundary) {
             this.shape = new Rectangle(new Point(x - speed, y), width, height);
@@ -59,7 +59,7 @@ public class Paddle implements Sprite, Collidable {
         double y  = this.shape.getUpperLeft().getY();
         double width = this.shape.getWidth();
         double height = this.shape.getHeight();
-        this.shape = new Rectangle(new Point(x + speed, y), width, height);
+        //this.shape = new Rectangle(new Point(x + speed, y), width, height);
      // If the paddle stay in the boundaries after the move, make the move.
         if (x + width + speed < this.rightBoundary) {
             this.shape = new Rectangle(new Point(x + speed, y), width, height);
