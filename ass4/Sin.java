@@ -5,52 +5,51 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class Neg implements Expression {
+public class Sin implements Expression {
 
-	Expression negation;
+	Expression sinus;
 	
-	public Neg(Expression negation){
-		this.negation = negation;
+	public Sin(Expression sinus){
+		this.sinus = sinus;
 	}
 
 	public double evaluate(Map<String, Double> assignment) throws Exception {
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
-        double neg = 0;
+        double sin = 0;
         Expression newExpression = null;
         try {
 		    while (i.hasNext()) {
 			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
 		    }
-		    neg = newExpression.evaluate();
+		    sin = newExpression.evaluate();
         } catch (Exception e) {
-        	System.out.println("Neg Var wasn't found:" + e);
+        	System.out.println("Sin Var wasn't found:" + e);
         }
-        return neg; 
+        return sin; 
 	}
 
 	public double evaluate() throws Exception {
-		double neg = 0;
+		double sin = 0;
 		try {
-			neg = - (negation.evaluate());
+			sin = Math.sin(sinus.evaluate());
 		} catch (Exception e) {
-			System.out.println("neg evaluation faild :" + e);
+			System.out.println("Sin evaluation faild :" + e);
 		}
-		return neg;
+		return sin;
 	}
 
-	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(negation.getVariables());
+		variables.addAll(sinus.getVariables());
 		return variables;
 	}
 
 	   public String toString(){
-		   return "(" + negation.toString() + ")";
+		   return "(" + sinus.toString() + ")";
 	   }
 	
 	public Expression assign(String var, Expression expression) {
-		return new Neg(negation.assign(var, expression));
+		return new Sin(sinus.assign(var, expression));
 	}
 }

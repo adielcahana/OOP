@@ -5,52 +5,51 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class Neg implements Expression {
+public class Cos implements Expression {
 
-	Expression negation;
+	Expression cosinus;
 	
-	public Neg(Expression negation){
-		this.negation = negation;
+	public Cos(Expression cosinus){
+		this.cosinus = cosinus;
 	}
 
 	public double evaluate(Map<String, Double> assignment) throws Exception {
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
-        double neg = 0;
+        double cos = 0;
         Expression newExpression = null;
         try {
 		    while (i.hasNext()) {
 			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
 		    }
-		    neg = newExpression.evaluate();
+		    cos = newExpression.evaluate();
         } catch (Exception e) {
-        	System.out.println("Neg Var wasn't found:" + e);
+        	System.out.println("Cos Var wasn't found:" + e);
         }
-        return neg; 
+        return cos; 
 	}
 
 	public double evaluate() throws Exception {
-		double neg = 0;
+		double cos = 0;
 		try {
-			neg = - (negation.evaluate());
+			cos = Math.cos(cosinus.evaluate());
 		} catch (Exception e) {
-			System.out.println("neg evaluation faild :" + e);
+			System.out.println("Cos evaluation faild :" + e);
 		}
-		return neg;
+		return cos;
 	}
 
-	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(negation.getVariables());
+		variables.addAll(cosinus.getVariables());
 		return variables;
 	}
 
 	   public String toString(){
-		   return "(" + negation.toString() + ")";
+		   return "(" + cosinus.toString() + ")";
 	   }
 	
 	public Expression assign(String var, Expression expression) {
-		return new Neg(negation.assign(var, expression));
+		return new Sin(cosinus.assign(var, expression));
 	}
 }
