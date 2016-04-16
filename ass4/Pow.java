@@ -56,6 +56,10 @@ public class Pow implements Expression{
 	}		
 
 	public String toString() {
-		return "(" + base.toString() + "^" + exponent.toString() + ")";
+		return "(" + base.toString() + " ^ " + exponent.toString() + ")";
+	}
+	
+	public Expression differentiate(String var) {
+		return new Div(new Mult(exponent, this), base);
 	}
 }

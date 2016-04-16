@@ -5,62 +5,62 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class Plus implements Expression {
-    Expression argA;
-    Expression argB;
+public class Div implements Expression{
+	Expression numerator;
+    Expression denominator;
 	
-	public Plus(Expression argA, Expression argB) {
-		this.argA = argA;
-		this.argB = argB;
+	public Div(Expression numerator, Expression denominator) {
+		this.numerator = numerator;
+		this.denominator = denominator;
 	}
 	
 	@Override
 	public double evaluate(Map<String, Double> assignment) throws Exception {
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
-        double sum = 0;
+        double quotient = 0;
         Expression newExpression = null;
         try {
 		    while (i.hasNext()) {
 			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
 		    }
-		    sum = newExpression.evaluate();
+		    quotient = newExpression.evaluate();
         } catch (Exception e) {
-        	System.out.println("Plus Var wasn't found:" + e);
+        	System.out.println("Div Var wasn't found:" + e);
         }
-        return sum; 
+        return quotient; 
 	}
 
 	@Override
 	public double evaluate() throws Exception {
-		double sum = 0;
+		double quotient = 0;
 		try {
-			sum = argA.evaluate()+ argB.evaluate();
+			quotient = numerator.evaluate() / denominator.evaluate();
 		} catch (Exception e) {
-			System.out.println("Plus evaluation faild :" + e);
+			System.out.println("Div evaluation faild :" + e);
 		}
-		return sum;
+		return quotient;
 	}
 
 	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(argA.getVariables());
-		variables.addAll(argB.getVariables());
+		variables.addAll(numerator.getVariables());
+		variables.addAll(denominator.getVariables());
 		return variables;
 	}
 
 	@Override
 	public Expression assign(String var, Expression expression) {
-		return new Plus(argA.assign(var, expression), argB.assign(var, expression));
+		return new Div(numerator.assign(var, expression), denominator.assign(var, expression));
 	}		
 
 	public String toString() {
-		return "(" + argA.toString() + " + " + argB.toString() + ")";
+		return "(" + numerator.toString() + " / " + denominator.toString() + ")";
 	}
-
+	
 	@Override
 	public Expression differentiate(String var) {
-		return new Plus(argA.differentiate(var), argB.differentiate(var));
+		return new Div(numerator.differentiate(var), denominator.differentiate(var));
 	}
 }

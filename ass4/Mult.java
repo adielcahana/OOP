@@ -35,7 +35,7 @@ public class Mult implements Expression {
 	public double evaluate() throws Exception {
 		double product = 0;
 		try {
-			product = multiplier.evaluate() - multiplicand.evaluate();
+			product = multiplier.evaluate() * multiplicand.evaluate();
 		} catch (Exception e) {
 			System.out.println("Minus evaluation faild :" + e);
 		}
@@ -52,10 +52,15 @@ public class Mult implements Expression {
 
 	@Override
 	public Expression assign(String var, Expression expression) {
-		return new Plus(multiplier.assign(var, expression), multiplicand.assign(var, expression));
+		return new Mult(multiplier.assign(var, expression), multiplicand.assign(var, expression));
 	}		
 
 	public String toString() {
-		return "(" + multiplier.toString() + "-" + multiplicand.toString() + ")";
+		return "(" + multiplier.toString() + " * " + multiplicand.toString() + ")";
+	}
+	
+	@Override
+	public Expression differentiate(String var) {
+		return new Mult(multiplier.differentiate(var), multiplicand.differentiate(var));
 	}
 }

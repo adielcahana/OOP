@@ -22,4 +22,8 @@ public interface Expression {
    // var are replaced with the provided expression (Does not modify the
    // current expression).
    public Expression assign(String var, Expression expression);
+   
+   // Returns the expression tree resulting from differentiating
+   // the current expression relative to variable `var`.
+   public Expression differentiate(String var);
 }

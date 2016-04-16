@@ -52,10 +52,15 @@ public class Minus implements Expression{
 
 	@Override
 	public Expression assign(String var, Expression expression) {
-		return new Plus(minuend.assign(var, expression), subtrahend.assign(var, expression));
+		return new Minus(minuend.assign(var, expression), subtrahend.assign(var, expression));
 	}		
 
 	public String toString() {
-		return "(" + minuend.toString() + "-" + subtrahend.toString() + ")";
+		return "(" + minuend.toString() + " - " + subtrahend.toString() + ")";
+	}
+	
+	@Override
+	public Expression differentiate(String var) {
+		return new Minus(minuend.differentiate(var), subtrahend.differentiate(var));
 	}
 }
