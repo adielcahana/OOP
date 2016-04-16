@@ -9,23 +9,15 @@ public class Num implements Expression{
 	private double value;
 	
 	public Num(double value){
-	this.value = this.getValue();
+	this.value = value;
 	}
 
 	public double evaluate(Map<String, Double> assignment) throws Exception {
-		Set<Entry<String, Double>> values = assignment.entrySet();
-        Iterator<Entry<String, Double>> i = values.iterator();
-        double value = 0;
-        Expression newExpression = null;
         try {
-		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
-		    }
-		    value = newExpression.evaluate();
         } catch (Exception e) {
         	System.out.println("num wasn't found:" + e);
         }
-        return value; 
+        return 0; 
 	}
 
 	public double evaluate() throws Exception {
@@ -45,9 +37,5 @@ public class Num implements Expression{
 
 	public Expression assign(String var, Expression expression) {
 		return null;
-	}
-
-	public double getValue() {
-		return value;
 	}
 }
