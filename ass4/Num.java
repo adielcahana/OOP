@@ -1,8 +1,5 @@
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 public class Num implements Expression{
 	
@@ -31,6 +28,10 @@ public class Num implements Expression{
 		return evaluate;
 	}
 
+	public String toString(){
+		return Double.toString(value);
+	}
+	
 	public List<String> getVariables() {
 		return null;
 	}
