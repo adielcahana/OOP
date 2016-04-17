@@ -1,8 +1,6 @@
 import java.util.List;
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
 public class Const implements Expression{
 
 	private Num value;
@@ -17,7 +15,7 @@ public class Const implements Expression{
 		this.value = new Num(Math.PI);
 		this.name = constant;
 	}
-	throw new RuntimeException("Error wrong argument");
+	throw new RuntimeException("Error wrong argument" + constant);
 	}
 	
 	public double evaluate(Map<String, Double> assignment) throws Exception {
