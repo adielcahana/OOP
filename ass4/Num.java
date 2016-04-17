@@ -34,4 +34,9 @@ public class Num implements Expression{
 	public Expression assign(String var, Expression expression) {
 		return this;
 	}
+
+	@Override
+	public Expression differentiate(String var) {
+		return new Num(0);
+	}
 }
