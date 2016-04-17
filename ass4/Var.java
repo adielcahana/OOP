@@ -37,6 +37,11 @@ public class Var implements Expression {
 	}
 	
 	public Expression differentiate(String var) {
-		return new Plus(argA.differentiate(var), argB.differentiate(var));
+		if(variable == var){
+			return new Num(1);
+		}
+		else{
+			return new Num(0);
+		}
 	}
 }
