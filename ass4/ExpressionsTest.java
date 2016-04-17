@@ -4,14 +4,15 @@ import java.util.TreeMap;
 
 public class ExpressionsTest {
     public static void main(String[] args) {
-    	Expression e1 = 
+    	Expression e1 =
+    			new Log(new Const("e"),
                      new Pow(
                         new Mult(
                            new Plus(
                               new Mult(new Num(2), new Var("x")),
                               new Var("y")),
                            new Num(4)),
-                     new Var("x"));
+                     new Var("x")));
     	Expression e2 = 
     			new Div(
                         new Mult(
@@ -21,7 +22,7 @@ public class ExpressionsTest {
                            new Num(4)),
                      new Var("x"));
     	//toString test
-    	if (e1.toString().equals("((((2.0 * x) + y) * 4.0) ^ x)")) {
+    	if (e1.toString().equals("Log(e, ((((2.0 * x) + y) * 4.0) ^ x))")) {
     		System.out.println("e1 is correct " + e1.toString());
     	} else {  	
     		System.out.println("Error in e1 " + e1.toString());
@@ -39,7 +40,7 @@ public class ExpressionsTest {
     	double value;
 		try {
 			value = e1.evaluate(assignment);
-			if (value == 1024.0) {
+			if (Math.abs(value - 6.93147) <= 0.001) {
 	    		System.out.println("e1 evaluation succseeded"); 
 	    	} else {
 	    		System.out.println("e1 evaluation failed " + value); 
@@ -60,6 +61,12 @@ public class ExpressionsTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	//Differentiation test
+    	System.out.println(e1.differentiate("x"));
+    	System.out.println(e1.differentiate("y"));
+    	System.out.println(e2.differentiate("x"));
+    	System.out.println(e2.differentiate("y"));
     	
     	
     	// variables list test

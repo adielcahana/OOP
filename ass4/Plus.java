@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 public class Plus implements Expression {
-    Expression argA;
-    Expression argB;
+    private Expression argA;
+    private Expression argB;
 	
 	public Plus(Expression argA, Expression argB) {
 		this.argA = argA;
@@ -19,10 +19,12 @@ public class Plus implements Expression {
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double sum = 0;
-        Expression newExpression = null;
         try {
+        	Entry<String, Double> value = i.next();
+        	Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
 		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
+		    	value = i.next();
+			    newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
 		    }
 		    sum = newExpression.evaluate();
         } catch (Exception e) {
@@ -35,7 +37,8 @@ public class Plus implements Expression {
 	public double evaluate() throws Exception {
 		double sum = 0;
 		try {
-			sum = argA.evaluate()+ argB.evaluate();
+			sum = argA.evaluate() + argB.evaluate();
+			System.out.println(sum);
 		} catch (Exception e) {
 			System.out.println("Plus evaluation faild :" + e);
 		}
@@ -45,8 +48,14 @@ public class Plus implements Expression {
 	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(argA.getVariables());
-		variables.addAll(argB.getVariables());
+		List<String> tempVars = argA.getVariables();
+		if (tempVars != null) {
+		    variables.addAll(tempVars);
+		}
+		tempVars = argB.getVariables();
+		if (tempVars != null) {
+			variables.addAll(tempVars);
+		}
 		return variables;
 	}
 
@@ -62,5 +71,23 @@ public class Plus implements Expression {
 	@Override
 	public Expression differentiate(String var) {
 		return new Plus(argA.differentiate(var), argB.differentiate(var));
+	}
+	
+	@Override
+	public Expression simplify() {
+		Plus simpledExp = new Plus(this.argA.simplify(), this.argA.simplify());
+		if (simpledExp.argA instanceof Num && simpledExp.argB instanceof Num) {
+			if (simpledExp.argA.toString() == "0" && simpledExp.argB.toString() == "0") {
+				return new Num(0);	
+			}
+			return new Num(simpledExp.evaluate());	
+		}
+		if (simpledExp.argA.toString() == "0") {
+			return argB;	
+		}
+		if (simpledExp.argB.toString() == "0") {
+			return argA;	
+		}
+		return simpledExp;
 	}
 }

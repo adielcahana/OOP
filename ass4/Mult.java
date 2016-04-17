@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 public class Mult implements Expression {
-	Expression multiplier;
-    Expression multiplicand;
+	private Expression multiplier;
+	private Expression multiplicand;
 	
 	public Mult(Expression multiplier, Expression multiplicand) {
 		this.multiplier = multiplier;
@@ -19,14 +19,16 @@ public class Mult implements Expression {
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double product = 0;
-        Expression newExpression = null;
         try {
+        	Entry<String, Double> value = i.next();
+        	Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
 		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
+		    	value = i.next();
+			    newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
 		    }
 		    product = newExpression.evaluate();
         } catch (Exception e) {
-        	System.out.println("Plus Var wasn't found:" + e);
+        	System.out.println("Mult Var wasn't found:" + e);
         }
         return product; 
 	}
@@ -36,8 +38,9 @@ public class Mult implements Expression {
 		double product = 0;
 		try {
 			product = multiplier.evaluate() * multiplicand.evaluate();
+			System.out.println(product);
 		} catch (Exception e) {
-			System.out.println("Minus evaluation faild :" + e);
+			System.out.println("Mult evaluation faild :" + e);
 		}
 		return product;
 	}
@@ -45,8 +48,14 @@ public class Mult implements Expression {
 	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(multiplier.getVariables());
-		variables.addAll(multiplicand.getVariables());
+		List<String> tempVars = multiplier.getVariables();
+		if (tempVars != null) {
+		    variables.addAll(tempVars);
+		}
+		tempVars = multiplicand.getVariables();
+		if (tempVars != null) {
+			variables.addAll(tempVars);
+		}
 		return variables;
 	}
 
@@ -61,6 +70,31 @@ public class Mult implements Expression {
 	
 	@Override
 	public Expression differentiate(String var) {
-		return new Mult(multiplier.differentiate(var), multiplicand.differentiate(var));
+		if (multiplier instanceof Num && multiplicand instanceof Num) {
+			return new Num(0);	
+		}
+		if (multiplier instanceof Num && !(multiplicand instanceof Num)) {
+			return new Mult(multiplier, multiplicand.differentiate(var));
+		}
+		return new Plus(new Mult(multiplier.differentiate(var), multiplicand),new Mult(multiplier, multiplicand.differentiate(var)));
+		}
+	@Override
+	public Expression simplify() {
+		Mult simpledExp = new Mult(this.multiplier.simplify(), this.multiplier.simplify());
+		if (simpledExp.multiplier instanceof Num && simpledExp.multiplicand instanceof Num) {
+			if (simpledExp.multiplier.toString() == "0" || simpledExp.multiplicand.toString() == "0") {
+				return new Num(0);
+			return new Num(simpledExp.evaluate());	
+		    }
+		}
+		if (simpledExp.multiplier.toString() == "1") {
+			return multiplicand;	
+		}
+		if (simpledExp.multiplicand.toString() == "1") {
+			return multiplier;	
+		}
+		return simpledExp;
 	}
 }
+
+

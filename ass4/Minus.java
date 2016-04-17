@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 public class Minus implements Expression{
-	Expression minuend;
-    Expression subtrahend;
+	private Expression minuend;
+	private Expression subtrahend;
 	
 	public Minus(Expression minuend, Expression subtrahend) {
 		this.minuend = minuend;
@@ -19,10 +19,12 @@ public class Minus implements Expression{
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double evaluate = 0;
-        Expression newExpression = null;
         try {
+        	Entry<String, Double> value = i.next();
+        	Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
 		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
+		    	value = i.next();
+			    newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
 		    }
 		    evaluate = newExpression.evaluate();
         } catch (Exception e) {
@@ -36,6 +38,7 @@ public class Minus implements Expression{
 		double difference = 0;
 		try {
 			difference = minuend.evaluate() - subtrahend.evaluate();
+			System.out.println(difference);
 		} catch (Exception e) {
 			System.out.println("Minus evaluation faild :" + e);
 		}
@@ -45,8 +48,14 @@ public class Minus implements Expression{
 	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(minuend.getVariables());
-		variables.addAll(subtrahend.getVariables());
+		List<String> tempVars = minuend.getVariables();
+		if (tempVars != null) {
+		    variables.addAll(tempVars);
+		}
+		tempVars = subtrahend.getVariables();
+		if (tempVars != null) {
+			variables.addAll(tempVars);
+		}
 		return variables;
 	}
 
@@ -62,5 +71,23 @@ public class Minus implements Expression{
 	@Override
 	public Expression differentiate(String var) {
 		return new Minus(minuend.differentiate(var), subtrahend.differentiate(var));
+	}
+	
+	@Override
+	public Expression simplify() {
+		Minus simpledExp = new Minus(this.minuend.simplify(), this.minuend.simplify());
+		if (simpledExp.minuend instanceof Num && simpledExp.subtrahend instanceof Num) {
+			if (simpledExp.minuend.toString() == "0" && simpledExp.subtrahend.toString() == "0") {
+				return new Num(0);
+			return new Num(simpledExp.evaluate());
+			}
+		}
+		if (simpledExp.minuend.toString() == "0") {
+			return new Neg(subtrahend);	
+		}
+		if (simpledExp.subtrahend.toString() == "0") {
+			return minuend;	
+		}
+		return simpledExp;
 	}
 }

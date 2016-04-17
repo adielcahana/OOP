@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 public class Log implements Expression {
-    Expression base;
-    Expression antilogarithm;
+	private Expression base;
+	private Expression antilogarithm;
 	
 	public Log(Expression base, Expression antilogarithm) {
 		this.base = base;
@@ -19,14 +19,16 @@ public class Log implements Expression {
 		Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double logarithm = 0;
-        Expression newExpression = null;
         try {
+        	Entry<String, Double> value = i.next();
+        	Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
 		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
+		    	value = i.next();
+			    newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
 		    }
 		    logarithm = newExpression.evaluate();
         } catch (Exception e) {
-        	System.out.println("Pow Var wasn't found:" + e);
+        	System.out.println("Log Var wasn't found:" + e);
         }
         return logarithm; 
 	}
@@ -35,7 +37,8 @@ public class Log implements Expression {
 	public double evaluate() throws Exception {
 		double logarithm = 0;
 		try {
-			logarithm = Math.log(antilogarithm.evaluate())/Math.log(base.evaluate());
+			logarithm = Math.log(antilogarithm.evaluate()) / Math.log(base.evaluate());
+			System.out.println(logarithm);
 		} catch (Exception e) {
 			System.out.println("Pow evaluation failed :" + e);
 		}
@@ -45,8 +48,14 @@ public class Log implements Expression {
 	@Override
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(base.getVariables());
-		variables.addAll(antilogarithm.getVariables());
+		List<String> tempVars = base.getVariables();
+		if (tempVars != null) {
+		    variables.addAll(tempVars);
+		}
+		tempVars = antilogarithm.getVariables();
+		if (tempVars != null) {
+			variables.addAll(tempVars);
+		}
 		return variables;
 	}
 
@@ -56,11 +65,20 @@ public class Log implements Expression {
 	}		
 
 	public String toString() {
-		return "log(" + base.toString() + ", " + antilogarithm.toString() + ")";
+		return "Log(" + base.toString() + ", " + antilogarithm.toString() + ")";
 	}
 	
 	@Override
 	public Expression differentiate(String var) {
-		return new Mult(new Div(new Num(1), new Mult(antilogarithm, new Log(new Const("e", 2.71828))), base), antilogarithm.differentiate(var));
+		boolean varInBase = base.toString().contains(var);
+		boolean varInAntilogarithm = antilogarithm.toString().contains(var);
+		if (varInBase == false && varInAntilogarithm == false ) {
+			return new Num(0);	
+		}
+		if (varInAntilogarithm == true) {
+			return new Mult(new Div(new Num(1), new Mult(antilogarithm, new Log(new Const("e"), base))), antilogarithm.differentiate(var));	
+		}
+		Expression log = new Div(new Log(new Num(2), antilogarithm), new Log(new Num(2), base));
+		return log.differentiate(var); 
 	}
 }
