@@ -10,20 +10,15 @@ public class Num implements Expression{
 	}
 
 	public double evaluate(Map<String, Double> assignment) throws Exception {
-        try {
-        } catch (Exception e) {
-        	System.out.println("num wasn't found:" + e);
-        }
-        return 0; 
+        throw new Exception("cannot assgin to Num");
 	}
 
 	public double evaluate() throws Exception {
 		double evaluate = 0;
-		try{
+		try {
 			evaluate = this.value;
 		}
-		catch (Exception e){
-			System.out.println("num wasn't found:" + e);
+		catch (Exception e) {
 		}
 		return evaluate;
 	}
@@ -37,6 +32,6 @@ public class Num implements Expression{
 	}
 
 	public Expression assign(String var, Expression expression) {
-		return null;
+		return this;
 	}
 }

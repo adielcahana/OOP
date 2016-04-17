@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,24 +11,17 @@ public class Var implements Expression {
 	}
 	
 	public double evaluate(Map<String, Double> assignment) throws Exception {
-		try{
-        } catch (Exception e) {
-        	System.out.println("num wasn't found:" + e);
-        }
-        return 0; 
+		throw new Exception("cannot evaluate Var");
 	}
 
 	public double evaluate() throws Exception {
-		try{	
-		}
-		catch (Exception e){
-			System.out.println("var wasn't found:" + e);
-		}
-		return 0;
+		throw new Exception("cannot evaluate Var");
 	}
 
 	public List<String> getVariables() {
-		return null;
+		List<String> var = new ArrayList<String>();
+		var.add(this.variable);
+		return var; 
 	}
 
 	public String toString(){
@@ -35,8 +29,14 @@ public class Var implements Expression {
 	}
 
 	public Expression assign(String var, Expression expression) {
-		double value = Double.parseDouble(var);
-		Num num = new Num(value);
-		return num;
+		if(var.equals(variable)) {
+		   return expression;
+		} else { 
+			return this;
 		}
+	}
+	
+	public Expression differentiate(String var) {
+		return new Plus(argA.differentiate(var), argB.differentiate(var));
+	}
 }
