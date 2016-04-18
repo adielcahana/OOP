@@ -39,4 +39,8 @@ public class Num implements Expression{
 	public Expression differentiate(String var) {
 		return new Num(0);
 	}
+	
+	public Expression simplify() {
+		return this;
+	}
 }

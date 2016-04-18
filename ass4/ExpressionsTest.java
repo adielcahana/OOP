@@ -22,12 +22,12 @@ public class ExpressionsTest {
                            new Num(4)),
                      new Var("x"));
     	//toString test
-    	if (e1.toString().equals("Log(e, ((((2.0 * x) + y) * 4.0) ^ x))")) {
+    	if (e1.toString().equals("Log(e, ((((2.0 * x) + y) * 4.0)^x))")) {
     		System.out.println("e1 is correct " + e1.toString());
     	} else {  	
     		System.out.println("Error in e1 " + e1.toString());
     	}
-    	if (e2.toString().equals("((((2.0 * x) ^ y) * 4.0) / x)")) {
+    	if (e2.toString().equals("((((2.0 * x)^y) * 4.0) / x)")) {
     		System.out.println("e2 is correct " + e2.toString());
     	} else {  	
     		System.out.println("Error in e2 " + e2.toString());
@@ -64,10 +64,13 @@ public class ExpressionsTest {
     	
     	//Differentiation test
     	System.out.println(e1.differentiate("x"));
+    	System.out.println(e1.differentiate("x").simplify());
     	System.out.println(e1.differentiate("y"));
+    	System.out.println(e1.differentiate("y").simplify());
     	System.out.println(e2.differentiate("x"));
+    	System.out.println(e2.differentiate("x").simplify());
     	System.out.println(e2.differentiate("y"));
-    	
+    	System.out.println(e2.differentiate("y").simplify());
     	
     	// variables list test
     	List<String> Vars = e1.getVariables();
@@ -75,13 +78,14 @@ public class ExpressionsTest {
     		System.out.println("e1 getVars succseeded");
     	} else {
     		System.out.println("e1 getVars failed");
-    	}
-    	
+    	}    
     	Vars = e2.getVariables();
     	if (Vars.contains("x") && Vars.contains("y")) {
     		System.out.println("e2 getVars succseeded");
     	} else {
     		System.out.println("e2 getVars failed");
     	}
+    
+    	
     }
 }

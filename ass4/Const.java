@@ -38,9 +38,9 @@ public class Const implements Expression{
 		return null;
 	}
 
-	   public String toString(){
-	       return this.name;
-	   }
+	public String toString() {
+	    return this.name;
+	}
 	
 	@Override
 	public Expression assign(String var, Expression expression) {
@@ -50,6 +50,10 @@ public class Const implements Expression{
 	@Override
 	public Expression differentiate(String var) {
 		return new Num(0);
+	}
+	
+	public Expression simplify() {
+		return this;
 	}
 
 }

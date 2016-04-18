@@ -26,7 +26,9 @@ public interface Expression {
    // Returns the expression tree resulting from differentiating
    // the current expression relative to variable `var`.
    public Expression differentiate(String var);
+
+   //public boolean equals(Expression e);
    
-// Returned a simplified version of the current expression.
-   //Expression simplify();
+   // Returned a simplified version of the current expression.
+   public Expression simplify();
 }

@@ -5,40 +5,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class Minus implements Expression{
-	private Expression minuend;
-	private Expression subtrahend;
-	
+public class Minus extends BinaryExpression implements Expression{
+	 
 	public Minus(Expression minuend, Expression subtrahend) {
-		this.minuend = minuend;
-		this.subtrahend = subtrahend;
+		super(minuend, subtrahend);
+		this.operator = " - ";
 	}
 	
-	@Override
-	public double evaluate(Map<String, Double> assignment) throws Exception {
-		Set<Entry<String, Double>> values = assignment.entrySet();
-        Iterator<Entry<String, Double>> i = values.iterator();
-        double evaluate = 0;
-        try {
-        	Entry<String, Double> value = i.next();
-        	Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
-		    while (i.hasNext()) {
-		    	value = i.next();
-			    newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
-		    }
-		    evaluate = newExpression.evaluate();
-        } catch (Exception e) {
-        	System.out.println("Minus Var wasn't found:" + e);
-        }
-        return evaluate; 
-	}
 
 	@Override
 	public double evaluate() throws Exception {
 		double difference = 0;
 		try {
-			difference = minuend.evaluate() - subtrahend.evaluate();
-			System.out.println(difference);
+			difference = argA.evaluate() - argB.evaluate();
+		//	System.out.println(difference);
 		} catch (Exception e) {
 			System.out.println("Minus evaluation faild :" + e);
 		}
@@ -46,48 +26,37 @@ public class Minus implements Expression{
 	}
 
 	@Override
-	public List<String> getVariables() {
-		List<String> variables = new ArrayList<String>();
-		List<String> tempVars = minuend.getVariables();
-		if (tempVars != null) {
-		    variables.addAll(tempVars);
-		}
-		tempVars = subtrahend.getVariables();
-		if (tempVars != null) {
-			variables.addAll(tempVars);
-		}
-		return variables;
-	}
-
-	@Override
 	public Expression assign(String var, Expression expression) {
-		return new Minus(minuend.assign(var, expression), subtrahend.assign(var, expression));
+		return new Minus(argA.assign(var, expression), argB.assign(var, expression));
 	}		
 
-	public String toString() {
-		return "(" + minuend.toString() + " - " + subtrahend.toString() + ")";
-	}
 	
 	@Override
 	public Expression differentiate(String var) {
-		return new Minus(minuend.differentiate(var), subtrahend.differentiate(var));
+		return new Minus(argA.differentiate(var), argB.differentiate(var));
 	}
 	
 	@Override
 	public Expression simplify() {
-		Minus simpledExp = new Minus(this.minuend.simplify(), this.minuend.simplify());
-		if (simpledExp.minuend instanceof Num && simpledExp.subtrahend instanceof Num) {
-			if (simpledExp.minuend.toString() == "0" && simpledExp.subtrahend.toString() == "0") {
-				return new Num(0);
-			return new Num(simpledExp.evaluate());
+		if (argA.getVariables() == null && argB.getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				Expression exp = new Num(evaluate); 
+				return exp;
+			} catch (Exception e){	
 			}
 		}
-		if (simpledExp.minuend.toString() == "0") {
-			return new Neg(subtrahend);	
+		this.argA = this.argA.simplify();
+		this.argB = this.argB.simplify();
+		if (argB.toString().equals(argA.toString())) {
+			return new Num(0);	
 		}
-		if (simpledExp.subtrahend.toString() == "0") {
-			return minuend;	
+		if (argA.toString().equals("0.0")) {
+			return new Neg(argB);	
 		}
-		return simpledExp;
+		if (argB.toString().equals("0.0")) {
+			return argA;	
+		}
+		return this;
 	}
 }
