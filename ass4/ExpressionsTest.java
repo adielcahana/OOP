@@ -73,7 +73,7 @@ public class ExpressionsTest {
     	try {
 			value = e3.evaluate(assignment);
 	    		System.out.println(value);
-	    		System.out.println(Math.sin(20));
+	    		System.out.println(Math.sin(2));
 	    		System.out.println(Math.cos(4));
 	    		
 		} catch (Exception e) {
@@ -91,7 +91,6 @@ public class ExpressionsTest {
     	System.out.println(e2.differentiate("y").simplify());
     	System.out.println(e3.differentiate("x"));
     	System.out.println(e3.differentiate("x").simplify());
-    	System.out.println(e3.differentiate("y").simplify());
     	
     	// variables list test
     	List<String> Vars = e1.getVariables();
