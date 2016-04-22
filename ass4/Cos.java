@@ -5,51 +5,49 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class Cos implements Expression {
+public class Cos extends UnaryExpression implements Expression {
 
 	Expression cosinus;
 	
 	public Cos(Expression cosinus){
-		this.cosinus = cosinus;
-	}
-
-	public double evaluate(Map<String, Double> assignment) throws Exception {
-		Set<Entry<String, Double>> values = assignment.entrySet();
-        Iterator<Entry<String, Double>> i = values.iterator();
-        double cos = 0;
-        Expression newExpression = null;
-        try {
-		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
-		    }
-		    cos = newExpression.evaluate();
-        } catch (Exception e) {
-        	System.out.println("Cos Var wasn't found:" + e);
-        }
-        return cos; 
+		super(cosinus);
+		this.operator = " Cos";
 	}
 
 	public double evaluate() throws Exception {
 		double cos = 0;
 		try {
-			cos = Math.cos(cosinus.evaluate());
+			cos = Math.cos(arg.evaluate());
 		} catch (Exception e) {
 			System.out.println("Cos evaluation faild :" + e);
 		}
 		return cos;
 	}
 
-	public List<String> getVariables() {
-		List<String> variables = new ArrayList<String>();
-		variables.addAll(cosinus.getVariables());
-		return variables;
+	public Expression assign(String var, Expression expression) {
+		return new Sin(arg.assign(var, expression));
 	}
 
-	   public String toString(){
-		   return "(" + cosinus.toString() + ")";
-	   }
-	
-	public Expression assign(String var, Expression expression) {
-		return new Sin(cosinus.assign(var, expression));
+	@Override
+	public Expression differentiate(String var) {
+		return new Mult(arg.differentiate(var), new Neg(new Sin(arg)));
 	}
+
+	public Expression simplify() {
+		this.arg = this.arg.simplify();
+		if (arg.getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				if (evaluate == 0 % Math.PI){
+					return new Num(1);
+				}
+				if(evaluate == (Math.PI / 2) % Math.PI){
+					return new Num(0);
+				}
+			} catch (Exception e){	
+			}
+		}
+		return arg;
+	}
+	
 }

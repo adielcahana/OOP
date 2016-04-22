@@ -5,51 +5,49 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class Sin implements Expression {
+public class Sin extends UnaryExpression implements Expression {
 
 	Expression sinus;
-	
-	public Sin(Expression sinus){
-		this.sinus = sinus;
-	}
 
-	public double evaluate(Map<String, Double> assignment) throws Exception {
-		Set<Entry<String, Double>> values = assignment.entrySet();
-        Iterator<Entry<String, Double>> i = values.iterator();
-        double sin = 0;
-        Expression newExpression = null;
-        try {
-		    while (i.hasNext()) {
-			    newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
-		    }
-		    sin = newExpression.evaluate();
-        } catch (Exception e) {
-        	System.out.println("Sin Var wasn't found:" + e);
-        }
-        return sin; 
+	public Sin(Expression sinus){
+		super(sinus);
+		this.operator = " Sin";
 	}
 
 	public double evaluate() throws Exception {
 		double sin = 0;
 		try {
-			sin = Math.sin(sinus.evaluate());
+			sin = Math.sin(arg.evaluate());
 		} catch (Exception e) {
 			System.out.println("Sin evaluation faild :" + e);
 		}
 		return sin;
 	}
 
-	public List<String> getVariables() {
-		List<String> variables = new ArrayList<String>();
-		variables.addAll(sinus.getVariables());
-		return variables;
+	public Expression assign(String var, Expression expression) {
+		return new Sin(arg.assign(var, expression));
 	}
 
-	   public String toString(){
-		   return "(" + sinus.toString() + ")";
-	   }
-	
-	public Expression assign(String var, Expression expression) {
-		return new Sin(sinus.assign(var, expression));
+	@Override
+	public Expression differentiate(String var) {
+		return new Mult(arg.differentiate(var), new Cos(arg));
+	}
+
+	@Override
+	public Expression simplify() {
+		this.arg = this.arg.simplify();
+		if (arg.getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				if (evaluate == 0 % Math.PI){
+					return new Num(0);
+				}
+				if(evaluate == Math.PI % Math.PI){
+					return new Num(1);
+				}
+			} catch (Exception e){	
+			}
+		}
+		return arg;
 	}
 }

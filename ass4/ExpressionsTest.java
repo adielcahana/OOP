@@ -21,6 +21,10 @@ public class ExpressionsTest {
                               new Var("y")),
                            new Num(4)),
                      new Var("x"));
+    	Expression e3 = 
+    			new Sin(new Var("x"));
+    					//new Mult(new Num(5), new Var("x")));    	
+    	
     	//toString test
     	if (e1.toString().equals("Log(e, ((((2.0 * x) + y) * 4.0)^x))")) {
     		System.out.println("e1 is correct " + e1.toString());
@@ -31,6 +35,11 @@ public class ExpressionsTest {
     		System.out.println("e2 is correct " + e2.toString());
     	} else {  	
     		System.out.println("Error in e2 " + e2.toString());
+    	}
+    	if (e3.toString().equals(" Sin(x)")) {
+    		System.out.println("e3 is correct " + e3.toString());
+    	} else {  	
+    		System.out.println("Error in e3 " + e3.toString());
     	}
     	
     	//evaluate test
@@ -61,6 +70,15 @@ public class ExpressionsTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	try {
+			value = e3.evaluate(assignment);
+	    		System.out.println(value);
+	    		System.out.println(Math.sin(20));
+	    		System.out.println(Math.cos(4));
+	    		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     	
     	//Differentiation test
     	System.out.println(e1.differentiate("x"));
@@ -71,6 +89,9 @@ public class ExpressionsTest {
     	System.out.println(e2.differentiate("x").simplify());
     	System.out.println(e2.differentiate("y"));
     	System.out.println(e2.differentiate("y").simplify());
+    	System.out.println(e3.differentiate("x"));
+    	System.out.println(e3.differentiate("x").simplify());
+    	System.out.println(e3.differentiate("y").simplify());
     	
     	// variables list test
     	List<String> Vars = e1.getVariables();
