@@ -22,8 +22,11 @@ public class ExpressionsTest {
                            new Num(4)),
                      new Var("x"));
     	Expression e3 = 
-    			new Sin(new Var("x"));
-    					//new Mult(new Num(5), new Var("x")));    	
+    			new Plus(new Var("y"),
+    					new Mult(new Neg(new Num(-4)),
+    							new Sin(
+    									new Mult(new Num(5),
+    											new Sin(new Var("x"))))));
     	
     	//toString test
     	if (e1.toString().equals("Log(e, ((((2.0 * x) + y) * 4.0)^x))")) {
@@ -44,8 +47,8 @@ public class ExpressionsTest {
     	
     	//evaluate test
     	Map<String, Double> assignment = new TreeMap<String, Double>();
-    	assignment.put("x", 2.0);
-    	assignment.put("y", 4.0);
+    	assignment.put("x", Math.PI / 2);
+    	assignment.put("y", 0.0);
     	double value;
 		try {
 			value = e1.evaluate(assignment);
@@ -73,8 +76,6 @@ public class ExpressionsTest {
     	try {
 			value = e3.evaluate(assignment);
 	    		System.out.println(value);
-	    		System.out.println(Math.sin(2));
-	    		System.out.println(Math.cos(4));
 	    		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,6 +92,7 @@ public class ExpressionsTest {
     	System.out.println(e2.differentiate("y").simplify());
     	System.out.println(e3.differentiate("x"));
     	System.out.println(e3.differentiate("x").simplify());
+    	System.out.println(e3.differentiate("y").simplify());
     	
     	// variables list test
     	List<String> Vars = e1.getVariables();
@@ -105,7 +107,11 @@ public class ExpressionsTest {
     	} else {
     		System.out.println("e2 getVars failed");
     	}
-    
-    	
+    	Vars = e3.getVariables();
+    	if (Vars.contains("x") && Vars.contains("y")) {
+    		System.out.println("e3 getVars succseeded");
+    	} else {
+    		System.out.println("e3 getVars failed");
+    	}    
     }
 }

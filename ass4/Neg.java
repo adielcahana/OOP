@@ -33,8 +33,4 @@ public class Neg extends UnaryExpression implements Expression {
 		return new Neg(arg.differentiate(var));
 	}
 
-	@Override
-	public Expression simplify() {
-		return arg;
-	}
 }

@@ -32,22 +32,5 @@ public class Cos extends UnaryExpression implements Expression {
 	public Expression differentiate(String var) {
 		return new Mult(arg.differentiate(var), new Neg(new Sin(arg)));
 	}
-
-	public Expression simplify() {
-		this.arg = this.arg.simplify();
-		if (arg.getVariables() == null) {
-			try {
-				double evaluate = this.evaluate();
-				if (evaluate == 0 % Math.PI){
-					return new Num(1);
-				}
-				if(evaluate == (Math.PI / 2) % Math.PI){
-					return new Num(0);
-				}
-			} catch (Exception e){	
-			}
-		}
-		return arg;
-	}
 	
 }

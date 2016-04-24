@@ -24,6 +24,9 @@ public class Num implements Expression{
 	}
 
 	public String toString(){
+		if (Double.toString(value).equals("-0.0")){
+			return "0.0";
+		}
 		return Double.toString(value);
 	}
 	

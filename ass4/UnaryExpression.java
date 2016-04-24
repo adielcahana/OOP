@@ -32,9 +32,11 @@ public abstract class UnaryExpression {
 
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
-		variables.addAll(arg.getVariables());
-		return variables;
-	}
+		List<String> tempVars = arg.getVariables();
+		if (tempVars != null) {
+		    variables.addAll(tempVars);
+		}
+		return variables;}
 	
 	public String toString(){
 		return this.operator + "(" + arg.toString() + ")";
@@ -42,4 +44,15 @@ public abstract class UnaryExpression {
 	
 	public abstract Expression assign(String var, Expression expression);
 
+	public Expression simplify(){
+		if (arg.getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				Expression exp = new Num(evaluate); 
+				return exp;
+			} catch (Exception e){	
+			}
 	}
+		return arg;
+	}
+}
