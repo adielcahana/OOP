@@ -9,7 +9,7 @@ public class Neg extends UnaryExpression implements Expression {
 
 	Expression negation;
 	
-	public Neg(Expression negation){
+	public Neg(Object negation){
 		super(negation);
 		this.operator = " -";
 	}

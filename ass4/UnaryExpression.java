@@ -1,3 +1,4 @@
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +12,20 @@ public abstract class UnaryExpression {
 
 	public UnaryExpression (Expression arg){
 		this.arg = arg;
+	}
+	
+	public UnaryExpression (Object arg){
+		if((arg instanceof Double)){
+			this.arg = new Num((Double) arg);
+		} else if (arg instanceof Integer){
+			this.arg = new Num((int) arg);
+		}else if (arg instanceof String){
+			this.arg = new Var((String) arg);
+		} else if (arg instanceof Expression){
+			this.arg = (Expression) arg;
+		}else {
+    		throw new InvalidParameterException();
+    	}
 	}
 
 	public double evaluate(Map<String, Double> assignment) throws Exception {

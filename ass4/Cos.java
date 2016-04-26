@@ -9,7 +9,7 @@ public class Cos extends UnaryExpression implements Expression {
 
 	Expression cosinus;
 	
-	public Cos(Expression cosinus){
+	public Cos(Object cosinus){
 		super(cosinus);
 		this.operator = " Cos";
 	}

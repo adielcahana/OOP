@@ -9,7 +9,7 @@ public class Sin extends UnaryExpression implements Expression {
 
 	Expression sinus;
 
-	public Sin(Expression sinus){
+	public Sin(Object sinus){
 		super(sinus);
 		this.operator = " Sin";
 	}
