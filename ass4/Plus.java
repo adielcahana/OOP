@@ -2,14 +2,14 @@ public class Plus extends BinaryExpression implements Expression {
 
     public Plus(Object argA, Object argB) {
         super(argA, argB);
-        this.operator = " + ";
+        this.setOperator(" + ");
     }
 
     @Override
     public double evaluate() throws Exception {
         double sum = 0;
         try {
-            sum = argA.evaluate() + argB.evaluate();
+            sum = this.getArgA().evaluate() + this.getArgB().evaluate();
 //            System.out.println(sum);
         } catch (Exception e) {
             System.out.println("Plus evaluation faild :" + e);
@@ -19,21 +19,21 @@ public class Plus extends BinaryExpression implements Expression {
 
     @Override
     public Expression assign(String var, Expression expression) {
-        return new Plus(argA.assign(var, expression), argB.assign(var, expression));
+        return new Plus(this.getArgA().assign(var, expression), this.getArgB().assign(var, expression));
     }
 
     public String toString() {
-        return "(" + argA.toString() + " + " + argB.toString() + ")";
+        return "(" + this.getArgA().toString() + " + " + this.getArgB().toString() + ")";
     }
 
     @Override
     public Expression differentiate(String var) {
-        return new Plus(argA.differentiate(var), argB.differentiate(var));
+        return new Plus(this.getArgA().differentiate(var), this.getArgB().differentiate(var));
     }
 
     @Override
     public Expression simplify() {
-        if (argA.getVariables() == null && argB.getVariables() == null) {
+        if (this.getArgA().getVariables() == null && this.getArgB().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
@@ -41,13 +41,13 @@ public class Plus extends BinaryExpression implements Expression {
             } catch (Exception e){
             }
         }
-        this.argA = this.argA.simplify();
-        this.argB = this.argB.simplify();
-        if (argA.toString().equals("0.0")) {
-            return argB;
+        this.setArgA(this.getArgA().simplify());
+        this.setArgB(this.getArgB().simplify());
+        if (this.getArgA().toString().equals("0.0")) {
+            return this.getArgB();
         }
-        if (argB.toString().equals("0.0")) {
-            return argA;
+        if (this.getArgB().toString().equals("0.0")) {
+            return this.getArgA();
         }
         return this;
     }

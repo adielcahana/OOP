@@ -5,14 +5,14 @@ public class Pow extends BinaryExpression implements Expression{
 
     public Pow(Object base, Object exponent) {
         super(base, exponent);
-        this.operator = "^";
+        this.setOperator("^");
     }
 
     @Override
     public double evaluate() throws Exception {
         double power = 0;
         try {
-            power = Math.pow(argA.evaluate(), argB.evaluate());
+            power = Math.pow(this.getArgA().evaluate(), this.getArgB().evaluate());
         //    System.out.println(power);
         } catch (Exception e) {
             System.out.println("Pow evaluation failed :" + e);
@@ -23,11 +23,11 @@ public class Pow extends BinaryExpression implements Expression{
     @Override
     public List<String> getVariables() {
         List<String> variables = new ArrayList<String>();
-        List<String> tempVars = argA.getVariables();
+        List<String> tempVars = this.getArgA().getVariables();
         if (tempVars != null) {
             variables.addAll(tempVars);
         }
-        tempVars = argB.getVariables();
+        tempVars = this.getArgB().getVariables();
         if (tempVars != null) {
             variables.removeAll(tempVars);
             variables.addAll(tempVars);
@@ -37,24 +37,24 @@ public class Pow extends BinaryExpression implements Expression{
 
     @Override
     public Expression assign(String var, Expression expression) {
-        return new Pow(argA.assign(var, expression), argB.assign(var, expression));
+        return new Pow(this.getArgA().assign(var, expression), this.getArgB().assign(var, expression));
     }
 
     @Override
     public Expression differentiate(String var) {
-        boolean varInBase = argA.toString().contains(var);
-        boolean varInExponent = argB.toString().contains(var);
+        boolean varInBase = this.getArgA().toString().contains(var);
+        boolean varInExponent = this.getArgB().toString().contains(var);
         if (varInBase && varInExponent){
-            Expression expression = new Log(new Const("e"), argA);
-            expression = new Mult(argB, expression);
+            Expression expression = new Log(new Const("e"), this.getArgA());
+            expression = new Mult(this.getArgB(), expression);
             expression = new Pow(new Const("e"), expression);
             return expression.differentiate(var);
         }
         if (varInBase) {
-            return new Div(new Mult(argB, this), argA);
+            return new Div(new Mult(this.getArgB(), this), this.getArgA());
         } else if (varInExponent) {
-            Expression expression = new Log(new Const("e"), argA);
-            expression = new Mult(new Mult(this, expression), argB.differentiate(var));
+            Expression expression = new Log(new Const("e"), this.getArgA());
+            expression = new Mult(new Mult(this, expression), this.getArgB().differentiate(var));
             return expression;
         }
         return new Num(0);
@@ -62,7 +62,7 @@ public class Pow extends BinaryExpression implements Expression{
 
     @Override
     public Expression simplify() {
-        if (argA.getVariables() == null && argB.getVariables() == null) {
+        if (this.getArgA().getVariables() == null && this.getArgB().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
@@ -70,13 +70,13 @@ public class Pow extends BinaryExpression implements Expression{
             } catch (Exception e) {
             }
         }
-        this.argA = this.argA.simplify();
-        this.argB = this.argB.simplify();
-        if (argA.toString().equals("0.0")) {
+        this.setArgA(this.getArgA().simplify());
+        this.setArgB(this.getArgB().simplify());
+        if (this.getArgA().toString().equals("0.0")) {
             return new Num(0);
         }
-        if (argB.toString().equals("1.0")) {
-            return this.argA;
+        if (this.getArgB().toString().equals("1.0")) {
+            return this.getArgA();
         }
         return this;
     }

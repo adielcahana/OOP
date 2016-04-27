@@ -7,69 +7,35 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 public abstract class BinaryExpression {
-    protected Expression argA;
-    protected Expression argB;
-    protected String operator;
+    private Expression argA;
+    private Expression argB;
+    private String operator;
 
-    public BinaryExpression(Expression argA, Expression argB) {
-        this.argA = argA;
-        this.argB = argB;
-    }
     public BinaryExpression(Object argA, Object argB) {
-    	// String + number case
-    	if (argA instanceof String && argB instanceof Double) {
-    		this.argA = new Var((String) argA);
-    		this.argB = new Num((Double) argB);
-    	} else if (argA instanceof Double && argB instanceof String) {
-    		this.argA = new Num((double) argA);
-    		this.argB = new Var((String) argB);
-    	} else if (argA instanceof String && argB instanceof Integer) {
-    		this.argA = new Var((String) argA);
-    		this.argB = new Num((int) argB);
-    	} else if (argA instanceof Integer && argB instanceof String) {
-    		this.argA = new Num((int) argA);
-    		this.argB = new Var((String) argB);
-    	// number + number case	
-    	}  else if (argA instanceof Integer && argB instanceof Integer) {
-    		this.argA = new Num((int) argA);
-    		this.argB = new Num((int) argB);
-    	} else if (argA instanceof Integer && argB instanceof Double) {
-    		this.argA = new Num((int) argA);
-    		this.argB = new Num((double) argB);
-    	} else if (argA instanceof Double && argB instanceof Integer) {
-    		this.argA = new Num((double) argA);
-    		this.argB = new Num((int) argB);
-    	//String + String case
-    	} else if (argA instanceof String && argB instanceof String) {
-    		this.argA = new Var((String) argA);
-    		this.argB = new Var((String) argB);
-    	// expression + expression case
-    	} else if (argA instanceof Expression && argB instanceof Expression) {
-    		this.argA = (Expression) argA;
-    		this.argB = (Expression) argB;
-    	// expression + string case
-    	} else if (argA instanceof Expression && argB instanceof String) {
-    		this.argA = (Expression) argA;
-    		this.argB = new Var((String) argB);
-    	} else if (argA instanceof String && argB instanceof Expression) {
-    		this.argA = new Var((String) argA);
-    		this.argB = (Expression) argB;
-    	// expression + number
-    	} else if (argA instanceof Expression && argB instanceof Double) {
-    		this.argA = (Expression) argA;
-    		this.argB = new Num((double) argB);
-    	} else if (argA instanceof Double && argB instanceof Expression) {
-    		this.argA = new Num((double) argA);
-    		this.argB = (Expression) argB;
-    	} else if (argA instanceof Expression && argB instanceof Integer) {
-    		this.argA = (Expression) argA;
-    		this.argB = new Num((int) argB);
-    	} else if (argA instanceof Integer && argB instanceof Expression) {
-    		this.argA = new Num((int) argA);
-    		this.argB = (Expression) argB;
-    	} else {
-    		throw new InvalidParameterException();
-    	}
+        // correctly assign argA expression according to its type   
+        if (argA instanceof String) {
+            this.argA = new Var((String) argA);
+        } else if (argA instanceof Double) {
+            this.argA = new Num((double) argA);
+        } else if (argA instanceof Integer) {
+            this.argA = new Num((int) argA);
+        } else if (argA instanceof Expression) {
+            this.argA = (Expression) argA;
+        } else {
+            throw new InvalidParameterException();
+        }
+        // correctly assign argB expression according to its type        
+        if (argB instanceof String) {
+            this.argB = new Var((String) argB);
+        } else if (argB instanceof Double) {
+            this.argB = new Num((double) argB);
+        } else if (argB instanceof Integer) {
+            this.argB = new Num((int) argB);
+        } else if (argB instanceof Expression) {
+            this.argB = (Expression) argB;
+        } else {
+            throw new InvalidParameterException();
+        }
     }
     /*public BinaryExpression(Expression argA, String var) {
         this.argA = argA;
@@ -105,7 +71,33 @@ public abstract class BinaryExpression {
     }*/
 
 
-    public double evaluate(Map<String, Double> assignment) throws Exception {
+    protected Expression getArgA() {
+        return argA;
+    }
+
+
+    protected void setArgA(Expression argA) {
+		this.argA = argA;
+	}
+
+	protected Expression getArgB() {
+        return argB;
+    }
+	
+	protected void setArgB(Expression argB) {
+		this.argB = argB;
+	}
+
+    protected String getOperator() {
+		return operator;
+	}
+
+	protected void setOperator(String operator) {
+		this.operator = operator;
+	}
+
+
+	public double evaluate(Map<String, Double> assignment) throws Exception {
         Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double sum = 0;
@@ -139,7 +131,7 @@ public abstract class BinaryExpression {
     }
 
     public String toString() {
-        return "(" + argA.toString() + this.operator + argB.toString() + ")";
+        return "(" + argA.toString() + this.getOperator() + argB.toString() + ")";
     }
 
     public abstract Expression assign(String var, Expression expression);
