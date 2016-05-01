@@ -16,7 +16,7 @@ public abstract class UnaryExpression {
 	
 	public UnaryExpression (Object arg){
 		if((arg instanceof Double)){
-			this.arg = new Num((Double) arg);
+			this.arg = new Num((double) arg);
 		} else if (arg instanceof Integer){
 			this.arg = new Num((int) arg);
 		}else if (arg instanceof String){
