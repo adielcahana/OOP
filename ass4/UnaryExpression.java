@@ -7,41 +7,57 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 public abstract class UnaryExpression {
-	protected Expression arg;
-	protected String operator;
-
-	public UnaryExpression (Expression arg){
-		this.arg = arg;
-	}
+	private Expression arg;
+	private String operator;
 	
 	public UnaryExpression (Object arg){
-		if((arg instanceof Double)){
-			this.arg = new Num((double) arg);
-		} else if (arg instanceof Integer){
-			this.arg = new Num((int) arg);
-		}else if (arg instanceof String){
-			this.arg = new Var((String) arg);
-		} else if (arg instanceof Expression){
-			this.arg = (Expression) arg;
-		}else {
-    		throw new InvalidParameterException();
-    	}
+        if (arg instanceof String) {
+            this.arg = new Var((String) arg);
+        } else if (arg instanceof Double) {
+            this.arg = new Num((double) arg);
+        } else if (arg instanceof Integer) {
+            this.arg = new Num((int) arg);
+        } else if (arg instanceof Expression) {
+            this.arg = (Expression) arg;
+        } else {
+            throw new InvalidParameterException();
+        }
+	}
+	
+    protected Expression getArg() {
+        return arg;
+    }
+
+
+    protected void setArg(Expression arg) {
+		this.arg = arg;
 	}
 
-	public double evaluate(Map<String, Double> assignment) throws Exception {
-		Set<Entry<String, Double>> values = assignment.entrySet();
-		Iterator<Entry<String, Double>> i = values.iterator();
-		double expression = 0;
-		Expression newExpression = null;
-		try {
-			while (i.hasNext()) {
-				newExpression = this.assign(i.next().getKey(), new Num(i.next().getValue()));
-			}
-			expression = newExpression.evaluate();
-		} catch (Exception e) {
-		}
-		return expression; 
+	protected void setOperator(String operator) {
+		this.operator = operator;
 	}
+	
+    protected String getOperator() {
+		return operator;
+	}
+
+	
+	public double evaluate(Map<String, Double> assignment) throws Exception {
+        Set<Entry<String, Double>> values = assignment.entrySet();
+        Iterator<Entry<String, Double>> i = values.iterator();
+        double expression = 0;
+        try {
+            Entry<String, Double> value = i.next();
+            Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
+            while (i.hasNext()) {
+                value = i.next();
+                newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
+            }
+            expression = newExpression.evaluate();
+        } catch (Exception e) {
+          }
+        return expression;
+    }
 
 	public abstract double evaluate() throws Exception;
 
