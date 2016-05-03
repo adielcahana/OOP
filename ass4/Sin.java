@@ -1,16 +1,14 @@
 public class Sin extends UnaryExpression implements Expression {
 
-	Expression sinus;
-
 	public Sin(Object sinus){
 		super(sinus);
-		this.operator = " Sin";
+		this.setOperator(" Sin");
 	}
 
 	public double evaluate() throws Exception {
 		double sin = 0;
 		try {
-			sin = Math.sin(arg.evaluate());
+			sin = Math.sin(getArg().evaluate());
 		} catch (Exception e) {
 			System.out.println("Sin evaluation faild :" + e);
 		}
@@ -18,11 +16,11 @@ public class Sin extends UnaryExpression implements Expression {
 	}
 
 	public Expression assign(String var, Expression expression) {
-		return new Sin(arg.assign(var, expression));
+		return new Sin(getArg().assign(var, expression));
 	}
 
 	@Override
 	public Expression differentiate(String var) {
-		return new Mult(arg.differentiate(var), new Cos(arg));
+		return new Mult(getArg().differentiate(var), new Cos(getArg()));
 	}
 }

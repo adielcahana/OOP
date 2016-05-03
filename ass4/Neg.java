@@ -1,16 +1,15 @@
 public class Neg extends UnaryExpression implements Expression {
 
-	Expression negation;
-	
 	public Neg(Object negation){
 		super(negation);
-		this.operator = " -";
+		this.setOperator(" -");
 	}
 
 	public double evaluate() throws Exception {
 		double neg = 0;
 		try {
-			neg = - (arg.evaluate());
+			//System.out.println(getArg().evaluate());
+			neg = - (getArg().evaluate());
 		} catch (Exception e) {
 			System.out.println("neg evaluation faild :" + e);
 		}
@@ -18,12 +17,12 @@ public class Neg extends UnaryExpression implements Expression {
 	}
 
 	public Expression assign(String var, Expression expression) {
-		return new Neg(arg.assign(var, expression));
+		return new Neg(getArg().assign(var, expression));
 	}
 
 	@Override
 	public Expression differentiate(String var) {
-		return new Neg(arg.differentiate(var));
+		return new Neg(getArg().differentiate(var));
 	}
 
 }

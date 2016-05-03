@@ -1,16 +1,16 @@
 public class Cos extends UnaryExpression implements Expression {
-
-	Expression cosinus;
 	
 	public Cos(Object cosinus){
 		super(cosinus);
-		this.operator = " Cos";
+		this.setOperator(" Cos");
 	}
 
 	public double evaluate() throws Exception {
 		double cos = 0;
+		System.out.println(Math.cos(getArg().evaluate()));
 		try {
-			cos = Math.cos(arg.evaluate());
+			cos = Math.cos(getArg().evaluate());
+			System.out.println(cos);
 		} catch (Exception e) {
 			System.out.println("Cos evaluation faild :" + e);
 		}
@@ -18,12 +18,12 @@ public class Cos extends UnaryExpression implements Expression {
 	}
 
 	public Expression assign(String var, Expression expression) {
-		return new Sin(arg.assign(var, expression));
+		return new Sin(getArg().assign(var, expression));
 	}
 
 	@Override
 	public Expression differentiate(String var) {
-		return new Mult(arg.differentiate(var), new Neg(new Sin(arg)));
+		return new Mult(getArg().differentiate(var), new Neg(new Sin(getArg())));
 	}
 	
 }
