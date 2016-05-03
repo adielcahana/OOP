@@ -2,13 +2,13 @@ public class Sin extends UnaryExpression implements Expression {
 
 	public Sin(Object sinus){
 		super(sinus);
-		this.setOperator(" Sin");
+		this.setOperator("Sin");
 	}
 
 	public double evaluate() throws Exception {
 		double sin = 0;
 		try {
-			sin = Math.sin(getArg().evaluate());
+			sin = Math.sin(Math.toRadians(getArg().evaluate()));
 		} catch (Exception e) {
 			System.out.println("Sin evaluation faild :" + e);
 		}

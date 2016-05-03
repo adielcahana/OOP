@@ -31,7 +31,7 @@ public class Mult extends BinaryExpression implements Expression {
             return new Mult(this.getArgA(), this.getArgB().differentiate(var));
         }
         return new Plus(new Mult(this.getArgA().differentiate(var), this.getArgB()),
-        		        new Mult(this.getArgA(), this.getArgB().differentiate(var)));
+                        new Mult(this.getArgA(), this.getArgB().differentiate(var)));
     }
 
     @Override

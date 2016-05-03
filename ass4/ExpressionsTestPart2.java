@@ -202,7 +202,7 @@ public class ExpressionsTestPart2 {
         
             e = new Div(new Num(1) , new Var("x"));
             e = e.differentiate("x");
-            
+            System.out.println(e);
             assignment.clear();
             assignment.put("x", 2.0);
             vv = e.evaluate(assignment);
@@ -365,12 +365,13 @@ public class ExpressionsTestPart2 {
             // ans : 1
             
             e = new Sin(new Var("x"));  // sin(x)
+            System.out.println(e);
             e = e.differentiate("x");  // cos(x)
-            
+            System.out.println(e);
             assignment.clear();
             assignment.put("x", (double) 0);  // cos(0) = 1
             value = e.evaluate(assignment);
-            
+            System.out.println(value);
             if (value == 1)
             {
                 gradePart2++;                System.out.println("good =)");
@@ -436,6 +437,7 @@ public class ExpressionsTestPart2 {
 
             e = new Pow(new Cos(new Var("x")) , new Num(2));        // [cos(x)]^2
             e = e.differentiate("x");       // 2 * cos(x) * (-sin(x)) = -2 * sin(x) * cos(x) 
+            System.out.println(e);
             assignment.clear();
             assignment.put("x",  60.0);     // -2 * sin(60) * cos(60) =  -0.866025403784
             assignment.put("e", 2.71);
@@ -835,7 +837,8 @@ public class ExpressionsTestPart2 {
         {
             // e^x / e^x = 1
             // Ans : 1
-            e = new Div(new Pow(new Var("e"), new Var("x")) , new Pow(new Var("e"), new Var("x")) );
+            e = new Div(new Pow(new Var("e"), new Var("x")) , new Pow(new Var("e"), new Var("x")));
+            System.out.println(e);
             simpStr = e.simplify().toString();
             
             if (simpStr.equals("1.0") || simpStr.equals("1"))

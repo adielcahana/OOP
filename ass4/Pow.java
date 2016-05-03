@@ -20,20 +20,6 @@ public class Pow extends BinaryExpression implements Expression{
         return power;
     }
 
-    @Override
-    public List<String> getVariables() {
-        List<String> variables = new ArrayList<String>();
-        List<String> tempVars = this.getArgA().getVariables();
-        if (tempVars != null) {
-            variables.addAll(tempVars);
-        }
-        tempVars = this.getArgB().getVariables();
-        if (tempVars != null) {
-            variables.removeAll(tempVars);
-            variables.addAll(tempVars);
-        }
-        return variables;
-    }
 
     @Override
     public Expression assign(String var, Expression expression) {
@@ -51,7 +37,7 @@ public class Pow extends BinaryExpression implements Expression{
             return expression.differentiate(var);
         }
         if (varInBase) {
-            return new Div(new Mult(this.getArgB(), this), this.getArgA());
+            return new Mult(new Div(new Mult(this.getArgB(), this), this.getArgA()) , this.getArgA().differentiate(var));
         } else if (varInExponent) {
             Expression expression = new Log(new Const("e"), this.getArgA());
             expression = new Mult(new Mult(this, expression), this.getArgB().differentiate(var));

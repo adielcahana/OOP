@@ -27,9 +27,9 @@ public class Div extends BinaryExpression implements Expression{
         if (this.getArgA() instanceof Num && this.getArgB() instanceof Num) {
             return new Num(0);
         }
-        if (this.getArgA() instanceof Num && !(this.getArgB() instanceof Num)) {
-            return new Mult(this.getArgA(), this.getArgB().differentiate(var));
-        }
+//        if (this.getArgA() instanceof Num && !(this.getArgB() instanceof Num)) {
+//            return new Mult(this.getArgA(), this.getArgB().differentiate(var));
+//        }
         return new Div(
                 new Minus(
                         new Mult(this.getArgA().differentiate(var), this.getArgB()), new Mult(this.getArgA(), this.getArgB().differentiate(var)))
@@ -52,7 +52,7 @@ public class Div extends BinaryExpression implements Expression{
             return new Num(0);
         }
         if (this.getArgA().toString().equals(this.getArgB().toString())) {
-            return new Num(0);
+            return new Num(1);
         }
         if (this.getArgB().toString().equals("1.0")) {
             return this.getArgA();
