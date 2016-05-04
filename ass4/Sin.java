@@ -23,4 +23,16 @@ public class Sin extends UnaryExpression implements Expression {
 	public Expression differentiate(String var) {
 		return new Mult(getArg().differentiate(var), new Cos(getArg()));
 	}
+	
+	public Expression simplify(){
+		if (getArg().getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				Expression exp = new Num(evaluate); 
+				return exp;
+			} catch (Exception e){	
+			}
+	}
+		return this;
+	}
 }

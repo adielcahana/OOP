@@ -6,9 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public abstract class UnaryExpression {
+public abstract class UnaryExpression extends BaseExpression {
 	private Expression arg;
-	private String operator;
 	
 	public UnaryExpression (Object arg){
         if (arg instanceof String) {
@@ -22,6 +21,7 @@ public abstract class UnaryExpression {
         } else {
             throw new InvalidParameterException();
         }
+	this.setOperator(getOperator());
 	}
 	
     protected Expression getArg() {
@@ -33,34 +33,6 @@ public abstract class UnaryExpression {
 		this.arg = arg;
 	}
 
-	protected void setOperator(String operator) {
-		this.operator = operator;
-	}
-	
-    protected String getOperator() {
-		return operator;
-	}
-
-	
-	public double evaluate(Map<String, Double> assignment) throws Exception {
-        Set<Entry<String, Double>> values = assignment.entrySet();
-        Iterator<Entry<String, Double>> i = values.iterator();
-        double expression = 0;
-        try {
-            Entry<String, Double> value = i.next();
-            Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
-            while (i.hasNext()) {
-                value = i.next();
-                newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
-            }
-            expression = newExpression.evaluate();
-        } catch (Exception e) {
-          }
-        return expression;
-    }
-
-	public abstract double evaluate() throws Exception;
-
 	public List<String> getVariables() {
 		List<String> variables = new ArrayList<String>();
 		List<String> tempVars = arg.getVariables();
@@ -70,20 +42,7 @@ public abstract class UnaryExpression {
 		return variables;}
 	
 	public String toString(){
-		return this.operator + "(" + arg.toString() + ")";
+		return this.getOperator() + "(" + arg.toString() + ")";
 	}
-	
-	public abstract Expression assign(String var, Expression expression);
 
-	public Expression simplify(){
-		if (arg.getVariables() == null) {
-			try {
-				double evaluate = this.evaluate();
-				Expression exp = new Num(evaluate); 
-				return exp;
-			} catch (Exception e){	
-			}
-	}
-		return arg;
-	}
 }

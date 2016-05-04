@@ -9,7 +9,6 @@ public class Cos extends UnaryExpression implements Expression {
 		double cos = 0;
 		try {
 			cos = Math.cos(Math.toRadians(getArg().evaluate()));
-			System.out.println(cos);
 		} catch (Exception e) {
 			System.out.println("Cos evaluation faild :" + e);
 		}
@@ -25,4 +24,15 @@ public class Cos extends UnaryExpression implements Expression {
 		return new Mult(getArg().differentiate(var), new Neg(new Sin(getArg())));
 	}
 	
+	public Expression simplify(){
+		if (getArg().getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				Expression exp = new Num(evaluate); 
+				return exp;
+			} catch (Exception e){	
+			}
+	}
+		return this;
+	}
 }
