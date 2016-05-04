@@ -10,8 +10,14 @@ public class Num implements Expression{
 	}
 
 	public double evaluate(Map<String, Double> assignment) throws Exception {
-        throw new Exception("cannot assgin to Num");
-	}
+		double evaluate = 0;
+		try{
+			evaluate = this.evaluate();
+		}
+		catch (Exception e){
+		}
+		return evaluate;
+		}
 
 	public double evaluate() throws Exception {
 		double evaluate = 0;

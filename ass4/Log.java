@@ -13,6 +13,7 @@ public class Log extends BinaryExpression implements Expression {
             //System.out.println(logarithm);
         } catch (Exception e) {
             System.out.println("Pow evaluation failed :" + e);
+            throw e;
         }
         return logarithm;
     }

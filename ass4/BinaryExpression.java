@@ -1,15 +1,11 @@
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
-public abstract class BinaryExpression {
+
+public abstract class BinaryExpression extends BaseExpression{
     private Expression argA;
     private Expression argB;
-    private String operator;
 
     public BinaryExpression(Object argA, Object argB) {
         // correctly assign argA expression according to its type   
@@ -36,6 +32,7 @@ public abstract class BinaryExpression {
         } else {
             throw new InvalidParameterException();
         }
+        this.setOperator(getOperator());
     }
     /*public BinaryExpression(Expression argA, String var) {
         this.argA = argA;
@@ -88,34 +85,6 @@ public abstract class BinaryExpression {
 		this.argB = argB;
 	}
 
-    protected String getOperator() {
-		return operator;
-	}
-
-	protected void setOperator(String operator) {
-		this.operator = operator;
-	}
-
-
-	public double evaluate(Map<String, Double> assignment) throws Exception {
-        Set<Entry<String, Double>> values = assignment.entrySet();
-        Iterator<Entry<String, Double>> i = values.iterator();
-        double sum = 0;
-        try {
-            Entry<String, Double> value = i.next();
-            Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
-            while (i.hasNext()) {
-                value = i.next();
-                newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
-            }
-            sum = newExpression.evaluate();
-        } catch (Exception e) {
-          }
-        return sum;
-    }
-
-    public abstract double evaluate() throws Exception;
-
     public List<String> getVariables() {
         List<String> variables = new ArrayList<String>();
         List<String> tempVars = argA.getVariables();
@@ -127,13 +96,13 @@ public abstract class BinaryExpression {
             variables.removeAll(tempVars);
             variables.addAll(tempVars);
         }
+        if (variables.isEmpty()){
+        	return null;
+        }
         return variables;
     }
 
     public String toString() {
         return "(" + argA.toString() + this.getOperator() + argB.toString() + ")";
     }
-
-    public abstract Expression assign(String var, Expression expression);
-
 }

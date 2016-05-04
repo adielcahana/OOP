@@ -13,6 +13,7 @@ public class Plus extends BinaryExpression implements Expression {
 //            System.out.println(sum);
         } catch (Exception e) {
             System.out.println("Plus evaluation faild :" + e);
+            throw e;
         }
         return sum;
     }

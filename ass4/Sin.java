@@ -11,6 +11,7 @@ public class Sin extends UnaryExpression implements Expression {
 			sin = Math.sin(Math.toRadians(getArg().evaluate()));
 		} catch (Exception e) {
 			System.out.println("Sin evaluation faild :" + e);
+			throw e;
 		}
 		return sin;
 	}
@@ -22,17 +23,5 @@ public class Sin extends UnaryExpression implements Expression {
 	@Override
 	public Expression differentiate(String var) {
 		return new Mult(getArg().differentiate(var), new Cos(getArg()));
-	}
-	
-	public Expression simplify(){
-		if (getArg().getVariables() == null) {
-			try {
-				double evaluate = this.evaluate();
-				Expression exp = new Num(evaluate); 
-				return exp;
-			} catch (Exception e){	
-			}
-	}
-		return this;
 	}
 }

@@ -1,10 +1,6 @@
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 public abstract class UnaryExpression extends BaseExpression {
 	private Expression arg;
@@ -39,10 +35,24 @@ public abstract class UnaryExpression extends BaseExpression {
 		if (tempVars != null) {
 		    variables.addAll(tempVars);
 		}
+		if (variables.isEmpty()){
+        	return null;
+        }
 		return variables;}
 	
 	public String toString(){
 		return this.getOperator() + "(" + arg.toString() + ")";
 	}
 
+	public Expression simplify(){
+		if (getArg().getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				Expression exp = new Num(evaluate); 
+				return exp;
+			} catch (Exception e){	
+			}
+	}
+		return (Expression) this;
+	}
 }

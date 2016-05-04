@@ -162,7 +162,9 @@ public class ExpressionsTestPart3 {
                 gradePart3++;
                 System.out.println("good =)");
             }else{
-                System.out.println("bad =(");
+                System.out.println(e);
+                System.out.println(s);
+            	System.out.println("bad =(");
             }
         }
         
@@ -244,11 +246,9 @@ public class ExpressionsTestPart3 {
             e = new Minus(new Pow(new Var("x"), new Num(5)) ,new Pow(new Var("x"), new Num(5)) );
             Expression de = e.differentiate("x");
             Expression simp = de.simplify();  // 0.0
-
             assignment.clear();
             assignment.put("x", 13.0);
             value = simp.evaluate(assignment);
-            
             if (value == 0)
             {
                 gradePart3++;
@@ -642,6 +642,7 @@ public class ExpressionsTestPart3 {
             e = new Plus(new Var("x") , new Var("y"));
             e = e.assign("x", new Num(2));
             // e = e.assign("y", new Num(2));
+            System.out.println(e.evaluate());
             value = e.evaluate();
         }
         

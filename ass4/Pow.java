@@ -16,6 +16,7 @@ public class Pow extends BinaryExpression implements Expression{
         //    System.out.println(power);
         } catch (Exception e) {
             System.out.println("Pow evaluation failed :" + e);
+            throw e;
         }
         return power;
     }

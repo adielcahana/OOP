@@ -12,6 +12,7 @@ public class Neg extends UnaryExpression implements Expression {
 			neg = - (getArg().evaluate());
 		} catch (Exception e) {
 			System.out.println("neg evaluation faild :" + e);
+			throw e;
 		}
 		return neg;
 	}
@@ -23,17 +24,5 @@ public class Neg extends UnaryExpression implements Expression {
 	@Override
 	public Expression differentiate(String var) {
 		return new Neg(getArg().differentiate(var));
-	}
-	
-	public Expression simplify(){
-		if (getArg().getVariables() == null) {
-			try {
-				double evaluate = this.evaluate();
-				Expression exp = new Num(evaluate); 
-				return exp;
-			} catch (Exception e){	
-			}
-	}
-		return this;
 	}
 }

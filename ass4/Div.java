@@ -13,6 +13,7 @@ public class Div extends BinaryExpression implements Expression{
     //        System.out.println(quotient);
         } catch (Exception e) {
             System.out.println("Div evaluation faild :" + e);
+            throw e;
         }
         return quotient;
     }

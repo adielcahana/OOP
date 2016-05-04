@@ -13,6 +13,7 @@ public class Minus extends BinaryExpression implements Expression{
         //    System.out.println(difference);
         } catch (Exception e) {
             System.out.println("Minus evaluation faild :" + e);
+            throw e;
         }
         return difference;
     }

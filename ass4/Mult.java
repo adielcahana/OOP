@@ -13,6 +13,7 @@ public class Mult extends BinaryExpression implements Expression {
         //    System.out.println(product);
         } catch (Exception e) {
             System.out.println("Mult evaluation faild :" + e);
+            throw e;
         }
         return product;
     }
@@ -58,5 +59,3 @@ public class Mult extends BinaryExpression implements Expression {
         return this;
     }
 }
-
-

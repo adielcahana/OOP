@@ -365,13 +365,10 @@ public class ExpressionsTestPart2 {
             // ans : 1
             
             e = new Sin(new Var("x"));  // sin(x)
-            System.out.println(e);
             e = e.differentiate("x");  // cos(x)
-            System.out.println(e);
             assignment.clear();
             assignment.put("x", (double) 0);  // cos(0) = 1
             value = e.evaluate(assignment);
-            System.out.println(value);
             if (value == 1)
             {
                 gradePart2++;                System.out.println("good =)");
@@ -437,7 +434,6 @@ public class ExpressionsTestPart2 {
 
             e = new Pow(new Cos(new Var("x")) , new Num(2));        // [cos(x)]^2
             e = e.differentiate("x");       // 2 * cos(x) * (-sin(x)) = -2 * sin(x) * cos(x) 
-            System.out.println(e);
             assignment.clear();
             assignment.put("x",  60.0);     // -2 * sin(60) * cos(60) =  -0.866025403784
             assignment.put("e", 2.71);
