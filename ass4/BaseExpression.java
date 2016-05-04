@@ -34,10 +34,6 @@ public abstract class BaseExpression {
     }
 	
 	public abstract double evaluate() throws Exception;
-	
-	public abstract List<String> getVariables();	
-	
-	public abstract String toString();
-	
+		
 	public abstract Expression assign(String var, Expression expression);
 }
