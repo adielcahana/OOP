@@ -25,4 +25,18 @@ public class Cos extends UnaryExpression implements Expression {
 		return new Mult(getArg().differentiate(var), new Neg(new Sin(getArg())));
 	}
 	
+	public Expression simplify(){
+		if (getArg().getVariables() == null) {
+			try {
+				double evaluate = this.evaluate();
+				Expression exp = new Num(evaluate); 
+				return exp;
+			} catch (Exception e){	
+			}
+	}
+		if (this == new Cos(new Plus(getArg(), 90)) || (this == new Cos(new Plus(90, getArg())))){
+			return new Neg(new Sin(getArg()));
+		}
+		return this;
+	}
 }

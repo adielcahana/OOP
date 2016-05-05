@@ -27,6 +27,10 @@ public class ExpressionsTestPart3 {
     
         try
         {
+        	e = new Neg(new Neg(new Neg(new Neg(new Neg(new Minus("y", "x"))))));
+        	e = e.simplify();
+        	System.out.println(e);
+        	
             // ((2*8)-6)^2 =====> 100
             e = new Mult(new Num(2) , new Num(8));
             e = new Pow( new Minus(new Mult(new Num(2) , new Num(8)) , new Num(6)), new Num(2));
