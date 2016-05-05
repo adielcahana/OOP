@@ -34,8 +34,9 @@ public class Sin extends UnaryExpression implements Expression {
 			} catch (Exception e){	
 			}
 	}
-		if (this == new Sin(new Plus(getArg(), 90)) || (this == new Sin(new Plus(90, getArg())))){
-			return new Cos(getArg());
+		if (this.toString().equals(new Sin(new Plus(getArg().getVariables().get(0), 90)).toString())
+				|| this.toString().equals(new Sin(new Plus(90,getArg().getVariables().get(0))).toString())){
+			return new Cos(getArg().getVariables().get(0));
 		}
 		return this;
 	}

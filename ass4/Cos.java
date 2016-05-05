@@ -34,8 +34,9 @@ public class Cos extends UnaryExpression implements Expression {
 			} catch (Exception e){	
 			}
 	}
-		if (this == new Cos(new Plus(getArg(), 90)) || (this == new Cos(new Plus(90, getArg())))){
-			return new Neg(new Sin(getArg()));
+		if (this.toString().equals(new Cos(new Plus(getArg().getVariables().get(0), 90)).toString())
+				|| this.toString().equals(new Cos(new Plus(90,getArg().getVariables().get(0))).toString())){
+			return new Neg(new Sin(getArg().getVariables().get(0)));
 		}
 		return this;
 	}
