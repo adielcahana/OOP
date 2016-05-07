@@ -1,34 +1,55 @@
 import java.util.List;
 import java.util.Map;
-
+/**
+* @author Adiel cahana <adiel.cahana@gmail.com>
+* @version 1.0
+* @since 2016-05-02 */
 public interface Expression {
-   // Evaluate the expression using the variable values provided
-   // in the assignment, and return the result.  If the expression
-   // contains a variable which is not in the assignment, an exception
-   // is thrown. 
-   public double evaluate(Map<String, Double> assignment) throws Exception;
+    /**
+     * Evaluate the expression and return the result.
+     * <p>
+     * the evaluation is using the variable values provided in the assignment
+     * If the expression contains a variable which is not in the assignment, an exception is thrown
+     * @param assignment - Map of variables and values
+     * @return result*/
+   double evaluate(Map<String, Double> assignment) throws Exception;
 
-   // A convenience method. Like the `evaluate(assignment)` method above,
-   // but uses an empty assignment.
-   public  double evaluate() throws Exception;
+   /**
+    * Evaluate the expression and return the result.
+    * <p>
+    * @return result*/
+   double evaluate() throws Exception;
 
-   // Returns a list of the variables in the expression.
-   public List<String> getVariables();
+   /**
+    * Returns a list of the variables in the expression.
+    * <p>
+    * @param variables - list of the variables, null if there is no vars*/
+   List<String> getVariables();
 
-   // Returns a nice string representation of the expression.
-   public String toString();
+   /**
+    * return a string representation of the expression
+    * <p>
+    * @return String - printable representation*/
+   String toString();
 
-   // Returns a new expression in which all occurrences of the variable
-   // var are replaced with the provided expression (Does not modify the
-   // current expression).
-   public Expression assign(String var, Expression expression);
-   
-   // Returns the expression tree resulting from differentiating
-   // the current expression relative to variable `var`.
-   public Expression differentiate(String var);
+   /**
+    * assigns a given expression to a var.
+    * <p>
+    * @param var - a string of the var to assign the expression to
+    * @param expression - a string of the var to assign the expression to
+    * @return Pow - a new Pow expression with the new assigned vars.*/
+   Expression assign(String var, Expression expression);
 
-   //public boolean equals(Expression e);
-   
-   // Returned a simplified version of the current expression.
-   public Expression simplify();
+   /**
+    * differentiate the expression with respect to a given var.
+    * <p>
+    * @param var - the var to differentiate
+    * @return Expression - the differentiated expression.*/
+  Expression differentiate(String var);
+
+   /**
+    * simplify the representation of the given expression with respect to a given var.
+    * <p>
+    * @return Expression - the simplified expression.*/
+  Expression simplify();
 }
