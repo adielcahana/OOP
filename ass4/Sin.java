@@ -1,43 +1,68 @@
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-04-21 */
 public class Sin extends UnaryExpression implements Expression {
 
-	public Sin(Object sinus){
-		super(sinus);
-		this.setOperator("Sin");
-	}
+    /** Sin constructor.
+     * Give Sin an inhered argument and the operator "Sin".
+     * <p>
+     * @param sinus - the argument of the expression.*/
+    public Sin(Object sinus) {
+        super(sinus);
+        this.setOperator("Sin");
+    }
 
-	public double evaluate() throws Exception {
-		double sin = 0;
-		try {
-			sin = Math.sin(Math.toRadians(getArg().evaluate()));
-		} catch (Exception e) {
-			System.out.println("Sin evaluation faild :" + e);
-			throw e;
-		}
-		return sin;
-	}
+    /** Evaluate the Sin.
+     * Set the arguments the value of sinus(argument).
+     * <p>
+     * @throws Exception if the evaluation failed.
+     * @return sinus of the argument */
+    public double evaluate() throws Exception {
+        double sin = 0;
+        try {
+            sin = Math.sin(Math.toRadians(getArg().evaluate()));
+        } catch (Exception e) {
+            System.out.println("Sin evaluation failed :" + e);
+            throw e;
+        }
+        return sin;
+    }
 
-	public Expression assign(String var, Expression expression) {
-		return new Sin(getArg().assign(var, expression));
-	}
 
-	@Override
-	public Expression differentiate(String var) {
-		return new Mult(getArg().differentiate(var), new Cos(getArg()));
-	}
-	
-	public Expression simplify(){
-		if (getArg().getVariables() == null) {
-			try {
-				double evaluate = this.evaluate();
-				Expression exp = new Num(evaluate); 
-				return exp;
-			} catch (Exception e){	
-			}
-	}
-		if (this.toString().equals(new Sin(new Plus(getArg().getVariables().get(0), 90)).toString())
-				|| this.toString().equals(new Sin(new Plus(90,getArg().getVariables().get(0))).toString())){
-			return new Cos(getArg().getVariables().get(0));
-		}
-		return this;
-	}
+    public Expression assign(String var, Expression expression) {
+        return new Sin(getArg().assign(var, expression));
+    }
+
+    @Override
+    /** differentiate of Sin.
+     * <p>
+     * @param var - the var to differentiate according it.
+     * @return the differentiate of sin(u) => (u' * cos(u)). */
+    public Expression differentiate(String var) {
+        return new Mult(getArg().differentiate(var), new Cos(getArg()));
+    }
+
+    /** Simplification of Sin.
+     * If the argument is't var evaluate the expression else check trigonometric identities.
+     * <p>
+     * @return the simplify expression. */
+    public Expression simplify() {
+        if (getArg().getVariables() == null) {
+            try {
+                double evaluate = this.evaluate();
+                Expression exp = new Num(evaluate);
+                return exp;
+            } catch (Exception e) {
+                System.out.println("evaluate failed");
+            }
+        }
+        // advanced simplification
+        // sin(90 + x), sin(x + 90) = cos(x) // trigonometric identities.
+        if (this.toString().equals(new Sin(new Plus(getArg().getVariables().get(0), 90)).toString())
+                || this.toString().equals(new Sin(new Plus(90, getArg().getVariables().get(0))).toString())) {
+            return new Cos(getArg().getVariables().get(0));
+        }
+        return this;
+    }
 }

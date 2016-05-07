@@ -1,43 +1,67 @@
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-04-21 */
 public class Cos extends UnaryExpression implements Expression {
-	
-	public Cos(Object cosinus){
-		super(cosinus);
-		this.setOperator("Cos");
-	}
 
-	public double evaluate() throws Exception {
-		double cos = 0;
-		try {
-			cos = Math.cos(Math.toRadians(getArg().evaluate()));
-		} catch (Exception e) {
-			System.out.println("Cos evaluation faild :" + e);
-			throw e;
-		}
-		return cos;
-	}
+    /** Cos constructor.
+     * Give Cos an inhered argument and the operator "Cos".
+     * <p>
+     * @param cosinus - the argument of the expression.*/
+    public Cos(Object cosinus) {
+        super(cosinus);
+        this.setOperator("Cos");
+    }
 
-	public Expression assign(String var, Expression expression) {
-		return new Cos(getArg().assign(var, expression));
-	}
+    /** Evaluate the Cos.
+     * Set the arguments the value of cosinus(argument).
+     * <p>
+     * @throws Exception if the evaluation failed.
+     * @return cosinus of the argument */
+    public double evaluate() throws Exception {
+        double cos = 0;
+        try {
+            cos = Math.cos(Math.toRadians(getArg().evaluate()));
+        } catch (Exception e) {
+            System.out.println("Cos evaluation faild :" + e);
+            throw e;
+        }
+        return cos;
+    }
 
-	@Override
-	public Expression differentiate(String var) {
-		return new Mult(getArg().differentiate(var), new Neg(new Sin(getArg())));
-	}
-	
-	public Expression simplify(){
-		if (getArg().getVariables() == null) {
-			try {
-				double evaluate = this.evaluate();
-				Expression exp = new Num(evaluate); 
-				return exp;
-			} catch (Exception e){	
-			}
-	}
-		if (this.toString().equals(new Cos(new Plus(getArg().getVariables().get(0), 90)).toString())
-				|| this.toString().equals(new Cos(new Plus(90,getArg().getVariables().get(0))).toString())){
-			return new Neg(new Sin(getArg().getVariables().get(0)));
-		}
-		return this;
-	}
+    public Expression assign(String var, Expression expression) {
+        return new Cos(getArg().assign(var, expression));
+    }
+
+    @Override
+    /** differentiate of Cos.
+     * <p>
+     * @param var - the var to differentiate according it.
+     * @return the differentiate of cos(u) => (u' * -sin(u)). */
+    public Expression differentiate(String var) {
+        return new Mult(getArg().differentiate(var), new Neg(new Sin(getArg())));
+    }
+
+    /** Simplification of Cos.
+     * If the argument is't var evaluate the expression else check trigonometric identities.
+     * <p>
+     * @return the simplify expression. */
+    public Expression simplify() {
+        if (getArg().getVariables() == null) {
+            try {
+                double evaluate = this.evaluate();
+                Expression exp = new Num(evaluate);
+                return exp;
+            } catch (Exception e) {
+                System.out.println("evaluate doesn't succeed");
+            }
+        }
+        // advanced simplification
+        // cos(90 + x), cos(x + 90) = -sin(x) // trigonometric identities.
+        if (this.toString().equals(new Cos(new Plus(getArg().getVariables().get(0), 90)).toString())
+                || this.toString().equals(new Cos(new Plus(90, getArg().getVariables().get(0))).toString())) {
+            return new Neg(new Sin(getArg().getVariables().get(0)));
+        }
+        return this;
+    }
 }
