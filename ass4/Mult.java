@@ -80,19 +80,19 @@ public class Mult extends BinaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        this.setArgA(this.getArgA().simplify());
-        this.setArgB(this.getArgB().simplify());
+        Expression argA = this.getArgA().simplify();
+        Expression argB = this.getArgB().simplify();
         // one of the args is 0
-        if (getArgA().toString().equals("0.0") || getArgB().toString().equals("0.0")) {
+        if (argA.toString().equals("0.0") || argB.toString().equals("0.0")) {
             return new Num(0);
         }
         // one of the args is 1
-        if (getArgA().toString().equals("1.0")) {
-            return getArgB();
+        if (argA.toString().equals("1.0")) {
+            return argB;
         }
-        if (getArgB().toString().equals("1.0")) {
-            return getArgA();
+        if (argB.toString().equals("1.0")) {
+            return argA;
         }
-        return this;
+        return new Mult(argA, argB);
     }
 }

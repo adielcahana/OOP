@@ -91,26 +91,26 @@ public class Pow extends BinaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        this.setArgA(this.getArgA().simplify());
-        this.setArgB(this.getArgB().simplify());
+        Expression argA = this.getArgA().simplify();
+        Expression argB = this.getArgB().simplify();
         //the base is 0
-        if (this.getArgA().toString().equals("0.0")) {
+        if (argA.toString().equals("0.0")) {
             return new Num(0);
         }
         //the exponent is 1
-        if (this.getArgB().toString().equals("1.0")) {
-            return this.getArgA();
+        if (argB.toString().equals("1.0")) {
+            return argA;
         }
         //the exponent is 0
-        if (this.getArgB().toString().equals("0.0")) {
+        if (argB.toString().equals("0.0")) {
             return new Num(0);
         }
         //the exponent is Pow
-        if (this.getArgA() instanceof Pow) {
-            Expression exp = new Pow(((Pow) this.getArgA()).getArgA(),
-                    new Mult(this.getArgB(), ((Pow) this.getArgA()).getArgB()));
+        if (argA instanceof Pow) {
+            Expression exp = new Pow(((Pow) argA).getArgA(),
+                    new Mult(argB, ((Pow) argA).getArgB()));
             return exp.simplify();
         }
-        return this;
+        return new Pow(argA, argB);
     }
 }

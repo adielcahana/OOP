@@ -74,20 +74,20 @@ public class Div extends BinaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        this.setArgA(this.getArgA().simplify());
-        this.setArgB(this.getArgB().simplify());
+        Expression argA = this.getArgA().simplify();
+        Expression argB = this.getArgB().simplify();
         // the numerator is 0
-        if (this.getArgA().toString().equals("0.0")) {
+        if (argA.toString().equals("0.0")) {
             return new Num(0);
         }
         // both of the arguments are equal
-        if (this.getArgA().toString().equals(this.getArgB().toString())) {
+        if (argA.toString().equals(argB.toString())) {
             return new Num(1);
         }
         // the denominator is 1
-        if (this.getArgB().toString().equals("1.0")) {
-            return this.getArgA();
+        if (argB.toString().equals("1.0")) {
+            return argA;
         }
-        return this;
+        return new Div(argA, argB);
     }
 }

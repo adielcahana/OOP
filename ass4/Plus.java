@@ -71,15 +71,15 @@ public class Plus extends BinaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        this.setArgA(this.getArgA().simplify());
-        this.setArgB(this.getArgB().simplify());
+        Expression argA = this.getArgA().simplify();
+        Expression argB = this.getArgB().simplify();
         //if one of the expression is of the form x+0 return x
-        if (this.getArgA().toString().equals("0.0")) {
-            return this.getArgB();
+        if (argA.toString().equals("0.0")) {
+            return argB;
         }
-        if (this.getArgB().toString().equals("0.0")) {
-            return this.getArgA();
+        if (argB.toString().equals("0.0")) {
+            return argA;
         }
-        return this;
+        return new Plus(argA, argB);
     }
 }

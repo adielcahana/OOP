@@ -70,20 +70,20 @@ public class Minus extends BinaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        this.setArgA(this.getArgA().simplify());
-        this.setArgB(this.getArgB().simplify());
+        Expression argA = this.getArgA().simplify();
+        Expression argB = this.getArgB().simplify();
         // both of of the arguments are the same
-        if (this.getArgB().toString().equals(this.getArgA().toString())) {
+        if (argB.toString().equals(argA.toString())) {
             return new Num(0);
         }
         // argA is 0, return -argBz
-        if (this.getArgA().toString().equals("0.0")) {
-            return new Neg(this.getArgB());
+        if (argA.toString().equals("0.0")) {
+            return new Neg(argB);
         }
         // argB is 0, return argA
-        if (this.getArgB().toString().equals("0.0")) {
-            return this.getArgA();
+        if (argB.toString().equals("0.0")) {
+            return argA;
         }
-        return this;
+        return new Minus(argA, argB);
     }
 }

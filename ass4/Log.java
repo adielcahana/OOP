@@ -94,12 +94,12 @@ public class Log extends BinaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        this.setArgA(this.getArgA().simplify());
-        this.setArgB(this.getArgB().simplify());
+        Expression argA = this.getArgA().simplify();
+        Expression argB = this.getArgB().simplify();
         // both of the arguments are equal
-        if (this.getArgA().toString().equals(this.getArgB().toString())) {
+        if (argA.toString().equals(argB.toString())) {
             return new Num(1);
         }
-        return this;
+        return new Log(argA, argB);
     }
 }
