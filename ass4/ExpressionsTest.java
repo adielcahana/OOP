@@ -1,98 +1,29 @@
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-//
+
+/**
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-05 */
 public class ExpressionsTest {
+
+    /**
+     * ExpressionsTest for the program.
+     * <p>
+     * @throws Exception if evaluation / assignment failed.
+     * @param args - the arguments for the main (empty) */
     public static void main(String[] args) throws Exception {
-         int p1 = ExpressionsTestPart1.main1();
-         int p2 = ExpressionsTestPart2.main2();
-         int p3 = ExpressionsTestPart3.main3();
-         System.out.println("grades :" + p1 + "," + p2 + "," + p3 +" from 64");
-         System.out.println("Final grade :" + (p1 +  p2 + p3) +" from 64");
-//    	Expression e1 =
-//    			new Log(new Const("e"),
-//                     new Pow(
-//                        new Mult(
-//                           new Plus(
-//                              new Mult(new Num(2), new Var("x")),
-//                              new Var("y")),
-//                           new Num(4)),
-//                     new Var("x")));
-//    	Expression e2 = 
-//    			new Div(
-//                        new Mult(
-//                           new Pow(
-//                              new Mult(new Num(2), new Var("x")),
-//                              new Var("y")),
-//                           new Num(4)),
-//                     new Var("x"));
-//    	Expression e3 = new Log("x", 2);
-//    	System.out.println(e3.toString());
-//    	//toString test
-//    	if (e1.toString().equals("Log(e, ((((2.0 * x) + y) * 4.0)^x))")) {
-//    		System.out.println("e1 is correct " + e1.toString());
-//    	} else {
-//    		System.out.println("Error in e1 " + e1.toString());
-//    	}
-//    	if (e2.toString().equals("((((2.0 * x)^y) * 4.0) / x)")) {
-//    		System.out.println("e2 is correct " + e2.toString());
-//    	} else {
-//    		System.out.println("Error in e2 " + e2.toString());
-//    	}
-//
-//    	//evaluate test
-//    	Map<String, Double> assignment = new TreeMap<String, Double>();
-//    	assignment.put("x", 2.0);
-//    	assignment.put("y", 4.0);
-//    	double value;
-//		try {
-//			value = e1.evaluate(assignment);
-//			if (Math.abs(value - 6.93147) <= 0.001) {
-//	    		System.out.println("e1 evaluation succseeded"); 
-//	    	} else {
-//	    		System.out.println("e1 evaluation failed " + value); 
-//	    	}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	
-//    	try {
-//			value = e2.evaluate(assignment);
-//			if (value == 512.0) {
-//	    		System.out.println("e2 evaluation succseeded"); 
-//	    	} else {
-//	    		System.out.println("e2 evaluation failed " + value); 
-//	    	}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	
-//    	//Differentiation test
-//    	System.out.println(e1.differentiate("x"));
-//    	System.out.println(e1.differentiate("x").simplify());
-//    	System.out.println(e1.differentiate("y"));
-//    	System.out.println(e1.differentiate("y").simplify());
-//    	System.out.println(e2.differentiate("x"));
-//    	System.out.println(e2.differentiate("x").simplify());
-//    	System.out.println(e2.differentiate("y"));
-//    	System.out.println(e2.differentiate("y").simplify());
-//    	
-//    	// variables list test
-//    	List<String> Vars = e1.getVariables();
-//    	if (Vars.contains("x") && Vars.contains("y")) {
-//    		System.out.println("e1 getVars succseeded");
-//    	} else {
-//    		System.out.println("e1 getVars failed");
-//    	}    
-//    	Vars = e2.getVariables();
-//    	if (Vars.contains("x") && Vars.contains("y")) {
-//    		System.out.println("e2 getVars succseeded");
-//    	} else {
-//    		System.out.println("e2 getVars failed");
-//    	}
-//    
-//    	
+        Expression e = new Plus(new Mult(2, "x"), new Plus(new Sin(new Mult(4, "y")), new Pow("e", "x")));
+        System.out.println(e);
+        Map<String, Double> assignment = new TreeMap<String, Double>();
+        assignment.put("x",  2.0);
+        assignment.put("y",  0.25);
+        assignment.put("e",  2.71);
+        System.out.println(e.evaluate(assignment));
+        e = e.differentiate("x");
+        System.out.println(e);
+        System.out.println(e.evaluate(assignment));
+        System.out.println(e.simplify());
+        System.out.println(e);
     }
 }
