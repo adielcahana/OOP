@@ -4,9 +4,6 @@
  * @since 2016-04-21 */
 public class Neg extends UnaryExpression implements Expression {
 
-    // Counter to know how much minus in a row.
-    private static int counter = 1;
-
     /** Neg constructor.
      * Give Neg an inhered argument and the operator "-".
      * <p>
@@ -83,25 +80,10 @@ public class Neg extends UnaryExpression implements Expression {
         }
         // advanced simplification
         // --(expression) = expression, ---(expression) = -(expression).
-        // Flag to know if it's the first neg.
-
-        int flag = 0;
-        if (counter > 1) {
-            flag = 1;
+        Expression e = getArg().simplify();
+        if (e instanceof Neg) {
+            return ((Neg) e).getArg();
         }
-        if (getArg() instanceof Neg) {
-            counter += 1;
-        }
-        //simplify the arguments
-        Expression arg = getArg().simplify();
-        if (counter % 2 == 0) {
-            if (flag == 0) {
-                counter = 1;
-            }
-            return arg;
-        } else {
-            counter += 1;
-            return new Neg(arg);
-        }
+        return new Neg(e);
     }
 }
