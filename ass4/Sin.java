@@ -66,12 +66,12 @@ public class Sin extends UnaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        setArg(getArg().simplify());
+        Expression arg = getArg().simplify();
         // advanced simplification
         // sin(90 + x), sin(x + 90) = cos(x) // trigonometric identities.
-        if (this.toString().equals(new Sin(new Plus(getArg().getVariables().get(0), 90)).toString())
-                || this.toString().equals(new Sin(new Plus(90, getArg().getVariables().get(0))).toString())) {
-            return new Cos(getArg().getVariables().get(0));
+        if (this.toString().equals(new Sin(new Plus(arg.getVariables().get(0), 90)).toString())
+                || this.toString().equals(new Sin(new Plus(90, arg.getVariables().get(0))).toString())) {
+            return new Cos(arg.getVariables().get(0));
         }
         return this;
     }

@@ -70,12 +70,12 @@ public class Cos extends UnaryExpression implements Expression {
             }
         }
         //simplify the arguments
-        setArg(getArg().simplify());
+        Expression arg = getArg().simplify();
         // advanced simplification
         // cos(90 + x), cos(x + 90) = -sin(x) // trigonometric identities.
-        if (this.toString().equals(new Cos(new Plus(getArg().getVariables().get(0), 90)).toString())
-                || this.toString().equals(new Cos(new Plus(90, getArg().getVariables().get(0))).toString())) {
-            return new Neg(new Sin(getArg().getVariables().get(0)));
+        if (this.toString().equals(new Cos(new Plus(arg.getVariables().get(0), 90)).toString())
+                || this.toString().equals(new Cos(new Plus(90, arg.getVariables().get(0))).toString())) {
+            return new Neg(new Sin(arg.getVariables().get(0)));
         }
         return this;
     }

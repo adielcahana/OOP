@@ -84,6 +84,7 @@ public class Neg extends UnaryExpression implements Expression {
         // advanced simplification
         // --(expression) = expression, ---(expression) = -(expression).
         // Flag to know if it's the first neg.
+
         int flag = 0;
         if (counter > 1) {
             flag = 1;
@@ -92,15 +93,15 @@ public class Neg extends UnaryExpression implements Expression {
             counter += 1;
         }
         //simplify the arguments
-            setArg(getArg().simplify());
+        Expression arg = getArg().simplify();
         if (counter % 2 == 0) {
             if (flag == 0) {
                 counter = 1;
             }
-            return getArg();
+            return arg;
         } else {
             counter += 1;
-            return new Neg(getArg());
+            return new Neg(arg);
         }
     }
 }
