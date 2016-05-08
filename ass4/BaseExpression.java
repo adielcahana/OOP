@@ -25,18 +25,29 @@ public abstract class BaseExpression {
     protected String getOperator() {
         return operator;
     }
-
+    
+    /**
+     * Evaluate the expression and return the result.
+     * <p>
+     * the evaluation is using the variable values provided in the assignment
+     * If the expression contains a variable which is not in the assignment, an exception is thrown
+     * @param assignment - Map of variables and values
+     * @throws Exception if the evaluation failed.
+     * @return result*/
     public double evaluate(Map<String, Double> assignment) throws Exception {
+        // create a set of the map entries
         Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double expression = 0;
         try {
+            // go over each entry and try to assign it to the expression
             Entry<String, Double> value = i.next();
             Expression newExpression = this.assign(value.getKey(), new Num(value.getValue()));
             while (i.hasNext()) {
                 value = i.next();
                 newExpression = newExpression.assign(value.getKey(), new Num(value.getValue()));
             }
+            // try to evaluate the final expression
             expression = newExpression.evaluate();
         } catch (Exception e) {
             System.out.println("evaluate failed");

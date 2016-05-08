@@ -80,7 +80,7 @@ public class Neg extends UnaryExpression implements Expression {
         }
         // advanced simplification
         // --(expression) = expression, ---(expression) = -(expression).
-        Expression e = getArg().simplify();
+        Expression e = this.getArg().simplify();
         if (e instanceof Neg) {
             return ((Neg) e).getArg();
         }
