@@ -1,4 +1,3 @@
-
 /**
  * @author Adiel cahana <adiel.cahana@gmail.com>
  * @version 1.0
@@ -9,14 +8,9 @@ public class SimplificationDemo {
      * <p>
      * @param args - no args expected*/
     public static void main(String[] args) {
-        //((2.0 * x)^Log((2.0 * x), (y + z)))
-        Expression e = new Pow(new Mult(2, "x"), new Log(new Mult(2, "x"), new Plus("y", "z")));
-        System.out.println(e);
-        //simplify to (y + z)
-        System.out.println(e.simplify());
 
         // (((2.0 * x)^(y + z))^(2.0 * x))
-        e = new Pow(new Pow(new Mult(2, "x"), new Plus("y", "z")), new Mult(2, "x"));
+        Expression e = new Pow(new Pow(new Mult(2, "x"), new Plus("y", "z")), new Mult(2, "x"));
         System.out.println(e);
         //simplify to ((2.0 * x)^((2.0 * x) * (y + z)))
         System.out.println(e.simplify());

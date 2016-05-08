@@ -8,10 +8,10 @@ import java.util.TreeMap;
 public class ExpressionsTest {
 
     /**
-     * ExpressionsTest for the program.
+     * run test for the program.
      * <p>
      * @throws Exception if evaluation / assignment failed.
-     * @param args - the arguments for the main (empty) */
+     * @param args - no args expected*/
     public static void main(String[] args) throws Exception {
         Expression e = new Plus(new Mult(2, "x"), new Plus(new Sin(new Mult(4, "y")), new Pow("e", "x")));
         System.out.println(e);

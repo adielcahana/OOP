@@ -25,7 +25,7 @@ public abstract class BaseExpression {
     protected String getOperator() {
         return operator;
     }
-    
+
     /**
      * Evaluate the expression and return the result.
      * <p>
