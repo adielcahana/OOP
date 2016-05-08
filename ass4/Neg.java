@@ -35,6 +35,18 @@ public class Neg extends UnaryExpression implements Expression {
 
     @Override
     /**
+     * return a string representation of the expression.
+     * <p>
+     * @return String - printable representation*/
+    public String toString() {
+        if (getArg() instanceof Var || getArg() instanceof Var) {
+            return "(" + this.getOperator() + getArg().toString() + ")";
+        }
+        return super.toString();
+    }
+
+    @Override
+    /**
      * assigns a given expression to a var.
      * <p>
      * @param var - a string of the var to assign the expression to
