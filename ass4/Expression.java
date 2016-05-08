@@ -5,29 +5,31 @@ import java.util.Map;
 * @version 1.0
 * @since 2016-05-02 */
 public interface Expression {
+
     /**
      * Evaluate the expression and return the result.
      * <p>
      * the evaluation is using the variable values provided in the assignment
      * If the expression contains a variable which is not in the assignment, an exception is thrown
      * @param assignment - Map of variables and values
+     * @throws Exception if the evaluation failed.
      * @return result*/
    double evaluate(Map<String, Double> assignment) throws Exception;
 
    /**
     * Evaluate the expression and return the result.
     * <p>
+    * @throws Exception if the evaluation failed.
     * @return result*/
    double evaluate() throws Exception;
 
-   /**
-    * Returns a list of the variables in the expression.
+   /** Set all the variables in the expression in a list.
     * <p>
-    * @param variables - list of the variables, null if there is no vars*/
+    * @return a string list of variables*/
    List<String> getVariables();
 
    /**
-    * return a string representation of the expression
+    * return a string representation of the expression.
     * <p>
     * @return String - printable representation*/
    String toString();

@@ -1,8 +1,8 @@
 /**
-* @author Adiel cahana <adiel.cahana@gmail.com>
-* @version 1.0
-* @since 2016-05-02 */
-public class Div extends BinaryExpression implements Expression{
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-02 */
+public class Div extends BinaryExpression implements Expression {
     /**
      * Div constructor.
      * <p>
@@ -18,15 +18,15 @@ public class Div extends BinaryExpression implements Expression{
      * evaluate quotient of the numerator and the denominator
      * <p>
      * if there is Vars in one of the arguments, exception is thrown.
-     * @return difference - the numeric difference of the arguments.*/
+     * @return quotient - the numeric quotient of the arguments.*/
     public double evaluate() throws Exception {
         double quotient = 0;
         try {
-        	//if there is no vars, evaluate
+            //if there is no vars, evaluate
             quotient = this.getArgA().evaluate() / this.getArgB().evaluate();
         } catch (Exception e) {
-        	// there are Vars in the arguments
-            System.out.println("Div evaluation faild :" + e);
+            // there are Vars in the arguments
+            System.out.println("Div evaluation failed :" + e);
             throw e;
         }
         return quotient;
@@ -50,26 +50,27 @@ public class Div extends BinaryExpression implements Expression{
      * @param var - the var to differentiate
      * @return Expression - the differentiated expression.*/
     public Expression differentiate(String var) {
-    	//the Div is "const" (does not contain the var)
+        //the Div is "const" (does not contain the var)
         if (this.getArgA() instanceof Num && this.getArgB() instanceof Num) {
             return new Num(0);
         }
-    	//differentiate according to the differentiation quotient rule
+        //differentiate according to the differentiation quotient rule
         return new Div(
                 new Minus(new Mult(this.getArgA().differentiate(var), this.getArgB()),
-                          new Mult(this.getArgA(), this.getArgB().differentiate(var))),
+                        new Mult(this.getArgA(), this.getArgB().differentiate(var))),
                 new Pow(this.getArgB(), new Num(2)));
     }
 
     @Override
     public Expression simplify() {
-    	//if there is no vars, evaluate
+        //if there is no vars, evaluate
         if (this.getArgA().getVariables() == null && this.getArgB().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
                 return exp;
-            } catch (Exception e){
+            } catch (Exception e) {
+                System.out.println("Div evaluation failed :" + e);
             }
         }
         //simplify the arguments

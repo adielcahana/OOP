@@ -62,7 +62,7 @@ public class Sin extends UnaryExpression implements Expression {
                 Expression exp = new Num(evaluate);
                 return exp;
             } catch (Exception e) {
-                System.out.println("evaluate failed");
+                System.out.println("Sin evaluation failed :" + e);
             }
         }
         //simplify the arguments

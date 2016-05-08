@@ -1,7 +1,7 @@
 /**
-* @author Adiel cahana <adiel.cahana@gmail.com>
-* @version 1.0
-* @since 2016-05-02 */
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-02 */
 public class Log extends BinaryExpression implements Expression {
     /**
      * Log constructor.
@@ -19,13 +19,13 @@ public class Log extends BinaryExpression implements Expression {
          * evaluate argA to the power of argB
          * <p>
          * if there is Vars in one of the arguments, exception is thrown.
-         * @return difference - the numeric difference of the arguments.*/
+         * @return logarithm - the value of (log(value of argA) / log(value of argB)).*/
         double logarithm = 0;
         try {
             logarithm = Math.log(this.getArgB().evaluate()) / Math.log(this.getArgA().evaluate());
             //System.out.println(logarithm);
         } catch (Exception e) {
-            System.out.println("Pow evaluation failed :" + e);
+            System.out.println("log evaluation failed :" + e);
             throw e;
         }
         return logarithm;
@@ -37,7 +37,7 @@ public class Log extends BinaryExpression implements Expression {
      * <p>
      * @param var - a string of the var to assign the expression to
      * @param expression - a string of the var to assign the expression to
-     * @return Div - a new Div expression with the new assigned vars.*/
+     * @return Log - a new Log expression with the new assigned vars.*/
     public Expression assign(String var, Expression expression) {
         return new Log(this.getArgA().assign(var, expression), this.getArgB().assign(var, expression));
     }
@@ -65,13 +65,13 @@ public class Log extends BinaryExpression implements Expression {
             return new Num(0);
         }
 
-//        if (varInAntilogarithm) {
-//            return new Mult(
-//                    new Div(
-//                            new Num(1),
-//                            new Mult(this.getArgB(), new Log(new Const("e"), this.getArgA())))
-//                    , this.getArgB().differentiate(var));
-//        }
+        //        if (varInAntilogarithm) {
+        //            return new Mult(
+        //                    new Div(
+        //                            new Num(1),
+        //                            new Mult(this.getArgB(), new Log(new Const("e"), this.getArgA())))
+        //                    , this.getArgB().differentiate(var));
+        //        }
         //change the log base and differentiate
         Expression log = new Div(new Log(new Num(2), this.getArgB()), new Log(new Num(2), this.getArgA()));
         return log.differentiate(var);
@@ -83,13 +83,14 @@ public class Log extends BinaryExpression implements Expression {
      * <p>
      * @return Expression - the simplified expression.*/
     public Expression simplify() {
-    	//if there is no vars, evaluate
+        //if there is no vars, evaluate
         if (this.getArgA().getVariables() == null && this.getArgB().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
                 return exp;
             } catch (Exception e) {
+                System.out.println("log evaluation failed :" + e);
             }
         }
         //simplify the arguments

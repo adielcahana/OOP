@@ -5,13 +5,13 @@ import java.util.List;
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
 * @since 2016-05-02 */
-public abstract class BinaryExpression extends BaseExpression{
+public abstract class BinaryExpression extends BaseExpression {
     private Expression argA;
     private Expression argB;
     /**
      * BinaryExpression constructor.
      * <p>
-     * verify the instance of the objects given as parameter and 
+     * verify the instance of the objects given as parameter and
      * construct the expression accordingly
      * @param argA - can be Expression, Double, or a String representing a Var.
      * @param argB - can be Expression, Double, or a String representing a Var.*/
@@ -76,37 +76,38 @@ public abstract class BinaryExpression extends BaseExpression{
     }*/
 
     /**
-     * argA getter
+     * argA getter.
      * <p>
      * @return argA*/
     protected Expression getArgA() {
         return argA;
     }
+
     /**
-     * argA setter
+     * argA setter.
      * <p>
-     * @param argA - Expression*/
-    protected void setArgA(Expression argA) {
-        this.argA = argA;
+     * @param argumentA - Expression*/
+    protected void setArgA(Expression argumentA) {
+        this.argA = argumentA;
     }
     /**
-     * argB getter
+     * argB getter.
      * <p>
      * @return argB*/
     protected Expression getArgB() {
         return argB;
     }
     /**
-     * argB setter
+     * argB setter.
      * <p>
-     * @param argB - Expression*/
-    protected void setArgB(Expression argB) {
-        this.argB = argB;
+     * @param argumentB - Expression*/
+    protected void setArgB(Expression argumentB) {
+        this.argB = argumentB;
     }
     /**
-     * Returns a list of the variables in the expression.
+     * Set all the variables in the expression in a list.
      * <p>
-     * @param variables - list of the variables, null if there is no vars*/
+     * @return a string list of variables*/
     public List<String> getVariables() {
         List<String> variables = new ArrayList<String>();
         List<String> tempVars = argA.getVariables();
@@ -117,19 +118,19 @@ public abstract class BinaryExpression extends BaseExpression{
         tempVars = argB.getVariables();
         //add argB vars to the list
         if (tempVars != null) {
-        	//delete duplicates 
+            //delete duplicates
             variables.removeAll(tempVars);
             variables.addAll(tempVars);
-        }        
+        }
         //assgin null if the list is empty
-        if (variables.isEmpty()){
+        if (variables.isEmpty()) {
             return null;
         }
         return variables;
     }
-    
+
     /**
-     * return a string representation of the expression
+     * return a string representation of the expression.
      * <p>
      * @return String - printable representation*/
     public String toString() {

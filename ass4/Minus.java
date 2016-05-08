@@ -26,7 +26,7 @@ public class Minus extends BinaryExpression implements Expression {
             difference = this.getArgA().evaluate() - this.getArgB().evaluate();
         } catch (Exception e) {
             // there are Vars in the arguments
-            System.out.println("Minus evaluation faild :" + e);
+            System.out.println("Minus evaluation failed :" + e);
             throw e;
         }
         return difference;
@@ -38,7 +38,7 @@ public class Minus extends BinaryExpression implements Expression {
      * <p>
      * @param var - a string of the var to assign the expression to
      * @param expression - a string of the var to assign the expression to
-     * @return Plus - a new Plus expression with the new assigned vars.*/
+     * @return Minus - a new Minus expression with the new assigned vars.*/
     public Expression assign(String var, Expression expression) {
         return new Minus(this.getArgA().assign(var, expression), this.getArgB().assign(var, expression));
     }
@@ -48,7 +48,7 @@ public class Minus extends BinaryExpression implements Expression {
      * differentiate the expression with respect to a given var.
      * <p>
      * @param var - the var to differentiate
-     * @return Plus - the differentiated expression.*/
+     * @return Minus - the differentiated expression.*/
     public Expression differentiate(String var) {
         return new Minus(this.getArgA().differentiate(var), this.getArgB().differentiate(var));
     }
@@ -65,7 +65,8 @@ public class Minus extends BinaryExpression implements Expression {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
                 return exp;
-            } catch (Exception e){
+            } catch (Exception e) {
+                System.out.println("Minus evaluation failed :" + e);
             }
         }
         //simplify the arguments
@@ -75,7 +76,7 @@ public class Minus extends BinaryExpression implements Expression {
         if (this.getArgB().toString().equals(this.getArgA().toString())) {
             return new Num(0);
         }
-        // argA is 0, return -argB
+        // argA is 0, return -argBz
         if (this.getArgA().toString().equals("0.0")) {
             return new Neg(this.getArgB());
         }

@@ -39,6 +39,7 @@ public abstract class BaseExpression {
             }
             expression = newExpression.evaluate();
         } catch (Exception e) {
+            System.out.println("evaluate failed");
         }
         return expression;
     }

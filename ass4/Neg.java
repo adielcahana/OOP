@@ -27,7 +27,7 @@ public class Neg extends UnaryExpression implements Expression {
             //System.out.println(getArg().evaluate());
             neg = -(getArg().evaluate());
         } catch (Exception e) {
-            System.out.println("neg evaluation faild :" + e);
+            System.out.println("neg evaluation failed :" + e);
             throw e;
         }
         return neg;
@@ -66,7 +66,7 @@ public class Neg extends UnaryExpression implements Expression {
                 Expression exp = new Num(evaluate);
                 return exp;
             } catch (Exception e) {
-                System.out.println("evaluate failed");
+                System.out.println("neg evaluation failed :" + e);
             }
         }
         // advanced simplification

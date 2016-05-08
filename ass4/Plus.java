@@ -1,8 +1,8 @@
 
 /**
-* @author Adiel cahana <adiel.cahana@gmail.com>
-* @version 1.0
-* @since 2016-05-02 */
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-02 */
 public class Plus extends BinaryExpression implements Expression {
     /**
      * Plus constructor.
@@ -27,7 +27,7 @@ public class Plus extends BinaryExpression implements Expression {
             sum = this.getArgA().evaluate() + this.getArgB().evaluate();
         } catch (Exception e) {
             // there are Vars in the arguments
-            System.out.println("Plus evaluation faild :" + e);
+            System.out.println("Plus evaluation failed :" + e);
             throw e;
         }
         return sum;
@@ -66,7 +66,8 @@ public class Plus extends BinaryExpression implements Expression {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
                 return exp;
-            } catch (Exception e){
+            } catch (Exception e) {
+                System.out.println("Plus evaluation failed :" + e);
             }
         }
         //simplify the arguments

@@ -18,6 +18,14 @@ public class Var implements Expression {
         this.variable = variable;
     }
 
+    /**
+     * Evaluate the expression and return the result.
+     * <p>
+     * the evaluation is using the variable values provided in the assignment
+     * If the expression contains a variable which is not in the assignment, an exception is thrown
+     * @param assignment - Map of variables and values
+     * @throws Exception that cannot evaluate Var.
+     * @return the exception because the var cannot be evaluated. */
     public double evaluate(Map<String, Double> assignment) throws Exception {
         throw new Exception("cannot evaluate Var");
     }

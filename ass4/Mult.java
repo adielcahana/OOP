@@ -1,7 +1,7 @@
 /**
-* @author Adiel cahana <adiel.cahana@gmail.com>
-* @version 1.0
-* @since 2016-05-02 */
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-02 */
 public class Mult extends BinaryExpression implements Expression {
     /**
      * Mult constructor.
@@ -18,15 +18,15 @@ public class Mult extends BinaryExpression implements Expression {
      * evaluate the product of argB and argA
      * <p>
      * if there is Vars in one of the arguments, exception is thrown.
-     * @return difference - the numeric difference of the arguments.*/
+     * @return product - the numeric product of the arguments.*/
     public double evaluate() throws Exception {
         double product = 0;
         try {
-        	//if there is no vars, evaluate
+            //if there is no vars, evaluate
             product = this.getArgA().evaluate() * this.getArgB().evaluate();
         } catch (Exception e) {
-        	// there are Vars in the arguments
-            System.out.println("Mult evaluation faild :" + e);
+            // there are Vars in the arguments
+            System.out.println("Mult evaluation failed :" + e);
             throw e;
         }
         return product;
@@ -38,7 +38,7 @@ public class Mult extends BinaryExpression implements Expression {
      * <p>
      * @param var - a string of the var to assign the expression to
      * @param expression - a string of the var to assign the expression to
-     * @return Plus - a new Plus expression with the new assigned vars.*/
+     * @return Mult - a new Mult expression with the new assigned vars.*/
     public Expression assign(String var, Expression expression) {
         return new Mult(this.getArgA().assign(var, expression), this.getArgB().assign(var, expression));
     }
@@ -50,17 +50,17 @@ public class Mult extends BinaryExpression implements Expression {
      * @param var - the var to differentiate
      * @return Plus - the differentiated expression.*/
     public Expression differentiate(String var) {
-    	// both args are numbers, return 0
+        // both args are numbers, return 0
         if (this.getArgA() instanceof Num && this.getArgB() instanceof Num) {
             return new Num(0);
         }
-//    	// one arg is a Num
-//        if (this.getArgA() instanceof Num && !(this.getArgB() instanceof Num)) {
-//            return new Mult(this.getArgA(), this.getArgB().differentiate(var));
-//        }
+        //     // one arg is a Num
+        //        if (this.getArgA() instanceof Num && !(this.getArgB() instanceof Num)) {
+        //            return new Mult(this.getArgA(), this.getArgB().differentiate(var));
+        //        }
         // both args aren't Nums
         return new Plus(new Mult(this.getArgA().differentiate(var), this.getArgB()),
-                        new Mult(this.getArgA(), this.getArgB().differentiate(var)));
+                new Mult(this.getArgA(), this.getArgB().differentiate(var)));
     }
 
     @Override
@@ -69,13 +69,14 @@ public class Mult extends BinaryExpression implements Expression {
      * <p>
      * @return Expression - the simplified expression.*/
     public Expression simplify() {
-    	//if there is no vars, evaluate
+        //if there is no vars, evaluate
         if (getArgA().getVariables() == null && getArgB().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
                 return exp;
             } catch (Exception e) {
+                System.out.println("Mult evaluation failed :" + e);
             }
         }
         //simplify the arguments

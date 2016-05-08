@@ -1,8 +1,8 @@
 /**
-* @author Adiel cahana <adiel.cahana@gmail.com>
-* @version 1.0
-* @since 2016-05-02 */
-public class Pow extends BinaryExpression implements Expression{
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-02 */
+public class Pow extends BinaryExpression implements Expression {
     /**
      * Pow constructor.
      * <p>
@@ -18,14 +18,14 @@ public class Pow extends BinaryExpression implements Expression{
      * evaluate argA to the power of argB
      * <p>
      * if there is Vars in one of the arguments, exception is thrown.
-     * @return difference - the numeric difference of the arguments.*/
+     * @return Power - the value of (agrA)^(argB).*/
     public double evaluate() throws Exception {
         double power = 0;
         try {
-        	//if there is no vars, evaluate
+            //if there is no vars, evaluate
             power = Math.pow(this.getArgA().evaluate(), this.getArgB().evaluate());
         } catch (Exception e) {
-        	// there are Vars in the arguments
+            // there are Vars in the arguments
             System.out.println("Pow evaluation failed :" + e);
             throw e;
         }
@@ -49,7 +49,7 @@ public class Pow extends BinaryExpression implements Expression{
      * differentiate the expression with respect to a given var.
      * <p>
      * @param var - the var to differentiate
-     * @return Plus - the differentiated expression.*/
+     * @return the differentiated expression.*/
     public Expression differentiate(String var) {
         boolean varInBase = this.getArgA().toString().contains(var);
         boolean varInExponent = this.getArgB().toString().contains(var);
@@ -63,8 +63,8 @@ public class Pow extends BinaryExpression implements Expression{
         //Base needs to be differentiate
         if (varInBase) {
             return new Mult(new Div(new Mult(this.getArgB(), this), this.getArgA()),
-            		        this.getArgA().differentiate(var));
-        //exponent needs to be differentiate
+                    this.getArgA().differentiate(var));
+            //exponent needs to be differentiate
         } else if (varInExponent) {
             Expression expression = new Log(new Const("e"), this.getArgA());
             expression = new Mult(new Mult(this, expression), this.getArgB().differentiate(var));
@@ -80,13 +80,14 @@ public class Pow extends BinaryExpression implements Expression{
      * <p>
      * @return Expression - the simplified expression.*/
     public Expression simplify() {
-    	//if there is no vars, evaluate
+        //if there is no vars, evaluate
         if (this.getArgA().getVariables() == null && this.getArgB().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
                 Expression exp = new Num(evaluate);
                 return exp;
             } catch (Exception e) {
+                System.out.println("Pow evaluation failed :" + e);
             }
         }
         //simplify the arguments
@@ -105,9 +106,10 @@ public class Pow extends BinaryExpression implements Expression{
             return new Num(0);
         }
         //the exponent is Pow
-        if (this.getArgA() instanceof Pow){
-        	Expression exp = new Pow(((Pow)this.getArgA()).getArgA(), new Mult(this.getArgB(), ((Pow)this.getArgA()).getArgB()));
-        	return exp.simplify();
+        if (this.getArgA() instanceof Pow) {
+            Expression exp = new Pow(((Pow) this.getArgA()).getArgA(),
+                    new Mult(this.getArgB(), ((Pow) this.getArgA()).getArgB()));
+            return exp.simplify();
         }
         return this;
     }

@@ -27,9 +27,17 @@ public class ExpressionsTestPart3 {
     
         try
         {
-        	e = new Neg(new Neg(new Neg(new Neg(new Neg(new Minus("y", "x"))))));
-        	e = e.simplify();
-        	System.out.println(e);
+            e = new Neg(new Neg(new Neg(new Neg(new Neg(new Cos(new Plus(90, "x")))))));
+            e = e.simplify();
+            System.out.println(e);
+            
+            e = new Neg(new Neg(new Neg(new Neg(new Neg(new Sin(new Plus(90, "x")))))));
+            e = e.simplify();
+            System.out.println(e);
+            
+            e = new Neg(new Neg(new Neg(new Neg(new Neg(new Minus("y", "x"))))));
+            e = e.simplify();
+            System.out.println(e);
         	
             // ((2*8)-6)^2 =====> 100
             e = new Mult(new Num(2) , new Num(8));

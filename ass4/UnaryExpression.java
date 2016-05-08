@@ -30,7 +30,8 @@ public abstract class UnaryExpression extends BaseExpression {
         this.setOperator(getOperator());
     }
 
-    /** arg getter.
+    /**
+     * arg getter.
      * <p>
      * @return arg*/
     protected Expression getArg() {
@@ -45,7 +46,8 @@ public abstract class UnaryExpression extends BaseExpression {
         this.arg = argument;
     }
 
-    /** Set all the variables in the expression in a list.
+    /**
+     * Set all the variables in the expression in a list.
      * <p>
      * @return a string list of variables*/
     public List<String> getVariables() {
