@@ -15,6 +15,7 @@ public class Neg extends UnaryExpression implements Expression {
         this.setOperator("-");
     }
 
+    @Override
     /** Evaluate the Neg.
      * Set the arguments the value of minus(argument).
      * <p>
@@ -32,6 +33,13 @@ public class Neg extends UnaryExpression implements Expression {
         return neg;
     }
 
+    @Override
+    /**
+     * assigns a given expression to a var.
+     * <p>
+     * @param var - a string of the var to assign the expression to
+     * @param expression - a string of the var to assign the expression to
+     * @return a new Neg expression with the new assigned vars.*/
     public Expression assign(String var, Expression expression) {
         return new Neg(getArg().assign(var, expression));
     }
@@ -50,6 +58,8 @@ public class Neg extends UnaryExpression implements Expression {
      * <p>
      * @return the simplify expression. */
     public Expression simplify() {
+        int flag = 0;
+        //if there is no vars, evaluate
         if (getArg().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
@@ -61,12 +71,18 @@ public class Neg extends UnaryExpression implements Expression {
         }
         // advanced simplification
         // --(expression) = expression, ---(expression) = -(expression).
-        setArg(getArg().simplify());
+        if (counter > 1) {
+            flag = 1;
+        }
         if (getArg() instanceof Neg) {
             counter += 1;
-            System.out.println(counter);
         }
+        //simplify the arguments
+            setArg(getArg().simplify());
         if (counter % 2 == 0) {
+            if (flag == 0) {
+                counter = 1;
+            }
             return getArg();
         } else {
             counter += 1;

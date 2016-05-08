@@ -61,11 +61,12 @@ public class Num implements Expression {
         return null;
     }
 
-    /** Return the Num assign.
+    /**
+     * assigns a given expression to a var.
      * <p>
-     * @param var - 
-     * @param expression -
-     * @return the Num. */
+     * @param var - a string of the var to assign the expression to
+     * @param expression - a string of the var to assign the expression to
+     * @return the same Num (because it's not a var it can't be assigned.*/
     public Expression assign(String var, Expression expression) {
         return this;
     }

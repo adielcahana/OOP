@@ -22,6 +22,10 @@ public class Var implements Expression {
         throw new Exception("cannot evaluate Var");
     }
 
+    @Override
+    /** Evaluate the Var.
+     * <p>
+     * @throws Exception that the var cannot be evaluated. */
     public double evaluate() throws Exception {
         throw new Exception("cannot evaluate Var");
     }
@@ -38,11 +42,13 @@ public class Var implements Expression {
         return this.variable;
     }
 
-    /** Return the Var assign.
+    @Override
+    /**
+     * assigns a given expression to a var.
      * <p>
-     * @param var - 
-     * @param expression -
-     * @return the const. */
+     * @param var - a string of the var to assign the expression to
+     * @param expression - a string of the var to assign the expression to
+     * @return if the param var is the same as this var return the expression else return this var. */
     public Expression assign(String var, Expression expression) {
         if (var.equals(this.variable)) {
             return expression;

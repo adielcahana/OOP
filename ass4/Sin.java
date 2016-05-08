@@ -13,6 +13,7 @@ public class Sin extends UnaryExpression implements Expression {
         this.setOperator("Sin");
     }
 
+    @Override
     /** Evaluate the Sin.
      * Set the arguments the value of sinus(argument).
      * <p>
@@ -29,7 +30,13 @@ public class Sin extends UnaryExpression implements Expression {
         return sin;
     }
 
-
+    @Override
+    /**
+     * assigns a given expression to a var.
+     * <p>
+     * @param var - a string of the var to assign the expression to
+     * @param expression - a string of the var to assign the expression to
+     * @return a new Sin expression with the new assigned vars.*/
     public Expression assign(String var, Expression expression) {
         return new Sin(getArg().assign(var, expression));
     }
@@ -48,6 +55,7 @@ public class Sin extends UnaryExpression implements Expression {
      * <p>
      * @return the simplify expression. */
     public Expression simplify() {
+        //if there is no vars, evaluate
         if (getArg().getVariables() == null) {
             try {
                 double evaluate = this.evaluate();
@@ -57,6 +65,8 @@ public class Sin extends UnaryExpression implements Expression {
                 System.out.println("evaluate failed");
             }
         }
+        //simplify the arguments
+        setArg(getArg().simplify());
         // advanced simplification
         // sin(90 + x), sin(x + 90) = cos(x) // trigonometric identities.
         if (this.toString().equals(new Sin(new Plus(getArg().getVariables().get(0), 90)).toString())

@@ -3,19 +3,30 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-04-27 */
 public abstract class BaseExpression {
 
-	private String operator;
-	
-	protected void setOperator(String operator) {
-		this.operator = operator;
-	}
-	
+    private String operator;
+
+    /**
+     * operator setter.
+     * <p>
+     * @param operatorExpression - the operator of the expression. */
+    protected void setOperator(String operatorExpression) {
+        this.operator = operatorExpression;
+    }
+
+    /** operator getter.
+     * <p>
+     * @return operator*/
     protected String getOperator() {
-		return operator;
-	}
-	
-	public double evaluate(Map<String, Double> assignment) throws Exception {
+        return operator;
+    }
+
+    public double evaluate(Map<String, Double> assignment) throws Exception {
         Set<Entry<String, Double>> values = assignment.entrySet();
         Iterator<Entry<String, Double>> i = values.iterator();
         double expression = 0;
@@ -28,11 +39,23 @@ public abstract class BaseExpression {
             }
             expression = newExpression.evaluate();
         } catch (Exception e) {
-          }
+        }
         return expression;
     }
-	
-	public abstract double evaluate() throws Exception;
-		
-	public abstract Expression assign(String var, Expression expression);
+
+    /**
+     * Evaluate the expression.
+     * Calculate the value of expression.
+     * <p>
+     * @throws Exception if the evaluation failed.
+     * @return value of the expression */
+    public abstract double evaluate() throws Exception;
+
+    /**
+     * assigns a given expression to a var.
+     * <p>
+     * @param var - a string of the var to assign the expression to
+     * @param expression - a string of the var to assign the expression to
+     * @return a new expression with the new assigned vars.*/
+    public abstract Expression assign(String var, Expression expression);
 }
