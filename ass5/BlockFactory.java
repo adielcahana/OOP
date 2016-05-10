@@ -57,10 +57,11 @@ public class BlockFactory {
      * @param maxHits - maximum hits available for the block
      * @param color - block fill color
      * @return BlockList*/
-    public List createBlockRaw(Point start, int maxHits, Color color) {
+    public List createBlockRaw(Point start, int maxHits, Color color, Counter blocksCounter) {
         List blockList = new ArrayList();
         int width = (int) (this.lowerFrameEdge.getX() - this.upperFrameEdge.getX()) - 20;
         int numOfBlocks =  (int) ((width  - start.getX()) / 50);
+        blocksCounter.increase(numOfBlocks);
         blockList = createBlockRaw(start, numOfBlocks, maxHits, color);
         return blockList;
     }

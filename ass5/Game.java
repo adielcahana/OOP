@@ -13,6 +13,9 @@ public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private biuoop.GUI gui;
+    private Counter ballsCounter;
+    private Counter blocksCounter;
+    
 
     /**
      * Contractor - Create a list of sprites a new environment and a gui for the game. */
@@ -20,6 +23,8 @@ public class Game {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment(new Point(600, 600) , new Point(0, 0));
         this.gui = new biuoop.GUI("title", 800, 600);
+        this.ballsCounter = new Counter();
+        this.blocksCounter = new Counter();
     }
 
     /**
@@ -59,6 +64,7 @@ public class Game {
         Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
         ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
         ball2.addToGame(this);
+        this.ballsCounter.increase(2);
         // Create the keyboard sensor for the paddle.
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         // Create the paddle and add it to the game.
@@ -77,10 +83,10 @@ public class Game {
             List blockList = null;
             // Create the first line of the blocks.
             if (i == 0) {
-                blockList = blockFactory.createBlockRaw(start, 2, colors[i]);
+                blockList = blockFactory.createBlockRaw(start, 2, colors[i], this.blocksCounter);
             } else {
                 // Create the other block lines.
-                blockList = blockFactory.createBlockRaw(start, 1, colors[i]);
+                blockList = blockFactory.createBlockRaw(start, 1, colors[i], this.blocksCounter);
             }
             // Add all the blocks to the games.
             for (int j = 0; j < blockList.size(); j++) {
@@ -107,6 +113,10 @@ public class Game {
             this.sprites.drawAllOn(d);
             this.sprites.notifyAllTimePassed();
             gui.show(d);
+            if (this.ballsCounter.getValue() == 0 || this.blocksCounter.getValue() == 0 ) {
+                this.gui.close();
+                return;
+            }
             // timing
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
@@ -121,7 +131,8 @@ public class Game {
      * Create 4 blocks for the frame and add them to the game. */
     public void createFrame() {
         Block upFrame = new Block(new Point(0, 0), 800, 20, -1, Color.GRAY);
-        Block lowFrame = new Block(new Point(0, 580), 800, 20, -1, Color.GRAY);
+        Block lowFrame = new Block(new Point(0, 600), 800, 20, -1, Color.GRAY);
+        lowFrame.addHitListener(new BallRemover(this, this.ballsCounter));
         Block lFrame = new Block(new Point(0, 20), 20, 580, -1, Color.GRAY);
         Block rFrame = new Block(new Point(780, 20), 20, 580, -1, Color.GRAY);
         lFrame.addToGame(this);
@@ -129,4 +140,5 @@ public class Game {
         upFrame.addToGame(this);
         lowFrame.addToGame(this);
     }
+
 }

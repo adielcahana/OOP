@@ -168,6 +168,10 @@ public class Ball implements Sprite {
     public void addToGame(Game game) {
         game.addSprite(this);
     }
+    
+    public void removeFromGame(Game game){
+        game.removeSprite(this);
+    }
     /**
      * notify the ball that the main animation loop continued.*/
     public void timePassed() {

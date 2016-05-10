@@ -2,11 +2,11 @@
 // of the number of blocks that were removed.
 public class BlockRemover implements HitListener {
    private Game game;
-   private Counter removedBlocks;
+   private Counter blocksCounter;
 
-   public BlockRemover(Game game, Counter removedBlocks) {
+   public BlockRemover(Game game, Counter blocksCounter) {
        this.game = game;
-       this.removedBlocks = removedBlocks;
+       this.blocksCounter = blocksCounter;
    }
 
    // Blocks that are hit and reach 0 hit-points should be removed
@@ -16,8 +16,8 @@ public class BlockRemover implements HitListener {
        if(beingHit.getMaxHits() == 0){
            beingHit.removeHitListener(this);
            beingHit.removeFromGame(game);
-           this.removedBlocks.increase(1);
-           System.out.println(removedBlocks.getValue());
+           this.blocksCounter.decrease(1);
+           System.out.println(blocksCounter.getValue());
        }
    }
 }
