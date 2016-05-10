@@ -59,13 +59,14 @@ public class GameEnvironment {
         }
         return null;
     }
+    
     /**
      * remove the collidable with the given index
      * from the environment.
      * <p>
      * @param index - the colldable index*/
-    public void removeCollidable(int index) {
-        this.collidables.remove(index);
+    public void removeCollidable(Collidable c) {
+        this.collidables.remove(c);
     }
 
     /**

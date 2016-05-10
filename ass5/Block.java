@@ -1,14 +1,18 @@
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import biuoop.DrawSurface;
+
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
 * @since 2016-04-02 */
-public class Block implements Collidable, Sprite {
+public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle shape;
     private int maxHits;
     private Color color;
+    List<HitListener> hitListeners;
 
     /** Block constructor.
      * <p>
@@ -21,6 +25,7 @@ public class Block implements Collidable, Sprite {
         this.shape = new Rectangle(upperLeft, width, height);
         this.maxHits = maxHits;
         this.color = color;
+        this.hitListeners = new ArrayList<HitListener>();
     }
     /** Block constructor.
      * <p>
@@ -31,6 +36,7 @@ public class Block implements Collidable, Sprite {
         this.shape = shape;
         this.maxHits = maxHits;
         this.color = color;
+        this.hitListeners = new ArrayList<HitListener>();
     }
 
     /** returns the remaining hits available.
@@ -53,7 +59,7 @@ public class Block implements Collidable, Sprite {
      * @param collisionPoint - the next collision coordinate
      * @param currentVelocity - the velocity that needs to be changed
      * @return Velocity - new appropriate velocity*/
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         //enum like variables
         final int up = 0;
         final int right = 1;
@@ -86,8 +92,19 @@ public class Block implements Collidable, Sprite {
             default:
                 System.out.println("Error: no velocity");
         }
+        this.notifyHit(hitter);
         return newVelocity;
     }
+    
+    private void notifyHit(Ball hitter) {
+        // Make a copy of the hitListeners before iterating over them.
+        List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+           hl.hitEvent(this, hitter);
+        }
+     }
+    
     /** Block drawing method.
      * <p>
      * drawing to black with a black frame,
@@ -118,8 +135,23 @@ public class Block implements Collidable, Sprite {
         game.addSprite(this);
     }
 
+    public void removeFromGame(Game game){
+        game.removeCollidable(this);
+        game.removeSprite(this);
+
+    }
+    
     /**
      * notify the block that the main animation loop continued.*/
     public void timePassed() {
+    }
+    @Override
+    public void addHitListener(HitListener hl) {
+        this.hitListeners.add(hl);
+    }
+    
+    @Override
+    public void removeHitListener(HitListener hl) {
+        this.hitListeners.remove(hl);
     }
 }

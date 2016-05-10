@@ -22,6 +22,12 @@ public class SpriteCollection {
     public void addSprite(Sprite s) {
         this.spriteCollection.add(s);
         }
+    
+    
+    public void removeSprite(Sprite s){
+        this.spriteCollection.remove(s);
+        }
+
 
     /**
      * Notify all the sprites in the list that time passed. */

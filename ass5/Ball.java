@@ -155,7 +155,7 @@ public class Ball implements Sprite {
                //if a collision will occcure in the next step, change the ball velocity
               //checks if the ball next step will pass the collision point
               if (info.collisionPoint().distance(this.center) - this.velocity.getSpeed() * 1.2 <= this.getSize()) {
-                   this.velocity = info.collisionObject().hit(info.collisionPoint(), this.velocity);
+                   this.velocity = info.collisionObject().hit(this, info.collisionPoint(), this.velocity);
               }
            }
            this.center = this.getVelocity().applyToPoint(this.center);

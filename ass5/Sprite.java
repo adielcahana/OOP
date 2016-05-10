@@ -9,7 +9,7 @@ public interface Sprite {
     /**
      * DrawOn the sprite.
      * <p>
-     * @param sprite - the surface of the sprite to draw.*/
+     * @param sprite - the surface of the sprite to draw.    */
    void drawOn(DrawSurface sprite);
 
    /**

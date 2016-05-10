@@ -29,6 +29,10 @@ public class Game {
     public void addCollidable(Collidable c) {
         this.environment.addCollidable(c);
     }
+    
+    public void removeCollidable(Collidable c) {
+        this.environment.removeCollidable(c);
+    }
 
     /**
      * Add the sprite object to the sprites list.
@@ -38,6 +42,11 @@ public class Game {
         this.sprites.addSprite(s);
     }
 
+
+public void removeSprite(Sprite s){
+    this.sprites.removeSprite(s);
+    }
+
     /**
      * Initialize the game.
      * Create the variables for the games. */
@@ -45,10 +54,10 @@ public class Game {
         Random rand = new Random();
         // Create 2 balls and add them to the game.
         Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
-        ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 8));
+        ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
         ball1.addToGame(this);
-        Ball ball2 = new Ball(new Point(570, 570), 5 , Color.BLUE, this.environment);
-        ball2.setVelocity(Velocity.fromAngleAndSpeed(90, 8));
+        Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
+        ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
         ball2.addToGame(this);
         // Create the keyboard sensor for the paddle.
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
@@ -67,10 +76,10 @@ public class Game {
             List blockList = null;
             // Create the first line of the blocks.
             if (i == 0) {
-                blockList = blockFactory.createBlockRaw(start, 2, colors[i % 6]);
+                blockList = blockFactory.createBlockRaw(start, 2, colors[i]);
             } else {
                 // Create the other block lines.
-                blockList = blockFactory.createBlockRaw(start, 1, colors[i % 6]);
+                blockList = blockFactory.createBlockRaw(start, 1, colors[i]);
                 }
             // Add all the blocks to the games.
             for (int j = 0; j < blockList.size(); j++) {

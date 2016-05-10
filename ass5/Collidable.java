@@ -10,8 +10,9 @@ public interface Collidable {
     /** Notify the object that we collided with it at collisionPoint with
     * a given velocity.
     * <p>
+    * @param ball - the ball that hit the Collidable.
     * @param collisionPoint - the next collision coordinate
     * @param currentVelocity - the velocity that needs to be changed
     * @return Velocity - the new velocity expected after the hit. */
-    Velocity hit(Point collisionPoint, Velocity currentVelocity);
+    Velocity hit(Ball ball, Point collisionPoint, Velocity currentVelocity);
 }
