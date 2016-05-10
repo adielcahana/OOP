@@ -14,8 +14,10 @@ public class BlockRemover implements HitListener {
    // that is being removed from the game.
    public void hitEvent(Block beingHit, Ball hitter) {
        if(beingHit.getMaxHits() == 0){
-           beingHit.removeHitListener((HitListener) beingHit.hitListeners);
+           beingHit.removeHitListener(this);
            beingHit.removeFromGame(game);
+           this.removedBlocks.increase(1);
+           System.out.println(removedBlocks.getValue());
        }
    }
 }

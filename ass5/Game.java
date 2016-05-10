@@ -6,16 +6,16 @@ import biuoop.DrawSurface;
 import biuoop.Sleeper;
 
 /**
-* @author Ori Engelberg <turht50@gmail.com>
-* @version 1.0
-* @since 2016-04-03 */
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-04-03 */
 public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private biuoop.GUI gui;
 
     /**
-    * Contractor - Create a list of sprites a new environment and a gui for the game. */
+     * Contractor - Create a list of sprites a new environment and a gui for the game. */
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment(new Point(600, 600) , new Point(0, 0));
@@ -29,7 +29,7 @@ public class Game {
     public void addCollidable(Collidable c) {
         this.environment.addCollidable(c);
     }
-    
+
     public void removeCollidable(Collidable c) {
         this.environment.removeCollidable(c);
     }
@@ -43,8 +43,8 @@ public class Game {
     }
 
 
-public void removeSprite(Sprite s){
-    this.sprites.removeSprite(s);
+    public void removeSprite(Sprite s){
+        this.sprites.removeSprite(s);
     }
 
     /**
@@ -72,6 +72,7 @@ public void removeSprite(Sprite s){
         // Create all the blocks and add them to the game.
         BlockFactory blockFactory = new BlockFactory(new Point(800, 600) , new Point(0, 0));
         Velocity velocity = new Velocity(50, 20);
+        HitListener hl = new BlockRemover(this, new Counter());
         for (int i = 0; i < 6; i++) {
             List blockList = null;
             // Create the first line of the blocks.
@@ -80,14 +81,16 @@ public void removeSprite(Sprite s){
             } else {
                 // Create the other block lines.
                 blockList = blockFactory.createBlockRaw(start, 1, colors[i]);
-                }
+            }
             // Add all the blocks to the games.
             for (int j = 0; j < blockList.size(); j++) {
-                ((Block) blockList.get(j)).addToGame(this);
-                }
-            start = velocity.applyToPoint(start);
+                Block temp = ((Block) blockList.get(j));
+                temp.addHitListener(hl);
+                temp.addToGame(this);
             }
+            start = velocity.applyToPoint(start);
         }
+    }
 
     /**
      * Run the game.
@@ -125,5 +128,5 @@ public void removeSprite(Sprite s){
         rFrame.addToGame(this);
         upFrame.addToGame(this);
         lowFrame.addToGame(this);
-        }
     }
+}

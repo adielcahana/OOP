@@ -92,7 +92,7 @@ public class Paddle implements Sprite, Collidable {
      * @param collisionPoint - the collision point of the ball with the paddle.
      * @param currentVelocity - the current velocity of the point.
      * @return the new velocity vector of the ball. */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         // Divide the paddle to 4 parts.
         final int up = 0;
         final int right = 1;

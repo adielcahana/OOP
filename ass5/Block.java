@@ -115,11 +115,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
     public void drawOn(DrawSurface surface) {
         String hits;
         //set the print string (hits) to the correct value
-        if (this.maxHits > 0) {
+       //if (this.maxHits > 0) {
             hits =  Integer.toString(this.maxHits);
-        } else {
+        /*} else {
             hits = "x";
-        }
+        }*/
         surface.setColor(this.color);
         this.shape.drawOn(surface);
         Line[] lines = this.shape.myLines();
@@ -145,6 +145,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * notify the block that the main animation loop continued.*/
     public void timePassed() {
     }
+    
     @Override
     public void addHitListener(HitListener hl) {
         this.hitListeners.add(hl);
