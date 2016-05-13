@@ -1,11 +1,17 @@
+
 public class ScoreTrackingListener implements HitListener {
-   private Counter currentScore;
+    private Counter currentScore;    
 
-   public ScoreTrackingListener(Counter scoreCounter) {
-      this.currentScore = scoreCounter;
-   }
+    public ScoreTrackingListener(Counter currentScore) {
+        this.currentScore = currentScore;
+    }
 
-   public void hitEvent(Block beingHit, Ball hitter) {
-      
-   }
+    @Override
+    public void hitEvent(Block beingHit, Ball hitter) {
+        this.currentScore.increase(5);
+        if (beingHit.getMaxHits() == 0) {
+            this.currentScore.increase(10);
+        }
+    }
+
 }
