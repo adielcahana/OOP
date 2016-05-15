@@ -9,16 +9,18 @@ import biuoop.Sleeper;
  * @author Ori Engelberg <turht50@gmail.com>
  * @version 1.0
  * @since 2016-04-03 */
-public class Game {
+public class Game implements Animation{
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private biuoop.GUI gui;
+    private biuoop.KeyboardSensor keyboard;
+    private AnimationRunner runner;
     private Counter ballsCounter;
     private Counter blocksCounter;
     private Counter scoreCounter;
     private Counter numberOfLives;
+    private boolean running;
     
-
     /**
      * Contractor - Create a list of sprites a new environment and a gui for the game. */
     public Game() {
@@ -28,7 +30,9 @@ public class Game {
         this.ballsCounter = new Counter();
         this.blocksCounter = new Counter();
         this.scoreCounter = new Counter();
-        this.numberOfLives = new Counter(4);
+        this.numberOfLives = new Counter();
+        this.runner = new AnimationRunner(this.gui, 60);
+        this.keyboard = this.gui.getKeyboardSensor();
     }
 
     /**
@@ -60,6 +64,7 @@ public class Game {
      * Initialize the game.
      * Create the variables for the games. */
     public void initialize() {
+        this.numberOfLives.increase(4);
         LivesIndicator lives = new LivesIndicator(new Point(0, 0), 800, 20, this.numberOfLives);
         ScoreIndicator score = new ScoreIndicator(new Point(0, 0), 800, 20, this.scoreCounter, this.numberOfLives);
         lives.addToGame(this);
@@ -107,6 +112,7 @@ public class Game {
      * Run the game.
      * Create the variables for the games. */
     public void playOneTurn() {
+        
         // Create 2 balls and add them to the game.
         Random rand = new Random();
         Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
@@ -116,39 +122,16 @@ public class Game {
         ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
         ball2.addToGame(this);
         this.ballsCounter.increase(2);
-        // Create the keyboard sensor for the paddle.
-        biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         // Create the paddle and add it to the game.
-        Paddle paddle = new Paddle(new Rectangle(new Point(390, 560), 80, 20), Color.BLACK, 5, keyboard, 20, 780);
+        Paddle paddle = new Paddle(new Rectangle(new Point(390, 560), 80, 20), Color.BLACK, 5, this.keyboard, 20, 780);
         paddle.addToGame(this);
-        Sleeper sleeper = new Sleeper();
-        int framesPerSecond = 60;
-        int millisecondsPerFrame = 1000 / framesPerSecond;
-        // Draw all the objects and move the ball in the frame.
-        while (true) {
-            long startTime = System.currentTimeMillis(); // timing
-            DrawSurface d = gui.getDrawSurface();
-            this.environment.setSurface(d);
-            this.sprites.drawAllOn(d);
-            this.sprites.notifyAllTimePassed();
-            gui.show(d);
-            if (this.ballsCounter.getValue() == 0) {
-                this.numberOfLives.decrease(1);
-                paddle.removeFromGame(this);
-                return;
-            } else if (this.blocksCounter.getValue() == 0) {
-                this.scoreCounter.increase(100);
-                this.sprites.drawAllOn(d);
-                return;
-            }
-            
-            // timing
-            long usedTime = System.currentTimeMillis() - startTime;
-            long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
-            if (milliSecondLeftToSleep > 0) {
-                sleeper.sleepFor(milliSecondLeftToSleep);
-            }
-        }
+        this.running = true;
+        // countdown before turn starts.
+        this.runner.run(new CountdownAnimation(2, 3, this.sprites)); 
+        // use our runner to run the current animation -- which is one turn of
+        // the game.
+        this.runner.run(this);
+        paddle.removeFromGame(this);
     }
 
     /**
@@ -164,5 +147,29 @@ public class Game {
         rFrame.addToGame(this);
         upFrame.addToGame(this);
         lowFrame.addToGame(this);
+    }
+    
+    public boolean shouldStop() {
+        return !this.running; 
+    }
+    
+    public void doOneFrame(DrawSurface d) {
+        if (this.keyboard.isPressed("p")) {
+            this.runner.run(new PauseScreen(this.keyboard));
+        }
+        this.environment.setSurface(d);
+        this.sprites.drawAllOn(d);
+        this.sprites.notifyAllTimePassed();
+        if (this.ballsCounter.getValue() == 0) {
+            this.numberOfLives.decrease(1);
+            this.running = false;
+        } else if (this.blocksCounter.getValue() == 0) {
+            this.scoreCounter.increase(100);
+            this.sprites.drawAllOn(d);
+            this.running = false;
+        }
+       // the logic from the previous playOneTurn method goes here.
+       // the `return` or `break` statements should be replaced with
+       // this.running = false;
     }
 }
