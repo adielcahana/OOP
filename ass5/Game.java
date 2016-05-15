@@ -94,18 +94,6 @@ public class Game {
         }
     }
 
-    public void createBalls(){
-        // Create 2 balls and add them to the game.
-        Random rand = new Random();
-        Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
-        ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
-        ball1.addToGame(this);
-        Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
-        ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
-        ball2.addToGame(this);
-        this.ballsCounter.increase(2);
-    }
-
     public void run(){
         while(this.numberOfLives.getValue() > 0 && this.blocksCounter.getValue() != 0){
             this.playOneTurn();
@@ -119,7 +107,15 @@ public class Game {
      * Run the game.
      * Create the variables for the games. */
     public void playOneTurn() {
-        createBalls();
+        // Create 2 balls and add them to the game.
+        Random rand = new Random();
+        Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
+        ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
+        ball1.addToGame(this);
+        Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
+        ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
+        ball2.addToGame(this);
+        this.ballsCounter.increase(2);
         // Create the keyboard sensor for the paddle.
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         // Create the paddle and add it to the game.
@@ -169,5 +165,4 @@ public class Game {
         upFrame.addToGame(this);
         lowFrame.addToGame(this);
     }
-
 }
