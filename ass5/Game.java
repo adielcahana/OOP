@@ -61,7 +61,7 @@ public class Game {
      * Create the variables for the games. */
     public void initialize() {
         LivesIndicator lives = new LivesIndicator(new Point(0, 0), 800, 20, this.numberOfLives);
-        ScoreIndicator score = new ScoreIndicator(new Point(0, 0), 800, 20, this.scoreCounter);
+        ScoreIndicator score = new ScoreIndicator(new Point(0, 0), 800, 20, this.scoreCounter, this.numberOfLives);
         lives.addToGame(this);
         score.addToGame(this);
         // Create the frame & blocks.
@@ -107,14 +107,11 @@ public class Game {
     }
 
     public void run(){
-        while(this.numberOfLives.getValue() > 0){
-            createBalls();
+        while(this.numberOfLives.getValue() > 0 && this.blocksCounter.getValue() != 0){
             this.playOneTurn();
         }
-        if (this.numberOfLives.getValue() == 0){
             this.gui.close();
             return;
-        }
     }
     
     
@@ -122,6 +119,7 @@ public class Game {
      * Run the game.
      * Create the variables for the games. */
     public void playOneTurn() {
+        createBalls();
         // Create the keyboard sensor for the paddle.
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         // Create the paddle and add it to the game.
@@ -145,7 +143,6 @@ public class Game {
             } else if (this.blocksCounter.getValue() == 0) {
                 this.scoreCounter.increase(100);
                 this.sprites.drawAllOn(d);
-                this.gui.close();
                 return;
             }
             
