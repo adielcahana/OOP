@@ -7,8 +7,7 @@ public class ScoreIndicator implements Sprite {
 
     private Rectangle shape;
     private final Color color = Color.WHITE;
-    private Counter scoreCounter; 
-    
+    private Counter scoreCounter;   
     
     /** Block constructor.
      * <p>

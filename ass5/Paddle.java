@@ -192,4 +192,9 @@ public class Paddle implements Sprite, Collidable {
         surface.setColor(this.color);
         this.shape.drawOn(surface);
         }
+
+    public void removeFromGame(Game game) {
+        game.removeSprite(this);
+        game.removeCollidable(this);
+    }
     }

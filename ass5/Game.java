@@ -16,6 +16,7 @@ public class Game {
     private Counter ballsCounter;
     private Counter blocksCounter;
     private Counter scoreCounter;
+    private Counter numberOfLives;
     
 
     /**
@@ -27,6 +28,7 @@ public class Game {
         this.ballsCounter = new Counter();
         this.blocksCounter = new Counter();
         this.scoreCounter = new Counter();
+        this.numberOfLives = new Counter(4);
     }
 
     /**
@@ -58,22 +60,10 @@ public class Game {
      * Initialize the game.
      * Create the variables for the games. */
     public void initialize() {
-        Random rand = new Random();
-        // Create 2 balls and add them to the game.
-        Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
-        ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
-        ball1.addToGame(this);
-        Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
-        ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
-        ball2.addToGame(this);
+        LivesIndicator lives = new LivesIndicator(new Point(0, 0), 800, 20, this.numberOfLives);
         ScoreIndicator score = new ScoreIndicator(new Point(0, 0), 800, 20, this.scoreCounter);
+        lives.addToGame(this);
         score.addToGame(this);
-        this.ballsCounter.increase(2);
-        // Create the keyboard sensor for the paddle.
-        biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
-        // Create the paddle and add it to the game.
-        Paddle paddle = new Paddle(new Rectangle(new Point(200, 560), 80, 20), Color.BLACK, 5, keyboard, 20, 780);
-        paddle.addToGame(this);
         // Create the frame & blocks.
         this.createFrame();
         // The colors for the blocks.
@@ -104,10 +94,39 @@ public class Game {
         }
     }
 
+    public void createBalls(){
+        // Create 2 balls and add them to the game.
+        Random rand = new Random();
+        Ball ball1 = new Ball(new Point(400, 400), 5 , Color.RED, this.environment);
+        ball1.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
+        ball1.addToGame(this);
+        Ball ball2 = new Ball(new Point(200, 200), 5 , Color.BLUE, this.environment);
+        ball2.setVelocity(Velocity.fromAngleAndSpeed(rand.nextInt(360), 7));
+        ball2.addToGame(this);
+        this.ballsCounter.increase(2);
+    }
+
+    public void run(){
+        while(this.numberOfLives.getValue() > 0){
+            createBalls();
+            this.playOneTurn();
+        }
+        if (this.numberOfLives.getValue() == 0){
+            this.gui.close();
+            return;
+        }
+    }
+    
+    
     /**
      * Run the game.
      * Create the variables for the games. */
-    public void run() {
+    public void playOneTurn() {
+        // Create the keyboard sensor for the paddle.
+        biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
+        // Create the paddle and add it to the game.
+        Paddle paddle = new Paddle(new Rectangle(new Point(390, 560), 80, 20), Color.BLACK, 5, keyboard, 20, 780);
+        paddle.addToGame(this);
         Sleeper sleeper = new Sleeper();
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
@@ -120,7 +139,8 @@ public class Game {
             this.sprites.notifyAllTimePassed();
             gui.show(d);
             if (this.ballsCounter.getValue() == 0) {
-                this.gui.close();
+                this.numberOfLives.decrease(1);
+                paddle.removeFromGame(this);
                 return;
             } else if (this.blocksCounter.getValue() == 0) {
                 this.scoreCounter.increase(100);
