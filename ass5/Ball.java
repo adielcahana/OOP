@@ -98,6 +98,8 @@ public class Ball implements Sprite {
        public void drawOn(DrawSurface surface) {
            surface.setColor(this.color);
            surface.fillCircle(this.getX(), this.getY(), this.getSize());
+           surface.setColor(color.BLACK);
+           surface.drawCircle(this.getX(), this.getY(), this.radius);
        }
        /**
         * velocity query.
@@ -122,6 +124,10 @@ public class Ball implements Sprite {
            this.velocity = new Velocity(dx, dy);
        }
 
+       public void setGameEnvironment(GameEnvironment enviroment) {
+           this.enviroment = enviroment;
+       }
+       
        /**
         * computes the ball trajectory.
         * <p>
@@ -165,11 +171,11 @@ public class Ball implements Sprite {
      * adds the ball to the game.
      * <p>
      * @param game - the game*/
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addSprite(this);
     }
     
-    public void removeFromGame(Game game){
+    public void removeFromGame(GameLevel game){
         game.removeSprite(this);
     }
     /**

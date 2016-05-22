@@ -179,11 +179,16 @@ public class Paddle implements Sprite, Collidable {
      * Add the paddle to the game as sprite and as collidable.
      * <p>
      * @param game - the game that the paddle added to. */
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addSprite(this);
         game.addCollidable(this);
         }
 
+    public void removeFromGame(GameLevel game) {
+        game.removeSprite(this);
+        game.removeCollidable(this);
+    }
+    
     /**
      * Draw the paddle.
      * <p>
@@ -193,8 +198,4 @@ public class Paddle implements Sprite, Collidable {
         this.shape.drawOn(surface);
         }
 
-    public void removeFromGame(Game game) {
-        game.removeSprite(this);
-        game.removeCollidable(this);
-    }
     }

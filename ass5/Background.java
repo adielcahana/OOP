@@ -2,26 +2,26 @@ import java.awt.Color;
 
 import biuoop.DrawSurface;
 
-public class LivesIndicator implements Sprite {
-    private final Color color = Color.BLACK;
-    private Counter lives;
+public class Background implements Sprite {
 
-    public LivesIndicator(Counter lives) {
-        this.lives = lives;
-    }
+    private Rectangle frame;
+    private Color color;
     
+    public Background(Rectangle frame, Color color){
+        this.frame = frame;
+        this.color = color;
+    }
     
     @Override
     public void drawOn(DrawSurface surface) {
-        String lives = "lives: " + Integer.toString(this.lives.getValue());
         surface.setColor(this.color);
-        surface.drawText(100, 17, lives, 20);
-    }    
+        this.frame.drawOn(surface);
+    }
 
     @Override
     public void timePassed() {
     }
-    
+
     public void addToGame(GameLevel game) {
         game.addSprite(this);
     }
@@ -29,5 +29,4 @@ public class LivesIndicator implements Sprite {
     public void removeFromGame(GameLevel game){
         game.removeSprite(this);
     }
-
 }

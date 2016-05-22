@@ -124,18 +124,18 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.shape.drawOn(surface);
         Line[] lines = this.shape.myLines();
         //draw the hit number on Hits remaining
-        surface.drawText((int) lines[0].middle().getX() - 3, (int) lines[1].middle().getY() + 7, hits, 20);
+        //surface.drawText((int) lines[0].middle().getX() - 3, (int) lines[1].middle().getY() + 7, hits, 20);
     }
 
     /** add the Block to the game Database.
      * <p>
      * @param game - the game to be add to*/
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addCollidable(this);
         game.addSprite(this);
     }
 
-    public void removeFromGame(Game game){
+    public void removeFromGame(GameLevel game){
         game.removeCollidable(this);
         game.removeSprite(this);
 

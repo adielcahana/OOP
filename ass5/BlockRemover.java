@@ -1,10 +1,10 @@
 // a BlockRemover is in charge of removing blocks from the game, as well as keeping count
 // of the number of blocks that were removed.
 public class BlockRemover implements HitListener {
-   private Game game;
+   private GameLevel game;
    private Counter blocksCounter;
 
-   public BlockRemover(Game game, Counter blocksCounter) {
+   public BlockRemover(GameLevel game, Counter blocksCounter) {
        this.game = game;
        this.blocksCounter = blocksCounter;
    }

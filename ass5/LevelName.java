@@ -2,24 +2,25 @@ import java.awt.Color;
 
 import biuoop.DrawSurface;
 
-public class LivesIndicator implements Sprite {
+public class LevelName implements Sprite {
+    
     private final Color color = Color.BLACK;
-    private Counter lives;
-
-    public LivesIndicator(Counter lives) {
-        this.lives = lives;
+    private String levelName;
+    
+    public LevelName(String levelName) {
+        this.levelName = levelName;
     }
     
     
     @Override
     public void drawOn(DrawSurface surface) {
-        String lives = "lives: " + Integer.toString(this.lives.getValue());
+        String levelName = "levelName: " + this.levelName;
         surface.setColor(this.color);
-        surface.drawText(100, 17, lives, 20);
-    }    
+        //draw the level name.
+        surface.drawText(550, 17, levelName, 20);
+    }
 
-    @Override
-    public void timePassed() {
+    public void timePassed() {        
     }
     
     public void addToGame(GameLevel game) {
@@ -29,5 +30,5 @@ public class LivesIndicator implements Sprite {
     public void removeFromGame(GameLevel game){
         game.removeSprite(this);
     }
-
+    
 }
