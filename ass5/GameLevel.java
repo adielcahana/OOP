@@ -128,7 +128,7 @@ public class GameLevel implements Animation{
         paddle.addToGame(this);
         this.running = true;
         // countdown before turn starts.
-        this.runner.run(new CountdownAnimation(2, 3, this.sprites)); 
+        this.runner.run(new CountdownAnimation(2, 3, this.sprites, this.level)); 
         // use our runner to run the current animation -- which is one turn of
         // the game.
         this.runner.run(this);
