@@ -28,7 +28,6 @@ public class CountdownAnimation implements Animation {
     public void doOneFrame(DrawSurface d) {
         long startTime = System.currentTimeMillis(); // timing
         gameScreen.drawAllOn(d);
-        this.level.drawBackgroundImge(d);
         if (this.countLeft < 0) {
             this.stop = true;
         } else if (this.countLeft > 0) {

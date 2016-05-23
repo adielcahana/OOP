@@ -15,4 +15,8 @@ public interface Sprite {
    /**
     * Notify the sprite that the time passed. */
    void timePassed();
+   
+   public void addToGame(GameLevel game);
+   
+   public void removeFromGame(GameLevel game);
 }

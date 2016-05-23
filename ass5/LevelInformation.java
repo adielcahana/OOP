@@ -30,6 +30,4 @@ public interface LevelInformation {
    // before the level is considered to be "cleared".
    // This number should be <= blocks.size();
    int numberOfBlocksToRemove();
-   
-   public void drawBackgroundImge(DrawSurface surface);
 }

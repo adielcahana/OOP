@@ -84,8 +84,7 @@ public class GameLevel implements Animation{
         lives.addToGame(this);
         LevelName name = new LevelName(this.level.levelName());
         name.addToGame(this);
-        Background background = (Background) level.getBackground();
-        background.addToGame(this);
+        level.getBackground().addToGame(this);
         // The colors for the blocks.
         //Color[] colors = {Color.BLUE, Color.RED, Color.YELLOW, Color.PINK, Color.GREEN, Color.MAGENTA};
         Point start = new Point(230, 150);
@@ -161,7 +160,6 @@ public class GameLevel implements Animation{
         }
         this.environment.setSurface(d);
         this.sprites.drawAllOn(d);
-        this.level.drawBackgroundImge(d);
         this.sprites.notifyAllTimePassed();
         if (this.ballsCounter.getValue() == 0) {
             this.numberOfLives.decrease(1);

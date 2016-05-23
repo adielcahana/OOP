@@ -5,12 +5,11 @@ import java.awt.Color;;
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
 * @since 2016-04-02 */
-public class Circle implements Drawable {
+public class Circle {
 
     private double x;
     private double y;
     private double radius;
-    private Color color;
 
     /** Circle constructor.
      * <p>
@@ -19,13 +18,6 @@ public class Circle implements Drawable {
         this.x = 0;
         this.y = 0;
         this.radius = radius;
-    }
-    
-    public Circle(double radius, double x, double y, Color color) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.color = color;
     }
 
     /**
@@ -54,12 +46,5 @@ public class Circle implements Drawable {
         ds.fillCircle((int) x, (int) y, (int) radius);
         ds.setColor(Color.BLACK);
         ds.drawCircle((int) x, (int) y, (int) radius);
-    }
-
-    @Override
-    public void drawOnDrawable(DrawSurface surface) {
-        surface.setColor(this.color);
-        surface.fillCircle((int) x, (int) y, (int) radius);
-        surface.drawCircle((int) x, (int) y, (int) radius);
     }
 }

@@ -6,6 +6,12 @@ import biuoop.DrawSurface;
 
 public class LevelTwo implements LevelInformation {
 
+    private BackgroundLevelTwo background;
+    
+    public LevelTwo(){
+        this.background = new BackgroundLevelTwo(new Rectangle(new Point(20, 40), 760, 560), Color.WHITE);
+    }
+    
     @Override
     public int numberOfBalls() {
         return 10;
@@ -42,7 +48,7 @@ public class LevelTwo implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return new Background(new Rectangle(new Point(20, 40), 760, 560), Color.WHITE);
+        return this.background;
     }
 
     @Override
@@ -80,18 +86,4 @@ public class LevelTwo implements LevelInformation {
         return 15;
     }
 
-    @Override
-    public void drawBackgroundImge(DrawSurface surface) {
-        int x = 150;
-        int y = 150;
-        surface.setColor(new Color(224, 224, 224));
-        for (int i = 20; i < 650; i += 5) {
-            surface.drawLine(x, y, 0 + i, 300);
-        }
-        surface.fillCircle(x, y, 50);
-        surface.setColor(new Color(204, 204, 0));
-        surface.fillCircle(x, y, 40);
-        surface.setColor(Color.YELLOW);
-        surface.fillCircle(x, y, 30);
-    }
 }
