@@ -4,13 +4,14 @@ import java.util.List;
 
 import biuoop.DrawSurface;
 /**
-* @author Adiel Chana <adielcahana@gmail.com>
-* @version 1.0
-* @since 2016-03-27 */
-public class Rectangle {
+ * @author Adiel Chana <adielcahana@gmail.com>
+ * @version 1.0
+ * @since 2016-03-27 */
+public class Rectangle implements Drawable {
     private Point upperLeft;
     private double width;
     private double height;
+    private Color color;
 
     /** Create a new rectangle with location and width/height.
      * <p>
@@ -23,6 +24,14 @@ public class Rectangle {
         this.width = width;
         this.height = height;
     }
+
+    public Rectangle(Point upperLeft, double width, double height, Color color) {
+        this.upperLeft = upperLeft;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+    }
+    
     /** Return a (possibly empty) List of intersection points
      * with the specified line.
      * <p>
@@ -105,8 +114,17 @@ public class Rectangle {
      * @param surface - the DrawSurface*/
     public void drawOn(DrawSurface surface) {
         surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
-                              (int) this.width, (int) this.height);
+                (int) this.width, (int) this.height);
         surface.setColor(Color.BLACK);
+        surface.drawRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
+                (int) this.width, (int) this.height);
+    }
+    
+    @Override
+    public void drawOnDrawable(DrawSurface surface) {
+        surface.setColor(this.color);
+        surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
+                (int) this.width, (int) this.height);
         surface.drawRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
                 (int) this.width, (int) this.height);
     }

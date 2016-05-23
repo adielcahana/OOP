@@ -1,14 +1,22 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import biuoop.DrawSurface;
 
 public class LevelOne implements LevelInformation{
 
+    private Background background;
+
     public LevelOne(){
-        this.getBackground();
+        ArrayList<Drawable> imge = new ArrayList<Drawable>();
+        imge.add(new Line(520, 210, 420, 210));
+        imge.add(new Line(280, 210, 380, 210));
+        imge.add(new Line(400, 90, 400, 190));
+        imge.add(new Line(400, 330, 400, 230));
+        imge.add(new Circle(400, 210, 100, Color.BLUE));
+        imge.add(new Circle(400, 210, 75, Color.BLUE));
+        imge.add(new Circle(400, 210, 50, Color.BLUE));
+        this.background = new Background(new Rectangle(new Point(20, 40), 760, 560), Color.BLACK, imge);
     }
 
     public int numberOfBalls() {
@@ -52,7 +60,7 @@ public class LevelOne implements LevelInformation{
 
     @Override
     public Sprite getBackground() {
-        return new Background(new Rectangle(new Point(20, 40), 760, 560), Color.BLACK);
+        return this.background;
     }
 
     @Override
@@ -65,13 +73,13 @@ public class LevelOne implements LevelInformation{
     }
 
     public void drawBackgroundImge(DrawSurface surface) {
-        surface.setColor(Color.blue);
+        /*surface.setColor(Color.blue);
         surface.drawLine(520, 210, 420, 210);
         surface.drawLine(280, 210, 380, 210);
         surface.drawLine(400, 90, 400, 190);
         surface.drawLine(400, 330, 400, 230);
         surface.drawCircle(400, 210, 100);
         surface.drawCircle(400, 210, 75);
-        surface.drawCircle(400, 210, 50);
+        surface.drawCircle(400, 210, 50);*/
     }
 }

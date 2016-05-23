@@ -8,10 +8,11 @@ import biuoop.DrawSurface;
 * @author Ori Engelberg <turht50@gmail.com>
 * @version 1.1
 * @since 2016-03-21 */
-public class Line {
+public class Line implements Drawable {
     private Point start;
     private Point end;
     private double slope;
+    private Color color;
 
     /**
     * Contractor - Create a start point an end point and the line slope.
@@ -37,6 +38,13 @@ public class Line {
            this.slope = slope();
            }
 
+       public Line(double x1, double y1, double x2, double y2, Color color) {
+           this.start = new Point(x1, y1);
+           this.end = new Point(x2, y2);
+           this.slope = slope();
+           this.color = color;
+           }
+       
        /**
         * Calculate the length of the line.
         * <p>
@@ -194,5 +202,12 @@ public class Line {
     public void drawOn(DrawSurface d, Color color) {
         d.setColor(color);
         d.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
+    }
+
+    @Override
+    public void drawOnDrawable(DrawSurface surface) {
+        surface.setColor(this.color);
+        surface.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
+        
     }
 }
