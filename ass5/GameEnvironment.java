@@ -95,7 +95,7 @@ public class GameEnvironment {
         }
         if (collisionsPoints.isEmpty() || blocks.isEmpty()) {
             System.out.println("Error: no CollisionInfo");
-            return null;
+            return getClosestCollision(new Line(trajectory.start(), new Point(trajectory.end().getX() +1, trajectory.end().getY())));
         }
         //copy the collision points to another array and sort them
         sortedCollisionsPoints.addAll(collisionsPoints);
