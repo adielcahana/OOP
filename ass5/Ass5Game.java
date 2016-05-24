@@ -11,9 +11,9 @@ public class Ass5Game {
 
     public static List<LevelInformation> levels(){
         List<LevelInformation> levels = new ArrayList<LevelInformation>();
-        levels.add(new LevelOne());
-        levels.add(new LevelTwo());
-        levels.add(new LevelThree());
+        //levels.add(new LevelOne());
+        //levels.add(new LevelTwo());
+        //levels.add(new LevelThree());
         levels.add(new LevelFour());
         return levels;
     }

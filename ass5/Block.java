@@ -135,6 +135,9 @@ public class Block implements Collidable, Sprite, HitNotifier {
         game.addSprite(this);
     }
 
+    /** remove the Block from the game Database.
+     * <p>
+     * @param game - the game to be remove*/
     public void removeFromGame(GameLevel game){
         game.removeCollidable(this);
         game.removeSprite(this);

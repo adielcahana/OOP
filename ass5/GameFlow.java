@@ -21,7 +21,7 @@ public class GameFlow {
     }
 
     public void runLevels(List<LevelInformation> levels) {
-        // ...
+
         for (LevelInformation levelInfo : levels) {
 
             GameLevel level = new GameLevel(levelInfo, this.keyboard, this.animationRunner, this.gui, this.scoreCounter, this.numberOfLives);
