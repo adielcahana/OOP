@@ -75,12 +75,19 @@ public class LevelThree implements LevelInformation {
         int y = 200;
         // Array of colors for the block.
         Color[] colors = {Color.GRAY, Color.RED, Color.YELLOW, Color.BLUE, Color.WHITE};
-        // Create the blocks and put them in a list.
+        // Create the blocks and put them in a list first row with 2 hit.
         for (int i = 0; i < 5; i++) {
             int x = 730;
-            for (int j = i; j < 10; j++) {
-                blockList.add(new Block(new Point(x, y), 50, 20, 1, colors[i]));
-                x -= 50;
+            if (i == 0) {
+                for (int j = i; j < 10; j++) {
+                    blockList.add(new Block(new Point(x, y), 50, 20, 2, colors[i]));
+                    x -= 50;
+                }
+            } else {
+                for (int j = i; j < 10; j++) {
+                    blockList.add(new Block(new Point(x, y), 50, 20, 1, colors[i]));
+                    x -= 50;
+                }
             }
             y += 20;
         }

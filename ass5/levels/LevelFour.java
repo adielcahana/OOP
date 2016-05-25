@@ -78,12 +78,19 @@ public class LevelFour implements LevelInformation {
         double y = 100;
         // Array of colors for the block.
         Color[] colors = {Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN, Color.WHITE, Color.PINK, Color.CYAN};
-        // Create the blocks and put them in a list.
+        // Create the blocks and put them in a list first row with 2 hit.
         for (int i = 0; i < 7; i++) {
             double x = 20;
-            for (int j = 0; j < 15; j++) {
-                blockList.add(new Block(new Point(x, y),  760 / 15 + 0.7, 20, 1, colors[i]));
-                x +=  760 / 15 + 0.7;
+            if (i == 0) {
+                for (int j = 0; j < 15; j++) {
+                    blockList.add(new Block(new Point(x, y),  760 / 15 + 0.7, 20, 2, colors[i]));
+                    x +=  760 / 15 + 0.7;
+                }
+            } else {
+                for (int j = 0; j < 15; j++) {
+                    blockList.add(new Block(new Point(x, y),  760 / 15 + 0.7, 20, 1, colors[i]));
+                    x +=  760 / 15 + 0.7;
+                }
             }
             y += 20;
         }
