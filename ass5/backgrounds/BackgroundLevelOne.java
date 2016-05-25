@@ -6,20 +6,31 @@ import biuoop.DrawSurface;
 import gameObjects.Sprite;
 import geometry.Rectangle;
 
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-04-19 */
 public class BackgroundLevelOne implements Sprite {
 
     private Rectangle frame;
     private Color color;
-    
-    public BackgroundLevelOne(Rectangle frame, Color color){
-        this.frame = frame;
-        this.color = color;
+
+    /** Constructor - create the background rectangle and give it color. */
+    public BackgroundLevelOne() {
+        this.frame = new Rectangle(new Point(20, 40), 760, 560);
+        this.color = Color.BLACK;
     }
-    
+
     @Override
+    /**
+     * draw the background.
+     * <p>
+     * @param surface - the given DrawSurface. */
     public void drawOn(DrawSurface surface) {
+        // Draw the background.
         surface.setColor(this.color);
         this.frame.drawOn(surface);
+        // Draw a scope.
         surface.setColor(Color.blue);
         surface.drawLine(520, 210, 420, 210);
         surface.drawLine(280, 210, 380, 210);
@@ -34,11 +45,19 @@ public class BackgroundLevelOne implements Sprite {
     public void timePassed() {
     }
 
+    /**
+     * adds the background to the game.
+     * <p>
+     * @param game - the game. */
     public void addToGame(GameLevel game) {
         game.addSprite(this);
     }
-    
-    public void removeFromGame(GameLevel game){
+
+    /**
+     * remove the background from the game.
+     * <p>
+     * @param game - the game*/
+    public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
     }
 }
