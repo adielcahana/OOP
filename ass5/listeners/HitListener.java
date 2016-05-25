@@ -1,9 +1,18 @@
 package listeners;
+
 import gameObjects.Ball;
 import gameObjects.Block;
 
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-04-10 */
 public interface HitListener {
-   // This method is called whenever the beingHit object is hit.
-   // The hitter parameter is the Ball that's doing the hitting.
+
+    /**
+     * Called when beingHit object is hit.
+     * <p>
+     * @param beingHit - the block that hit.
+     * @param hitter - the ball that hit. */
    void hitEvent(Block beingHit, Ball hitter);
 }
