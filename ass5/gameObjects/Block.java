@@ -1,4 +1,5 @@
 package gameObjects;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,14 @@ import geometry.Rectangle;
 import listeners.HitListener;
 
 /**
-* @author Adiel cahana <adiel.cahana@gmail.com>
-* @version 1.0
-* @since 2016-04-02 */
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-04-02 */
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle shape;
     private int maxHits;
     private Color color;
-    List<HitListener> hitListeners;
+    private List<HitListener> hitListeners;
 
     /** Block constructor.
      * <p>
@@ -62,6 +63,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * notify the block that it been hit
      * return appropriate velocity to the ball.
      * <p>
+     * @param hitter - the ball that hit the block.
      * @param collisionPoint - the next collision coordinate
      * @param currentVelocity - the velocity that needs to be changed
      * @return Velocity - new appropriate velocity*/
@@ -83,54 +85,47 @@ public class Block implements Collidable, Sprite, HitNotifier {
         }
         //setting new velocity according to the hit place
         switch(hitPlace) {
-            case up:
-                newVelocity = new Velocity(dx, -Math.abs(dy));
-                break;
-            case down:
-                newVelocity = new Velocity(dx, Math.abs(dy));
-                break;
-            case right:
-                newVelocity = new Velocity(Math.abs(dx), dy);
-                break;
-            case left:
-                newVelocity = new Velocity(-Math.abs(dx), dy);
-                break;
-            default:
-                System.out.println("Error: no velocity");
+        case up:
+            newVelocity = new Velocity(dx, -Math.abs(dy));
+            break;
+        case down:
+            newVelocity = new Velocity(dx, Math.abs(dy));
+            break;
+        case right:
+            newVelocity = new Velocity(Math.abs(dx), dy);
+            break;
+        case left:
+            newVelocity = new Velocity(-Math.abs(dx), dy);
+            break;
+        default:
+            System.out.println("Error: no velocity");
         }
+        // Notify on the hit.
         this.notifyHit(hitter);
         return newVelocity;
     }
-    
+
+    /** Notify all the listeners that about the event.
+     * <p>
+     * @param hitter - the ball that hit the block. */
     private void notifyHit(Ball hitter) {
-        // Make a copy of the hitListeners before iterating over them.
+        // Copy the hitListeners before iterating over them.
         List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
-        // Notify all listeners about a hit event:
+        // Notify all listeners about a hit event.
         for (HitListener hl : listeners) {
-           hl.hitEvent(this, hitter);
+            hl.hitEvent(this, hitter);
         }
-     }
-    
+    }
+
     /** Block drawing method.
      * <p>
      * drawing to black with a black frame,
      * filled with his set color.
-     * draw the hit number in the block center.
      * <p>
      * @param surface - the surface to be drew on*/
     public void drawOn(DrawSurface surface) {
-        String hits;
-        //set the print string (hits) to the correct value
-       //if (this.maxHits > 0) {
-            hits =  Integer.toString(this.maxHits);
-        /*} else {
-            hits = "x";
-        }*/
         surface.setColor(this.color);
         this.shape.drawOn(surface);
-        Line[] lines = this.shape.myLines();
-        //draw the hit number on Hits remaining
-        //surface.drawText((int) lines[0].middle().getX() - 3, (int) lines[1].middle().getY() + 7, hits, 20);
     }
 
     /** add the Block to the game Database.
@@ -144,22 +139,22 @@ public class Block implements Collidable, Sprite, HitNotifier {
     /** remove the Block from the game Database.
      * <p>
      * @param game - the game to be remove*/
-    public void removeFromGame(GameLevel game){
+    public void removeFromGame(GameLevel game) {
         game.removeCollidable(this);
         game.removeSprite(this);
 
     }
-    
+
     /**
      * notify the block that the main animation loop continued.*/
     public void timePassed() {
     }
-    
+
     @Override
     public void addHitListener(HitListener hl) {
         this.hitListeners.add(hl);
     }
-    
+
     @Override
     public void removeHitListener(HitListener hl) {
         this.hitListeners.remove(hl);

@@ -1,7 +1,7 @@
 package gameObjects;
+
 import animations.GameLevel;
 import biuoop.DrawSurface;
-
 /**
 * @author Ori Engelberg <turht50@gmail.com>
 * @version 1.0

@@ -1,4 +1,5 @@
 package gameObjects;
+
 import java.awt.Color;
 
 import animations.GameLevel;
@@ -9,7 +10,7 @@ public class ScoreIndicator implements Sprite {
 
     private final Color color = Color.BLACK;
     private Counter scoreCounter;
-    
+
     /** Block constructor.
      * <p>
      * @param upperLeft - coordinate
@@ -20,7 +21,7 @@ public class ScoreIndicator implements Sprite {
     public ScoreIndicator(Counter scoreCounter) {
         this.scoreCounter = scoreCounter;
     }
-    
+
     @Override
     public void drawOn(DrawSurface surface) {
         String hits = "Score: " + Integer.toString(this.scoreCounter.getValue());
@@ -31,11 +32,11 @@ public class ScoreIndicator implements Sprite {
     @Override
     public void timePassed() {   
     }
-    
+
     public void addToGame(GameLevel game) {
         game.addSprite(this);
     }
-    
+
     public void removeFromGame(GameLevel game){
         game.removeSprite(this);
     }
