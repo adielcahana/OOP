@@ -95,6 +95,7 @@ public class Paddle implements Sprite, Collidable {
      *  the upper part of the paddle divided to 5,
      *  and every part return a different angle of the velocity.
      * <p>
+     * @param hitter - the ball that hit the paddle.
      * @param collisionPoint - the collision point of the ball with the paddle.
      * @param currentVelocity - the current velocity of the point.
      * @return the new velocity vector of the ball. */
@@ -190,11 +191,15 @@ public class Paddle implements Sprite, Collidable {
         game.addCollidable(this);
         }
 
+    /**
+    * remove the paddle from the game as sprite and as collidable.
+    * <p>
+    * @param game - the game that the paddle added to. */
     public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
         game.removeCollidable(this);
     }
-    
+
     /**
      * Draw the paddle.
      * <p>
