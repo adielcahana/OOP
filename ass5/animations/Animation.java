@@ -1,4 +1,5 @@
 package animations;
+
 import biuoop.DrawSurface;
 
 public interface Animation {

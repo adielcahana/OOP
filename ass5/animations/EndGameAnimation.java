@@ -20,8 +20,8 @@ public class EndGameAnimation implements Animation {
     private LevelInformation level;
     private List<Ball> ballList;
     private GameLevel game;
-    
-    
+
+
     public EndGameAnimation(boolean win, Counter scoreCounter, LevelInformation level, KeyboardSensor keyboard) {
         this.stop = false;
         this.win = win;
@@ -33,7 +33,7 @@ public class EndGameAnimation implements Animation {
         this.keyboard = keyboard;
         this.game = game;
     }
-    
+
     @Override
     public void doOneFrame(DrawSurface d) {
         this.level.getBackground().drawOn(d);
@@ -62,21 +62,21 @@ public class EndGameAnimation implements Animation {
         // TODO Auto-generated method stub
         return stop;
     }
-    
+
     public void balls() {
         for (int i = 0, j = 0; i < 9; i++ , j+=45) {
             Ball ball = new Ball(100, 100, 5, Color.WHITE);
             ball.setVelocity(Velocity.fromAngleAndSpeed(j , 7));
             ball.addToGame(game);
             this.ballList.add(ball);
-            
+
         }
         for (int i = 0, j = 0; i < 9; i++ , j+=45) {
             Ball ball = new Ball(300, 400, 5, Color.BLUE);
             ball.setVelocity(Velocity.fromAngleAndSpeed(j , 7));
             ball.addToGame(game);
             this.ballList.add(ball);
-            
+
         }
         for (int i = 0, j = 0; i < 9; i++ , j+=45) {
             Ball ball = new Ball(500, 700, 5, Color.BLUE);

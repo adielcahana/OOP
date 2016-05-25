@@ -12,21 +12,23 @@ public class CountdownAnimation implements Animation {
     private SpriteCollection gameScreen;
     private Sleeper sleeper;
     private boolean stop;
-
+    private LevelInformation level;
+    
     // The CountdownAnimation will display the given gameScreen,
     // for numOfSeconds seconds, and on top of them it will show
     // a countdown from countFrom back to 1, where each number will
     // appear on the screen for (numOfSeconds / countFrom) secods, before
     // it is replaced with the next one.
-    public CountdownAnimation(double numOfSeconds, int countFrom, SpriteCollection gameScreen) {
+    public CountdownAnimation(double numOfSeconds, int countFrom, SpriteCollection gameScreen, LevelInformation level) {
         this.numOfSeconds = numOfSeconds;
         this.countFrom = countFrom;
         this.countLeft = countFrom;
         this.stop = false;
         this.gameScreen = gameScreen;
         this.sleeper = new Sleeper();
+        this.level = level;
     }
-
+       
     public void doOneFrame(DrawSurface d) {
         long startTime = System.currentTimeMillis(); // timing
         gameScreen.drawAllOn(d);
@@ -46,8 +48,8 @@ public class CountdownAnimation implements Animation {
         }
         //this.sleeper.sleepFor((long) ((numOfSeconds * 1000) / countFrom) );
     }
-
+    
     public boolean shouldStop() { 
-        return this.stop;
+       return this.stop;
     }
 }

@@ -31,12 +31,11 @@ import animations.CountdownAnimation;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
- * @version 1.0
+ * @version 1.1
  * @since 2016-04-03 */
-public class GameLevel implements Animation{
+public class GameLevel implements Animation {
     private SpriteCollection sprites;
     private GameEnvironment environment;
-    private biuoop.GUI gui;
     private biuoop.KeyboardSensor keyboard;
     private AnimationRunner runner;
     private Counter ballsCounter;
@@ -47,23 +46,22 @@ public class GameLevel implements Animation{
     private LevelInformation level;
 
     /**
-     * Contractor - Create a list of sprites a new environment and a gui for the game. 
-     * @param animationRunner 
-     * @param keyboard 
-     * @param gui 
-     * @param numberOfLives2 
-     * @param scoreCounter */
-    public GameLevel(LevelInformation level, KeyboardSensor keyboard, AnimationRunner animationRunner, GUI gui, Counter scoreCounter, Counter numberOfLives) {
+     * Constructor - Create a list of sprites a new environment and a gui for the game.
+     * @param animationRunner - the AnimationRunner of the game.
+     * @param keyboard - the KeyboardSensor of the game.
+     * @param gui - the gui of the game.
+     * @param numberOfLives - Counter with the lives that left for the game.
+     * @param scoreCounter - Counter with the score of the player.
+     * @param level - the level that played. */
+    public GameLevel(LevelInformation level, KeyboardSensor keyboard, AnimationRunner animationRunner,
+            GUI gui, Counter scoreCounter, Counter numberOfLives) {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment(new Point(800, 600) , new Point(0, 0));
-        this.gui = gui;
         this.ballsCounter = new Counter();
         this.blocksCounter = new Counter();
         this.scoreCounter = scoreCounter;
         this.numberOfLives = numberOfLives;
         this.runner = animationRunner;
-        //this.runner = new AnimationRunner(this.gui, 60);
-        //this.keyboard = this.gui.getKeyboardSensor();
         this.keyboard = keyboard;
         this.level = level;
     }
@@ -76,6 +74,10 @@ public class GameLevel implements Animation{
         this.environment.addCollidable(c);
     }
 
+    /**
+     * remove the collidable object from the sprites list.
+     * <p>
+     * @param c - the collidable object to remove. */
     public void removeCollidable(Collidable c) {
         this.environment.removeCollidable(c);
     }
@@ -83,84 +85,81 @@ public class GameLevel implements Animation{
     /**
      * Add the sprite object to the sprites list.
      * <p>
-     * @param s - the collidable object to add. */
+     * @param s - the sprite object to add. */
     public void addSprite(Sprite s) {
         this.sprites.addSprite(s);
     }
 
-
-    public void removeSprite(Sprite s){
+    /**
+     * remove the sprite object from the sprites list.
+     * <p>
+     * @param s - the sprite object to remove. */
+    public void removeSprite(Sprite s) {
         this.sprites.removeSprite(s);
     }
 
     /**
-     * Initialize the game.
-     * Create the variables for the games. */
+     * Initialize the level.
+     * Create the sprites for the current level. */
     public void initialize() {
+        // Create the HitListener for blocks and score.
         HitListener blockRemover = new BlockRemover(this, this.blocksCounter);
         HitListener scoreListener = new ScoreTrackingListener(this.scoreCounter);
-        // Create the frame & blocks.
-        this.createFrame();
+        // Create the borders.
+        this.createBorder();
+        // Create the sprites that show the score lives and the level name.
         ScoreIndicator score = new ScoreIndicator(this.scoreCounter);
         score.addToGame(this);
         LivesIndicator lives = new LivesIndicator(this.numberOfLives);
         lives.addToGame(this);
         LevelName name = new LevelName(this.level.levelName());
         name.addToGame(this);
+        // Add the background of the level.
         level.getBackground().addToGame(this);
-        // The colors for the blocks.
-        //Color[] colors = {Color.BLUE, Color.RED, Color.YELLOW, Color.PINK, Color.GREEN, Color.MAGENTA};
-        Point start = new Point(230, 150);
-        // Create all the blocks and add them to the game.
-        //BlockFactory blockFactory = new BlockFactory(new Point(800, 600) , new Point(0, 0));
-        Velocity velocity = new Velocity(50, 20);
-        // Add all the blocks to the games.
+        //Point start = new Point(230, 150);
+        //Velocity velocity = new Velocity(50, 20);
+        // Get list of blocks from the level information and add them to the game.
         List<Block> blockList = new ArrayList<Block>(this.level.blocks());
         for (Block block : blockList) {
             block.addToGame(this);
             block.addHitListener(blockRemover);
             block.addHitListener(scoreListener);
         }
+        // Add the number of blocks to the block counter.
         this.blocksCounter.increase(level.numberOfBlocksToRemove());
-        start = velocity.applyToPoint(start);
+        //start = velocity.applyToPoint(start);
     }
-
-    public void run(){
-        while(this.numberOfLives.getValue() > 0 && this.blocksCounter.getValue() != 0){
-            this.playOneTurn();
-        }
-        this.gui.close();
-        return;
-    }
-
 
     /**
-     * Run the game.
-     * Create the variables for the games. */
+     * Run one turn (one live) of the game.
+     * Create the balls and the paddle and run the level. */
     public void playOneTurn() {
-        List<Ball> BallList = new ArrayList<Ball>(this.level.Balls());
-        for (Ball ball : BallList) {
+        // Get list of balls from the level information and add them to the game.
+        List<Ball> ballList = new ArrayList<Ball>(this.level.balls());
+        for (Ball ball : ballList) {
             ball.setGameEnvironment(this.environment);
             ball.addToGame(this);
         }
+     // Add the number of balls to the balls counter.
         this.ballsCounter.increase(level.numberOfBalls());
         // Create the paddle and add it to the game.
         Point paddlePoint = new Point(400 - (level.paddleWidth() / 2), 580);
-        Paddle paddle = new Paddle(new Rectangle(paddlePoint, level.paddleWidth(), 20), Color.YELLOW, level.paddleSpeed(), this.keyboard, 20, 780);
+        Paddle paddle = new Paddle(new Rectangle(paddlePoint, level.paddleWidth(), 20),
+                Color.YELLOW, level.paddleSpeed(), this.keyboard, 20, 780);
         paddle.addToGame(this);
         this.running = true;
-        // countdown before turn starts.
-        this.runner.run(new CountdownAnimation(2, 3, this.sprites)); 
-        // use our runner to run the current animation -- which is one turn of
-        // the game.
+        // Countdown before turn starts.
+        this.runner.run(new CountdownAnimation(2, 3, this.sprites, this.level));
+        // Use our runner to run the current animation -- which is one turn of the game.
         this.runner.run(this);
+        // remove the paddle to create new paddle in the middle.
         paddle.removeFromGame(this);
     }
 
     /**
-     * Create the frame.
-     * Create 4 blocks for the frame and add them to the game. */
-    public void createFrame() {
+     * Create the border.
+     * Create 4 blocks for the border and add them to the game. */
+    public void createBorder() {
         Block upFrame = new Block(new Point(0, 20), 800, 20, -1, Color.GRAY);
         Block lowFrame = new Block(new Point(0, 600), 800, 20, -1, Color.GRAY);
         lowFrame.addHitListener(new BallRemover(this, this.ballsCounter));
@@ -197,8 +196,11 @@ public class GameLevel implements Animation{
         // this.running = false;
     }
 
-    public boolean HaveBlocks(){
-        if(blocksCounter.getValue() > 0){
+    /**
+     * Check if left blocks in the level.
+     * @return true if left blocks else return false. */
+    public boolean haveBlocks() {
+        if (blocksCounter.getValue() > 0) {
             return true;
         }
         return false;
