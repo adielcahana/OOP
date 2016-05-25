@@ -1,7 +1,9 @@
 package geometry;
+
 import java.awt.Color;
 
 import biuoop.DrawSurface;;
+
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
