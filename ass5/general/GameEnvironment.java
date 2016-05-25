@@ -1,5 +1,5 @@
 package general;
-import geometry.Rectangle;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +9,8 @@ import gameObjects.Collidable;
 import geometry.Line;
 import geometry.Point;
 import geometry.PointByDistanceComparator;
+import geometry.Rectangle;
+
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
 * @version 1.0
@@ -101,7 +103,8 @@ public class GameEnvironment {
         }
         if (collisionsPoints.isEmpty() || blocks.isEmpty()) {
             System.out.println("Error: no CollisionInfo");
-            return getClosestCollision(new Line(trajectory.start(), new Point(trajectory.end().getX() +1, trajectory.end().getY())));
+            return getClosestCollision(new Line(trajectory.start(),
+                    new Point(trajectory.end().getX() + 1, trajectory.end().getY())));
         }
         //copy the collision points to another array and sort them
         sortedCollisionsPoints.addAll(collisionsPoints);

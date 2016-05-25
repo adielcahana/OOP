@@ -1,4 +1,5 @@
 package general;
+
 import gameObjects.Collidable;
 import geometry.Point;
 
