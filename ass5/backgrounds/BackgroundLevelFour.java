@@ -6,6 +6,7 @@ import animations.GameLevel;
 import biuoop.DrawSurface;
 import gameObjects.Cloud;
 import gameObjects.Sprite;
+import geometry.Point;
 import geometry.Rectangle;
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -35,7 +36,7 @@ public class BackgroundLevelFour implements Sprite {
         Cloud cloud1 = new Cloud(600, 500, 30, 100);
         cloud1.drawOn(surface);
         Cloud cloud2 = new Cloud(100, 400, 15, 210);
-        cloud2.drawOn(surface);
+        cloud2.drawOnCloud2(surface);
     }
 
     @Override
