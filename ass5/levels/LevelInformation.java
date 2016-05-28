@@ -2,10 +2,10 @@ package levels;
 
 import java.util.List;
 
-import gameObjects.Ball;
-import gameObjects.Block;
-import gameObjects.Sprite;
-import gameObjects.Velocity;
+import gameobjects.Ball;
+import gameobjects.Block;
+import gameobjects.Sprite;
+import gameobjects.Velocity;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>

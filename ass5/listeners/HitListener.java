@@ -1,7 +1,7 @@
 package listeners;
 
-import gameObjects.Ball;
-import gameObjects.Block;
+import gameobjects.Ball;
+import gameobjects.Block;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>

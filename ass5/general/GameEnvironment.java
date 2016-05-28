@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import biuoop.DrawSurface;
-import gameObjects.Collidable;
+import gameobjects.Collidable;
 import geometry.Line;
 import geometry.Point;
 import geometry.PointByDistanceComparator;
@@ -16,7 +16,7 @@ import geometry.Rectangle;
 * @version 1.0
 * @since 2016-04-02 */
 public class GameEnvironment {
-    private List collidables;
+    private List<Collidable> collidables;
     private Point lowerFrameEdge;
     private Point upperFrameEdge;
     private DrawSurface surface;
@@ -28,7 +28,7 @@ public class GameEnvironment {
      * @param lowerFrameEdge - the game frame lower boundary coordinate
      * @param upperFrameEdge - the game frame upper boundary coordinate*/
     public GameEnvironment(Point lowerFrameEdge, Point upperFrameEdge) {
-        this.collidables = new ArrayList();
+        this.collidables = new ArrayList<Collidable>();
         this.lowerFrameEdge = lowerFrameEdge;
         this.upperFrameEdge = upperFrameEdge;
         this.setSurface(null);
@@ -67,12 +67,12 @@ public class GameEnvironment {
         }
         return null;
     }
-    
+
     /**
      * remove the collidable with the given index
      * from the environment.
      * <p>
-     * @param index - the colldable index*/
+     * @param c - the colldable index*/
     public void removeCollidable(Collidable c) {
         this.collidables.remove(c);
     }
@@ -87,12 +87,12 @@ public class GameEnvironment {
     public CollisionInfo getClosestCollision(Line trajectory) {
         //counter
         int i = 0;
-        List collisionsPoints = new ArrayList();
-        List sortedCollisionsPoints = new ArrayList();
-        List blocks = new ArrayList();
+        List<Point> collisionsPoints = new ArrayList<Point>();
+        List<Point> sortedCollisionsPoints = new ArrayList<Point>();
+        List<Collidable> blocks = new ArrayList<Collidable>();
         //add only the collidables and collision points in the trajectory route to List
         while (i < this.collidables.size()) {
-            Collidable c = (Collidable) this.collidables.get(i);
+            Collidable c = this.collidables.get(i);
             Rectangle rect = c.getCollisionRectangle();
             Point temp = trajectory.closestIntersectionToStartOfLine(rect);
             if (temp != null) {

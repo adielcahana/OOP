@@ -3,7 +3,7 @@ import java.awt.Color;
 
 import animations.GameLevel;
 import biuoop.DrawSurface;
-import gameObjects.Sprite;
+import gameobjects.Sprite;
 import geometry.Point;
 import geometry.Rectangle;
 

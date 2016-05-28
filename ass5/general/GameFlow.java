@@ -8,8 +8,6 @@ import biuoop.KeyboardSensor;
 import levels.LevelInformation;
 import listeners.Counter;
 
-import biuoop.KeyboardSensor;
-
 /**
  * @author Ori Engelberg <turht50@gmail.com>
  * @version 1.0
@@ -24,9 +22,9 @@ public class GameFlow {
     /**
      * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game.. */
     public GameFlow() {
+        this.gui = new biuoop.GUI("title", 800, 600);
         this.animationRunner = new AnimationRunner(this.gui, 60);
         this.keyboard = gui.getKeyboardSensor();
-        this.gui = new biuoop.GUI("title", 800, 600);;
     }
 
     /**
@@ -38,11 +36,11 @@ public class GameFlow {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
         Counter numberOfLives = new Counter(7);;
-
-        for (LevelInformation levelInfo : levels) {
+        int i;
+        for (i = 0; i < levels.size(); i++) {
 
             // Create the level
-            GameLevel level = new GameLevel(levelInfo, this.keyboard,
+            GameLevel level = new GameLevel(levels.get(i), this.keyboard,
                     this.animationRunner, this.gui, scoreCounter, numberOfLives);
 
             // Initialize the level.
@@ -55,9 +53,13 @@ public class GameFlow {
 
             // if no more lives game end.
             if (numberOfLives.getValue() == 0) {
+                this.animationRunner.run(new EndGameAnimation(false, scoreCounter, this.keyboard));
                 this.gui.close();
                 return;
             }
+        }
+        if (i == levels.size()) {
+            this.animationRunner.run(new EndGameAnimation(true, scoreCounter, this.keyboard));
         }
     }
 }

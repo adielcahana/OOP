@@ -1,33 +1,30 @@
 package animations;
 
 import java.awt.Color;
-import geometry.Point;
-import geometry.Rectangle;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.KeyboardSensor;
-import gameObjects.Ball;
-import gameObjects.Block;
-import gameObjects.Collidable;
-import gameObjects.LevelName;
-import gameObjects.LivesIndicator;
-import gameObjects.Paddle;
-import gameObjects.ScoreIndicator;
-import gameObjects.Sprite;
-import gameObjects.SpriteCollection;
-import gameObjects.Velocity;
+import gameobjects.Ball;
+import gameobjects.Block;
+import gameobjects.Collidable;
+import gameobjects.LevelName;
+import gameobjects.LivesIndicator;
+import gameobjects.Paddle;
+import gameobjects.ScoreIndicator;
+import gameobjects.Sprite;
+import gameobjects.SpriteCollection;
 import general.GameEnvironment;
+import geometry.Point;
+import geometry.Rectangle;
 import levels.LevelInformation;
 import listeners.BallRemover;
 import listeners.BlockRemover;
 import listeners.Counter;
 import listeners.HitListener;
 import listeners.ScoreTrackingListener;
-import animations.CountdownAnimation;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -140,7 +137,7 @@ public class GameLevel implements Animation {
             ball.setGameEnvironment(this.environment);
             ball.addToGame(this);
         }
-     // Add the number of balls to the balls counter.
+        // Add the number of balls to the balls counter.
         this.ballsCounter.increase(level.numberOfBalls());
         // Create the paddle and add it to the game.
         Point paddlePoint = new Point(400 - (level.paddleWidth() / 2), 580);
@@ -149,7 +146,7 @@ public class GameLevel implements Animation {
         paddle.addToGame(this);
         this.running = true;
         // Countdown before turn starts.
-        this.runner.run(new CountdownAnimation(2, 3, this.sprites, this.level));
+        this.runner.run(new CountdownAnimation(2, 3, this.sprites));
         // Use our runner to run the current animation -- which is one turn of the game.
         this.runner.run(this);
         // remove the paddle to create new paddle in the middle.
@@ -170,30 +167,34 @@ public class GameLevel implements Animation {
         upFrame.addToGame(this);
         lowFrame.addToGame(this);
     }
-
+    @Override
+    /** returns information about the continuation of the animation.
+     * <p>
+     * @return stop - if the animation should stop' returns true. */
     public boolean shouldStop() {
-        return !this.running; 
+        return !this.running;
     }
-
+    @Override
+    /** draw one frame of the animation.
+    * <p>
+    * @param d - a draw surface to draw the frame on. */
     public void doOneFrame(DrawSurface d) {
-
+        //pause screen
         if (this.keyboard.isPressed("p")) {
             this.runner.run(new PauseScreen(this.keyboard));
         }
         this.environment.setSurface(d);
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();
+        //no balls left
         if (this.ballsCounter.getValue() == 0) {
             this.numberOfLives.decrease(1);
             this.running = false;
-        } else if (this.blocksCounter.getValue() == 0) {
+        //no blocks left
+        } else if (!this.haveBlocks()) {
             this.scoreCounter.increase(100);
-            this.sprites.drawAllOn(d);
             this.running = false;
         }
-        // the logic from the previous playOneTurn method goes here.
-        // the `return` or `break` statements should be replaced with
-        // this.running = false;
     }
 
     /**

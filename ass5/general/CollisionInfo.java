@@ -1,6 +1,6 @@
 package general;
 
-import gameObjects.Collidable;
+import gameobjects.Collidable;
 import geometry.Point;
 
 /**

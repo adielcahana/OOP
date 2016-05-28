@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import geometry.Rectangle;
-import geometry.Point;
 import backgrounds.BackgroundLevelOne;
-import gameObjects.Ball;
-import gameObjects.Block;
-import gameObjects.Sprite;
-import gameObjects.Velocity;
+import gameobjects.Ball;
+import gameobjects.Block;
+import gameobjects.Sprite;
+import gameobjects.Velocity;
+import geometry.Point;
+import geometry.Rectangle;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>

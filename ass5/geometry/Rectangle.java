@@ -31,8 +31,8 @@ public class Rectangle {
      * <p>
      * @param line - the line to check intersection with the rectangle
      * @return intersection List*/
-    public java.util.List intersectionPoints(Line line) {
-        List intersectionPoints = new ArrayList();
+    public List<Point> intersectionPoints(Line line) {
+        List<Point> intersectionPoints = new ArrayList<Point>();
         //get all the rectangle lines
         Line[] lines = this.myLines();
         //check if the line intersect with all the rectangle

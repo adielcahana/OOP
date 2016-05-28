@@ -160,7 +160,7 @@ public class Line {
         * @return if there is intersection return the closest point else return null.  */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         // Create list of the intersection points.
-        List intersections = rect.intersectionPoints(this);
+        List<Point> intersections = rect.intersectionPoints(this);
         if (intersections.isEmpty()) {
             return null;
         }

@@ -3,24 +3,33 @@ package animations;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
-
+/**
+* @author Adiel cahana <adiel.cahana@gmail.com>
+* @version 1.0
+* @since 2016-05-06 */
 public class AnimationRunner {
     private GUI gui;
     private int framesPerSecond;
     private Sleeper sleeper;
-    
+    /** AnimationRunner constructor.
+     * <p>
+     * @param gui - GUI.
+     * @param framesPerSecond - the frame rate. */
     public AnimationRunner(GUI gui, int framesPerSecond) {
         this.gui = gui;
         this.framesPerSecond = framesPerSecond;
         this.sleeper = new Sleeper();
     }
-    
+    /** Animation running method.
+     * <p>
+     * @param animation - the animation to run. */
     public void run(Animation animation) {
        int millisecondsPerFrame = 1000 / this.framesPerSecond;
-       // Draw all the objects and move the ball in the frame.
        while (!animation.shouldStop()) {
-          long startTime = System.currentTimeMillis(); // timing
+          // timing
+          long startTime = System.currentTimeMillis();
           DrawSurface d = gui.getDrawSurface();
+          //create one frame of the animation
           animation.doOneFrame(d);
           gui.show(d);
           // timing

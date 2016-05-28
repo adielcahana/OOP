@@ -25,21 +25,21 @@ public class Counter {
      * increase the counter by a given integer.
      * <p>
      * @param number - the increase amount*/
-    void increase(int number) {
+    public void increase(int number) {
         count += number;
     }
     /**
      * decrease the counter by a given integer.
      * <p>
      * @param number - the decrease amount*/
-    void decrease(int number) {
+    public void decrease(int number) {
         count -= number;
     }
     /**
      * get the counter state.
      * <p>
      * @return count - the counter amount*/
-    int getValue() {
+    public int getValue() {
         return this.count;
     }
 }
