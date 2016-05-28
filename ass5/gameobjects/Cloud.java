@@ -2,14 +2,13 @@ package gameobjects;
 
 import java.awt.Color;
 
-import animations.GameLevel;
 import biuoop.DrawSurface;
 
 /**
 * @author Ori Engelberg <turht50@gmail.com>
 * @version 1.0
 * @since 2016-05-21 */
-public class Cloud implements Sprite {
+public class Cloud {
     private int x;
     private int y;
     private int space;
@@ -29,13 +28,12 @@ public class Cloud implements Sprite {
         this.length = length;
     }
 
-    @Override
     /**
      * Draw the cloud.
      * Create 5 circles with different levels of gray color and draw a lines for the rain.
      * <p>
      * @param surface - the surface that given. */
-    public void drawOn(DrawSurface surface) {
+    public void drawOnCloud1(DrawSurface surface) {
         surface.setColor(Color.WHITE);
         for (int i = 0; i < 100; i += 10) {
             surface.drawLine(x + i, y, x + i - this.space, y + this.length);
@@ -71,18 +69,4 @@ public class Cloud implements Sprite {
         surface.fillCircle(x + 60, y - 20, 25);
         surface.fillCircle(x + 75, y + 10, 30);
     }
-    @Override
-    public void timePassed() {
-    }
-
-    @Override
-    public void addToGame(GameLevel game) {
-
-    }
-
-    @Override
-    public void removeFromGame(GameLevel game) {
-
-    }
-
 }
