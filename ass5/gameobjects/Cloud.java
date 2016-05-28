@@ -15,7 +15,8 @@ public class Cloud {
     private int length;
 
     /**
-     * Constructor - Create a start point an end point and the line slope.
+     * Constructor - give a point for the circles that created the cloud,
+     * the rain length and the space between the lines that create the rain.
      * <p>
      * @param x - a x value for circles that create the cloud.
      * @param y - a y value for circles that create the cloud.
