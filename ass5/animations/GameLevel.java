@@ -1,6 +1,9 @@
 package animations;
 
 import java.awt.Color;
+import geometry.Point;
+import geometry.Rectangle;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,6 @@ import gameobjects.ScoreIndicator;
 import gameobjects.Sprite;
 import gameobjects.SpriteCollection;
 import general.GameEnvironment;
-import geometry.Point;
-import geometry.Rectangle;
 import levels.LevelInformation;
 import listeners.BallRemover;
 import listeners.BlockRemover;
@@ -113,8 +114,6 @@ public class GameLevel implements Animation {
         name.addToGame(this);
         // Add the background of the level.
         level.getBackground().addToGame(this);
-        //Point start = new Point(230, 150);
-        //Velocity velocity = new Velocity(50, 20);
         // Get list of blocks from the level information and add them to the game.
         List<Block> blockList = new ArrayList<Block>(this.level.blocks());
         for (Block block : blockList) {
@@ -124,7 +123,6 @@ public class GameLevel implements Animation {
         }
         // Add the number of blocks to the block counter.
         this.blocksCounter.increase(level.numberOfBlocksToRemove());
-        //start = velocity.applyToPoint(start);
     }
 
     /**
@@ -167,38 +165,43 @@ public class GameLevel implements Animation {
         upFrame.addToGame(this);
         lowFrame.addToGame(this);
     }
-    @Override
+
     /** returns information about the continuation of the animation.
      * <p>
      * @return stop - if the animation should stop' returns true. */
     public boolean shouldStop() {
         return !this.running;
     }
-    @Override
-    /** draw one frame of the animation.
-    * <p>
-    * @param d - a draw surface to draw the frame on. */
+
+    /**
+     * Do one step of the game ( draw all the sprites and notify that time past).
+     * <p>
+     * @param d - the given surface.
+     */
     public void doOneFrame(DrawSurface d) {
-        //pause screen
+        // Pause the game.
         if (this.keyboard.isPressed("p")) {
             this.runner.run(new PauseScreen(this.keyboard));
         }
+        // Draw all the sprites.
         this.environment.setSurface(d);
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();
-        //no balls left
+        // If the balls over lose one life
         if (this.ballsCounter.getValue() == 0) {
             this.numberOfLives.decrease(1);
             this.running = false;
-        //no blocks left
-        } else if (!this.haveBlocks()) {
+        } else if (this.blocksCounter.getValue() == 0) {
+            // Else if win the level increase 100 points.
             this.scoreCounter.increase(100);
+            this.sprites.drawAllOn(d);
             this.running = false;
         }
     }
 
     /**
      * Check if left blocks in the level.
+     * <p>
      * @return true if left blocks else return false. */
     public boolean haveBlocks() {
         if (blocksCounter.getValue() > 0) {
