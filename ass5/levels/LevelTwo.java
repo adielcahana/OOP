@@ -36,13 +36,13 @@ public class LevelTwo implements LevelInformation {
      * @return a list of velocity for all the balls in the level. */
     public List<Velocity> initialBallVelocities() {
         List<Velocity> velocity = new ArrayList<Velocity>();
-        int j = 310;
+        int j = 300;
         // Make a velocity as the number of the balls and put on the list.
         for (int i = 0; i < this.numberOfBalls(); i++) {
             velocity.add(Velocity.fromAngleAndSpeed(j % 360, 7));
-            j += 10;
+            j += 12;
             if (j == 360) {
-                j += 10;
+                j += 12;
             }
         }
         return velocity;
