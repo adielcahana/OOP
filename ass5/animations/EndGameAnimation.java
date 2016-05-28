@@ -32,7 +32,6 @@ public class EndGameAnimation implements Animation {
     * <p>
     * @param d - a draw surface to draw the frame on. */
     public void doOneFrame(DrawSurface d) {
-        this.level.getBackground().drawOn(d);
         if (win) {
             d.drawText((d.getWidth() / 5) + 2, d.getHeight() / 2,
                        "You Win! Your score is " + this.scoreCounter.getValue(), 32);
