@@ -194,7 +194,6 @@ public class GameLevel implements Animation {
         } else if (this.blocksCounter.getValue() == 0) {
             // Else if win the level increase 100 points.
             this.scoreCounter.increase(100);
-            this.sprites.drawAllOn(d);
             this.running = false;
         }
     }
