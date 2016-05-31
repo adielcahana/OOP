@@ -1,12 +1,16 @@
 package general;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import animations.AnimationRunner;
 import animations.EndGameAnimation;
 import animations.GameLevel;
+import animations.HighScoresAnimation;
 import biuoop.KeyboardSensor;
 import levels.LevelInformation;
 import listeners.Counter;
+import score.HighScoresTable;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -35,7 +39,16 @@ public class GameFlow {
     public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
-        Counter numberOfLives = new Counter(7);;
+        Counter numberOfLives = new Counter(7);
+        HighScoresTable table = new HighScoresTable(6);
+        File file = new File("C:/Users/Adiel/workspace/ass6/scores.txt");
+        try {
+            table.load(file);
+        } catch (IOException e) {
+            System.out.println("error");
+            e.printStackTrace();
+        }
+        this.animationRunner.run(new HighScoresAnimation(table, "p", keyboard));
         int i;
         for (i = 0; i < levels.size(); i++) {
 

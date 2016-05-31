@@ -2,7 +2,6 @@ package animations;
 
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
-import levels.LevelInformation;
 import listeners.Counter;
 /**
 * @author Adiel cahana <adiel.cahana@gmail.com>
@@ -13,7 +12,6 @@ public class EndGameAnimation implements Animation {
     private boolean win;
     private KeyboardSensor keyboard;
     private Counter scoreCounter;
-    private LevelInformation level;
 
     /** Circle constructor.
      * <p>
