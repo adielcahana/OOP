@@ -50,7 +50,4 @@ public class HighScoresAnimation implements Animation {
     public boolean shouldStop() {
         return this.stop;
     }
-
-
-
 }
