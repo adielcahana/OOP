@@ -8,7 +8,7 @@ public class KeyPressStoppableAnimation implements Animation {
     private String key;
     private Animation animation;
     private boolean stop;
-    private boolean flag;
+    private boolean isAlreadyPressed ;
 
 
     public KeyPressStoppableAnimation(KeyboardSensor sensor, String key, Animation animation){
@@ -16,7 +16,7 @@ public class KeyPressStoppableAnimation implements Animation {
         this.key = key;
         this.animation = animation;
         this.stop = false;
-        this.flag = true;
+        this.isAlreadyPressed  = true;
         // think about the implementations of doOneFrame and shouldStop.
     }
 
@@ -24,11 +24,11 @@ public class KeyPressStoppableAnimation implements Animation {
     public void doOneFrame(DrawSurface d, double dt) {
         animation.doOneFrame(d, dt);
         if(this.sensor.isPressed(this.key)){
-            if(!this.flag){
+            if(!this.isAlreadyPressed ){
                 this.stop = true;
             }
         } else{
-            this.flag = false;
+            this.isAlreadyPressed  = false;
         }
     }
 
