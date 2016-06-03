@@ -38,7 +38,7 @@ public class GameFlow {
     public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
-        Counter numberOfLives = new Counter(1);;
+        Counter numberOfLives = new Counter(7);;
         int i;
         for (i = 0; i < levels.size(); i++) {
 
