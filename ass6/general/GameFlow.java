@@ -41,16 +41,12 @@ public class GameFlow {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
         Counter numberOfLives = new Counter(1);
-        HighScoresTable table = new HighScoresTable(5);
         File file = new File("./highscore.txt");
+        HighScoresTable table = HighScoresTable.loadFromFile(file);
         try {
-            table.load(file);
+            table.save(file);
         } catch (IOException e) {
-            try {
-                table.save(file);
-            } catch (IOException e1) {
-                System.err.println("Unable to find file: " + file.getName());
-            }
+            System.err.println("Unable to find file: " + file.getName());
         }
         int i;
         for (i = 0; i < levels.size(); i++) {
