@@ -67,7 +67,6 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
     public void clear() { 
         this.highScores.removeAll(highScores);
     }
-    
 
     // Load table data from file.
     // Current table data is cleared.
@@ -86,9 +85,11 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
                 this.maxSize = table.maxSize;
                 this.highScores.addAll(table.getHighScores());
             }
+        } catch (SerializationException e) {
+            System.err.println("Deserialization problem " + filename.getName());
+            throw e;
         } catch (FileNotFoundException e) {
             System.err.println("Unable to find file: " + filename.getName());
-            throw e;
         } catch (IOException e) {
             System.err.println("Failed reading file: " + filename.getName()
                     + ", message:" + e.getMessage());
@@ -102,7 +103,7 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
                 System.err.println("Failed closing file: " + filename.getName());
             }
         }
-    } 
+    }
 
     // Save table data to the specified file.
     public void save(File filename) throws IOException {
@@ -126,7 +127,6 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
         HighScoresTable table = new HighScoresTable(1);
         try {
             table.load(filename);
-            return table;
         } catch (FileNotFoundException e) {
             System.err.println("Unable to find file: " + filename.getName());
         } catch (IOException e) {
@@ -134,7 +134,7 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
                     + ", message:" + e.getMessage());
             e.printStackTrace(System.err);
         }
-        return null;
+        return table;
     }
 
     @Override
@@ -169,7 +169,8 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
             DialogManager dialog = gui.getDialogManager();
             String name = dialog.showQuestionDialog("new High score!", "What is your name?", "");
             while (!name.matches("(\\w)*")) {
-                name = dialog.showQuestionDialog("new High score!", "What is your name?\nonly [a-z]/[A-Z]/[0-9] is allowed", "");
+                name = dialog.showQuestionDialog("new High score!",
+                        "What is your name?\nonly [a-z]/[A-Z]/[0-9] is allowed", "");
             }
             this.add(new ScoreInfo(name, currentScore));
         }
