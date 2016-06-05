@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import biuoop.DialogManager;
+import biuoop.GUI;
+import listeners.Counter;
+
 public class HighScoresTable implements Serialization<HighScoresTable> {
     private Integer maxSize;
     private List<ScoreInfo> highScores;
-    
-//  assignment.put("x", 2.0);
-//  assignment.put("y", 4.0);
-    
     
     // Create an empty high-scores table with the specified size.
     // The size means that the table holds up to size top scores.
@@ -88,6 +88,7 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
             }
         } catch (FileNotFoundException e) {
             System.err.println("Unable to find file: " + filename.getName());
+            throw e;
         } catch (IOException e) {
             System.err.println("Failed reading file: " + filename.getName()
                     + ", message:" + e.getMessage());
@@ -105,10 +106,11 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
 
     // Save table data to the specified file.
     public void save(File filename) throws IOException {
-        PrintWriter writer = new PrintWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(filename)));
+        PrintWriter writer = null;
         try {
+            writer = new PrintWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(filename)));
             writer.print(this.serialize());
         } finally {
             if (writer != null) {
@@ -138,9 +140,9 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
     @Override
     public String serialize() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.maxSize + " ");
+        sb.append(this.maxSize + ":");
         for (ScoreInfo score : this.highScores) {
-            sb.append(score.serialize());  
+            sb.append(score.serialize());
             sb.append(";");
         }
         return sb.toString();
@@ -148,8 +150,8 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
 
     @Override
     public HighScoresTable deserialize(String s) throws SerializationException {
-        String[] parts = s.split(" ");
-        try {  
+        String[] parts = s.split(":");
+        try {
             HighScoresTable table = new HighScoresTable(Integer.parseInt(parts[0]));
             String[] parts2 = parts[1].split(";");
             ScoreInfo temp = new ScoreInfo("none" , 0);
@@ -159,6 +161,17 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
             return table;
         } catch (RuntimeException e) {
             throw new SerializationException(e);
+        }
+    }
+    public void newScore(GUI gui, Counter scoreCounter){
+        int currentScore = scoreCounter.getValue();
+        if (this.getRank(currentScore) <= 5) {
+            DialogManager dialog = gui.getDialogManager();
+            String name = dialog.showQuestionDialog("new High score!", "What is your name?", "");
+            while (!name.matches("(\\w)*")) {
+                name = dialog.showQuestionDialog("new High score!", "What is your name?\nonly [a-z]/[A-Z]/[0-9] is allowed", "");
+            }
+            this.add(new ScoreInfo(name, currentScore));
         }
     }
 }

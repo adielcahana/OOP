@@ -9,7 +9,7 @@ public class Main {
 //        for (int i = 0; i < 6; i++) {
 //            table.add(new ScoreInfo("name" + i, i));
 //        }
-        File file = new File("C:/Users/Adiel/workspace/ass6/scores.txt");
+        File file = new File("C:/Users/Adiel/workspace/ass6/highscores.txt");
         try {
             table.load(file);
         } catch (IOException e) {

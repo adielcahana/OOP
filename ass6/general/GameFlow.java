@@ -1,4 +1,6 @@
 package general;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import animations.AnimationRunner;
@@ -38,13 +40,25 @@ public class GameFlow {
     public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
-        Counter numberOfLives = new Counter(7);;
+        Counter numberOfLives = new Counter(1);
+        HighScoresTable table = new HighScoresTable(5);
+        File file = new File("./highscore.txt");
+        try {
+            table.load(file);
+        } catch (IOException e) {
+            try {
+                table.save(file);
+            } catch (IOException e1) {
+                System.err.println("Unable to find file: " + file.getName());
+            }
+        }
         int i;
         for (i = 0; i < levels.size(); i++) {
 
             // Create the level
             GameLevel level = new GameLevel(levels.get(i), this.keyboard,
                     this.animationRunner, this.gui, scoreCounter, numberOfLives);
+
 
             // Initialize the level.
             level.initialize();
@@ -56,15 +70,27 @@ public class GameFlow {
 
             // if no more lives game end.
             if (numberOfLives.getValue() == 0) {
-                this.animationRunner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY, new EndGameAnimation(false, scoreCounter, this.keyboard)));
-                this.animationRunner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY, new HighScoresAnimation(new HighScoresTable(5) , KeyboardSensor.SPACE_KEY, keyboard)));
-                this.gui.close();
-                return;
+                this.animationRunner.run(
+                        new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
+                                new EndGameAnimation(false, scoreCounter, this.keyboard)));
+                table.newScore(gui, scoreCounter);
+                break;
             }
         }
-        if (i == levels.size()) {
-            this.animationRunner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY, new EndGameAnimation(true, scoreCounter, this.keyboard)));
+        if (i > levels.size()) {
+            this.animationRunner.run(
+                    new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
+                            new EndGameAnimation(true, scoreCounter, this.keyboard)));
+            table.newScore(gui, scoreCounter);
         }
-        
+        this.animationRunner.run(
+                new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
+                        new HighScoresAnimation(table, KeyboardSensor.SPACE_KEY, keyboard)));
+        try {
+            table.save(file);
+        } catch (IOException e) {
+            System.err.println("Unable to find file: " + file.getName());
+        }
+        this.gui.close();
     }
 }
