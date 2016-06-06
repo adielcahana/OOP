@@ -8,6 +8,8 @@ import animations.EndGameAnimation;
 import animations.GameLevel;
 import animations.HighScoresAnimation;
 import animations.KeyPressStoppableAnimation;
+import animations.MenuAnimation;
+import backgrounds.BackgroundLevelFour;
 import biuoop.KeyboardSensor;
 import levels.LevelInformation;
 import listeners.Counter;
@@ -22,22 +24,59 @@ public class GameFlow {
     private AnimationRunner animationRunner;
     private KeyboardSensor keyboard;
     private biuoop.GUI gui;
+    private List<LevelInformation> levels;
 
 
     /**
      * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game.. */
-    public GameFlow() {
+    public GameFlow(List<LevelInformation> levels) {
         this.gui = new biuoop.GUI("title", 800, 600);
         this.animationRunner = new AnimationRunner(this.gui, 60);
         this.keyboard = gui.getKeyboardSensor();
+        this.levels = levels;
     }
 
+    public void showMenu() {
+        MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new BackgroundLevelFour(), keyboard);
+        menu.addSelection("s", "Play", new Task<Void>(){
+            public Void run() {
+                runLevels();
+                return null;
+            }
+        });
+        menu.addSelection("h", "High Score Table", new Task<Void>(){
+            public Void run() {
+                File file = new File("./highscore.txt");
+                HighScoresTable table = HighScoresTable.loadFromFile(file);
+                try {
+                    table.save(file);
+                } catch (IOException e) {
+                    System.err.println("Unable to find file: " + file.getName());
+                }
+                animationRunner.run(
+                        new KeyPressStoppableAnimation(keyboard, KeyboardSensor.SPACE_KEY,
+                                new HighScoresAnimation(table, KeyboardSensor.SPACE_KEY, keyboard)));
+                return null;
+            }
+        });
+        menu.addSelection("q", "Quit", new Task<Void>(){
+            public Void run() {
+                System.exit(0);
+                return null;
+            }
+        });
+        while (true){ 
+            this.animationRunner.run(menu);
+            Task<Void> t = menu.getStatus();
+            t.run();
+            menu.resetStatus();
+        }
+    }
     /**
      * Run the game.
-     * Get ArrayList of levels and run it in a loop as long left lives
      * <p>
-     * @param levels - the levels ArrayList. */
-    public void runLevels(List<LevelInformation> levels) {
+     * run the levels in a loop as long left lives*/
+    public void runLevels() {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
         Counter numberOfLives = new Counter(1);
@@ -54,7 +93,6 @@ public class GameFlow {
             // Create the level
             GameLevel level = new GameLevel(levels.get(i), this.keyboard,
                     this.animationRunner, this.gui, scoreCounter, numberOfLives);
-
 
             // Initialize the level.
             level.initialize();
@@ -87,6 +125,5 @@ public class GameFlow {
         } catch (IOException e) {
             System.err.println("Unable to find file: " + file.getName());
         }
-        this.gui.close();
     }
 }
