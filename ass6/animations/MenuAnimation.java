@@ -15,13 +15,15 @@ public class MenuAnimation<T> implements Menu<T> {
     private Sprite background;
     private boolean stop;
     private KeyboardSensor keyboard;
+    private AnimationRunner runner;
     
-    public MenuAnimation(Sprite background, KeyboardSensor keyboard) {
+    public MenuAnimation(Sprite background, KeyboardSensor keyboard,  AnimationRunner runner) {
         this.background = background;
         this.selections = new ArrayList<Selection<T>>();
         this.status = null;
         this.stop = false;
         this.keyboard = keyboard;
+        this.runner = runner;
     }
     
     @Override
@@ -50,17 +52,35 @@ public class MenuAnimation<T> implements Menu<T> {
 
     @Override
     public void addSelection(String key, String message, T returnVal) {
-        this.selections.add(new Selection<T>(key, message, returnVal));      
+        this.selections.add(new Selection<T>(key, message, returnVal));
     }
-
+    
+    @Override
+    public void addSelection(Selection<T> select) {
+        this.selections.add(select);    
+    }
+    
+    @Override
+    public void addSubMenu(String key, String message,final Menu<T> subMenu) {
+        this.addSelection("s", "Play", new T<T>(){
+            @Override
+            public T run() {
+                runner.run(subMenu);
+                return null;
+            }
+        });
+    }
+    
     @Override
     public T getStatus() {
         return this.status;
     }
-    
+
     public void resetStatus() {
         this.status = null;
         this.stop = false;
     }
+
+
     
 }

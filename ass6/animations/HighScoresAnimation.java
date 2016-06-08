@@ -39,7 +39,7 @@ public class HighScoresAnimation implements Animation {
             d.setColor(Color.BLACK);
             d.drawText(160, i, score.getName(), 30);
             d.drawText(460, i, Integer.toString(score.getScore()), 30);
-            i+=50;
+            i += 50;
         }
         if (this.keyboard.isPressed(this.endKey)) {
             this.stop = true;

@@ -24,16 +24,14 @@ public class GameFlow {
     private AnimationRunner animationRunner;
     private KeyboardSensor keyboard;
     private biuoop.GUI gui;
-    private List<LevelInformation> levels;
 
 
     /**
      * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game.. */
-    public GameFlow(List<LevelInformation> levels) {
+    public GameFlow() {
         this.gui = new biuoop.GUI("title", 800, 600);
         this.animationRunner = new AnimationRunner(this.gui, 60);
         this.keyboard = gui.getKeyboardSensor();
-        this.levels = levels;
     }
 
     public void showMenu() {
@@ -65,7 +63,7 @@ public class GameFlow {
                 return null;
             }
         });
-        while (true){ 
+        while (true){
             this.animationRunner.run(menu);
             Task<Void> t = menu.getStatus();
             t.run();
@@ -76,7 +74,7 @@ public class GameFlow {
      * Run the game.
      * <p>
      * run the levels in a loop as long left lives*/
-    public void runLevels() {
+    public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
         Counter numberOfLives = new Counter(1);
