@@ -2,10 +2,9 @@ package general;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-
-import java.util.Map.Entry;
 
 import gameobjects.Block;
 import score.SerializationException;
@@ -18,6 +17,8 @@ public class BlocksFromSymbolsFactory {
 
     public BlocksFromSymbolsFactory(Map<String, String> defaultDef, Map<String, String> blockDef,
             Map<String, Integer> spaceDef) throws SerializationException {
+        this.spacerWidths = new TreeMap<String, Integer>();
+        this.blockCreators = new TreeMap<String, BlocksCreator>();
         setSpaceCreators(spaceDef);
         setBlockCreators(defaultDef, blockDef);
         // TODO Auto-generated constructor stub
@@ -50,10 +51,9 @@ public class BlocksFromSymbolsFactory {
         Map<String,String> parameters = new TreeMap<String,String>();
         parameters.put("symbol", null);
         parameters.put("width", null);
-        parameters.put("hight", null);
-        parameters.put("hitPoints", null);
+        parameters.put("height", null);
+        parameters.put("hit_points", null);
         parameters.put("stroke", "");
-        parameters.put("fill", null);
         parameters.putAll(defaultDef);
 
         Set<Entry<String, String>> values = blockDef.entrySet();
@@ -70,38 +70,45 @@ public class BlocksFromSymbolsFactory {
                 switch (parts1[0]) {
                 case "width":
                     parameters.put("width", parts1[1]);
+                    System.out.println(parameters.get("width"));
                     break;
-                case "hight":
-                    parameters.put("hight", parts1[1]);
+                case "height":
+                    parameters.put("height", parts1[1]);
+                    System.out.println(parameters.get("height"));
                     break;
-                case "hitPoints":
-                    parameters.put("hitPoints", parts1[1]);
+                case "hit_points":
+                    parameters.put("hit_points", parts1[1]);
+                    System.out.println(parameters.get("hit_points"));
                     break;
                 case "stroke":
                     parameters.put("stroke", parts1[1]);
+                    System.out.println(parameters.get("stroke"));
+                    break;
                 default:
                     if (parts1[0].contains("fill")) {
-                        String fillNum;
-                        if(parts1[0].length() < 4){
+                        String fillNum = null;
+                        if(parts1[0].length() > 4){
                             fillNum = parts1[0].substring(5);
-                        }
-                        else{
+                        } else {
                             fillNum = "1";
                         }
                         fills.put(Integer.parseInt(fillNum), parts1[1]);
-                    }
-                    else{
+                    } else {
+                        //System.out.println(parts1[0]);
                         throw new SerializationException("Wrong parameters");
                     }
                     break;
                 }
             }
             if(parameters.containsValue(null)){
+                System.out.println(parameters.keySet());
+                System.out.println(parameters.values());
                 throw new SerializationException("Not enough parameters");
             }
             BlocksCreator block = new BlocksCreator(parameters, fills);
             blockCreators.put(parameters.get("symbol"), block);
         }
+
     }
 
     public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException{

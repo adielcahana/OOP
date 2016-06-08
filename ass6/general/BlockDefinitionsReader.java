@@ -19,7 +19,7 @@ public class BlockDefinitionsReader {
         try {
             String line = null;
             while (( line = bufferReader.readLine ()) != null ){
-                if(line.substring(0,1).equals("#") || line.isEmpty()){
+                if(line.isEmpty() || line.startsWith("#")){
                     continue;
                 }
                 String[] parts = line.split(" ");
@@ -33,7 +33,7 @@ public class BlockDefinitionsReader {
                 case "bdef":
                     String[] parts2 = parts[1].split(":");
                     if(parts2[0].equals("symbol") && parts2[1].length() == 1){
-                        blockDef.put(parts2[1], line.substring(15));
+                        blockDef.put(parts2[1], line.substring(14));
                     }
                     else{
                         throw new SerializationException();

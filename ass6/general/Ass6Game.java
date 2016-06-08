@@ -66,7 +66,7 @@ public class Ass6Game {
      * @param args - string of arguments to the main.*/
     public static void main(String[] args) {
         // Create a new GameFlow and run it.
-        GameFlow game = new GameFlow(levels(stringsToInts(args)));
+        GameFlow game = new GameFlow();
         game.showMenu();
     }
 }

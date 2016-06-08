@@ -1,7 +1,6 @@
 package general;
 
 import java.awt.Color;
-import java.util.List;
 import java.util.Map;
 
 import gameobjects.Block;
@@ -19,7 +18,7 @@ public class BlocksCreator implements BlockCreator {
     public BlocksCreator(Map<String, String> block, Map<Integer, String> fills){
         this.width = Integer.parseInt(block.get("width"));
         this.height = Integer.parseInt(block.get("height"));
-        this.hitPoints = Integer.parseInt(block.get("hitPoints"));
+        this.hitPoints = Integer.parseInt(block.get("hit_points"));
         setStroke(block.get("stroke"));  
         this.fill = fills;
     }

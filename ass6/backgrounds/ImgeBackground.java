@@ -1,4 +1,4 @@
-package general;
+package backgrounds;
 
 import java.awt.image.BufferedImage;
 

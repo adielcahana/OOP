@@ -1,5 +1,6 @@
 package general;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class GameFlow {
     private biuoop.GUI gui;
 
 
+
     /**
      * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game.. */
     public GameFlow() {
@@ -36,9 +38,16 @@ public class GameFlow {
 
     public void showMenu() {
         MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new BackgroundLevelFour(), keyboard);
-        menu.addSelection("s", "Play", new Task<Void>(){
+        final GameFlow game = this;
+        menu.addSelection("s", "Play", new Task<Void>() {
             public Void run() {
-                runLevels();
+                LevelSetReader reader = new LevelSetReader(game);
+                try {
+                    animationRunner.run(reader.getLevelSetMenu(keyboard, new File("./resources/level_sets.txt")));
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 return null;
             }
         });

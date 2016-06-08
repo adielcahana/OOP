@@ -1,9 +1,6 @@
 package animations;
 
 import java.awt.Color;
-import geometry.Point;
-import geometry.Rectangle;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +17,8 @@ import gameobjects.ScoreIndicator;
 import gameobjects.Sprite;
 import gameobjects.SpriteCollection;
 import general.GameEnvironment;
+import geometry.Point;
+import geometry.Rectangle;
 import levels.LevelInformation;
 import listeners.BallRemover;
 import listeners.BlockRemover;

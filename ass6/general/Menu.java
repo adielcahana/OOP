@@ -5,6 +5,6 @@ import animations.Animation;
 public interface Menu<T> extends Animation {
     void addSelection(String key, String message, T returnVal);
     void addSelection(Selection<T> select);
-    void addSubMenu(String key, String message, Menu<T> subMenu);
+    //void addSubMenu(String key, String message, Menu<T> subMenu);
     T getStatus();
 }

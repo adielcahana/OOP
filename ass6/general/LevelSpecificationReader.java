@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -33,19 +34,44 @@ public class LevelSpecificationReader{
         try {
             String line = null;
             while (( line = bufferReader.readLine ()) != null ){
+                if(line.isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
                 if("START_LEVEL".equals(line)) {
                     level = new Level();
                     continue;
                 }
+                if("END_LEVEL".equals(line)) {
+                    levels.add(level);
+                    continue;
+                }
                 String[] parts = line.split(":");
                 String key = parts[0];
+                if(key.equals("START_BLOCKS")){
+                    readBlockLines = true;
+                    continue;
+                }
+                if (readBlockLines){
+                    for (int i = 0; i < line.length(); ++i) {
+                        String symbol = Character.toString(line.charAt(i));
+                        if(factory.isSpaceSymbol(symbol)){
+                            xPosition += factory.getSpaceWidth(symbol);
+                        }else if(factory.isBlockSymbol(symbol)){
+                            Block block = factory.getBlock(symbol, xPosition, yPosition);
+                            level.blockList.add(block);
+                            xPosition += factory.getBlockWidth(symbol);
+                        }
+                    }
+                    yPosition += rowHeight;
+                    continue;
+                }
+                if(key.equals("END_BLOCKS")){
+                    readBlockLines = false;
+                    continue;
+                }
                 String value = parts[1];
                 if(key.equals("level_name")){
                     level.levelName = (value);
-                    continue;
-                }
-                if("END_LEVEL".equals(line)) {
-                    levels.add(level);
                     continue;
                 }
                 if(key.equals("ball_velocities")){
@@ -63,11 +89,10 @@ public class LevelSpecificationReader{
                         level.background = new ColorBackground(color);
                         continue;
                     } else if(value.startsWith("image")){
-                        String cutvalue = value.substring(5);
-                        String[] imgeLine = cutvalue.split(")");
+                        String imgeLine = value.substring(5, value.length() -1);
                         BufferedImage imge = null;
                         try {
-                            imge = ImageIO.read(new File(imgeLine[0]));
+                            imge = ImageIO.read(new File(imgeLine));
                         } catch (IOException e) {
 
                         }
@@ -109,31 +134,14 @@ public class LevelSpecificationReader{
                     continue;
                 }
 
-                if(key.equals("START_BLOCKS")){
-                    readBlockLines = true;
-                    continue;
-                }
-                if (readBlockLines){
-                    for (int i = 0; i < line.length(); ++i) {
-                        String symbol = Character.toString(line.charAt(i));
-                        if(factory.isSpaceSymbol(symbol)){
-                            xPosition += factory.getSpaceWidth(symbol);
-                        }else if(factory.isBlockSymbol(symbol)){
-                            Block block = factory.getBlock(symbol, xPosition, yPosition);
-                            level.blockList.add(block);
-                            xPosition += factory.getBlockWidth(symbol);
-                        }
-                    }
-                    yPosition += rowHeight;
-                    continue;
-                }
-                if(key.equals("END_BLOCKS")){
-                    readBlockLines = false;
-                    continue;
-                }
+
             }
-        } catch ( IOException e) {
-            System.out.println (" Something went wrong while reading !");
+        } catch (FileNotFoundException e) {
+            System.err.println("Unable to find file: "); 
+            e.printStackTrace(System.err);
+        } catch (IOException e) {
+            System.err.println("Failed reading file: " + ", message:" + e.getMessage());
+            e.printStackTrace(System.err);
         }
         return levels;
     }
