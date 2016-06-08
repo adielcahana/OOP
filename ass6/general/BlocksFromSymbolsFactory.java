@@ -63,7 +63,7 @@ public class BlocksFromSymbolsFactory {
         Entry<String, String> value = i.next();
         parameters.put("symbol", value.getKey());
         while (i.hasNext()) {
-            List <String> fills = new ArrayList<String>();
+            Map <Integer,String> fills = new TreeMap <Integer,String>();
             value = i.next();
             String line = value.getValue();
             String[] parts = line.split(" ");
@@ -83,6 +83,9 @@ public class BlocksFromSymbolsFactory {
                     parameters.put("stroke", parts1[1]);
                 default:
                     if (parts1[0].contains("fill")) {
+                        if(parts1[0].length() < 4){
+                            
+                        }
                         fills.add(parts1[0] + parts1[1]);
                     }
                     else{

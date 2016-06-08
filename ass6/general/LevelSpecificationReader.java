@@ -23,11 +23,12 @@ public class LevelSpecificationReader{
     private int xPosition;
     private int yPosition;
     private int rowHeight;
+    private boolean readBlockLines;
 
     public List<LevelInformation> fromReader(java.io.Reader reader) throws IOException {
         List<LevelInformation> levels = new ArrayList<LevelInformation>();
         Level level = null;
-        BlocksFromSymbolsFactory factory;
+        BlocksFromSymbolsFactory factory = null;
         BufferedReader bufferReader = new BufferedReader(reader);
         try {
             String line = null;
@@ -41,6 +42,10 @@ public class LevelSpecificationReader{
                 String value = parts[1];
                 if(key.equals("level_name")){
                     level.levelName = (value);
+                    continue;
+                }
+                if("END_LEVEL".equals(line)) {
+                    levels.add(level);
                     continue;
                 }
                 if(key.equals("ball_velocities")){
@@ -60,14 +65,14 @@ public class LevelSpecificationReader{
                         int G = Integer.parseInt(colors[1]);
                         int B = Integer.parseInt(colors[2]);
                         Color color = new Color(R, G, B);
-                        level.background = ;
+                        level.background = new ColorBackground(color);
                         continue;
                     } else if(value.startsWith("color")){
                         String colorLine = value.substring(6);
                         String color2 = colorLine.substring(0, colorLine.length() - 1);                
                         ColorsParser colorParser = new ColorsParser();
                         Color color = colorParser.colorFromString(color2);
-                        level.background = ;
+                        level.background = new ColorBackground(color);
                         continue;
                     } else if(value.startsWith("image")){
                         String cutvalue = value.substring(5);
@@ -76,12 +81,12 @@ public class LevelSpecificationReader{
                         try {
                             imge = ImageIO.read(new File(imgeLine[0]));
                         } catch (IOException e) {
-                            
+
                         }
-                        level.background = ;
+                        level.background = new ImgeBackground(imge);
                         continue;
                     }
-                    
+
                 }
                 if(key.equals("paddle_speed")){
                     level.paddleSpeed = Integer.parseInt(value);
@@ -117,27 +122,25 @@ public class LevelSpecificationReader{
                 }
 
                 if(key.equals("START_BLOCKS")){
+                    readBlockLines = true;
                     continue;
                 }
-                for (int i = 0; i < line.length(); ++i) {
-                    String symbol = Character.toString(line.charAt(i));
-                    if(factory.isSpaceSymbol(symbol)){
-                        xPosition += factory.getSpaceWidth(symbol);
-                    }else if(factory.isBlockSymbol(symbol)){
-                        Block block = factory.getBlock(symbol, xPosition, yPosition);
-                        level.blockList.add(block);
-                        xPosition += factory.getBlockWidth(symbol);
+                if (readBlockLines){
+                    for (int i = 0; i < line.length(); ++i) {
+                        String symbol = Character.toString(line.charAt(i));
+                        if(factory.isSpaceSymbol(symbol)){
+                            xPosition += factory.getSpaceWidth(symbol);
+                        }else if(factory.isBlockSymbol(symbol)){
+                            Block block = factory.getBlock(symbol, xPosition, yPosition);
+                            level.blockList.add(block);
+                            xPosition += factory.getBlockWidth(symbol);
+                        }
                     }
-                }
-                yPosition += rowHeight;
-                continue;
-
-                if(key.equals("END_BLOCKS")){
+                    yPosition += rowHeight;
                     continue;
                 }
-
-                if("END_LEVEL".equals(line)){
-                    levels.add(level);
+                if(key.equals("END_BLOCKS")){
+                    readBlockLines = false;
                     continue;
                 }
             }
@@ -148,7 +151,7 @@ public class LevelSpecificationReader{
     }
 
     private class Level implements LevelInformation {
-        
+
         private List<Velocity> velocities = new ArrayList<Velocity>();
         private List<Block> blockList = new ArrayList<Block>();
         private List<Ball> balls = new ArrayList<Ball>();
