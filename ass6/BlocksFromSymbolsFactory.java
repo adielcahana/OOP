@@ -1,6 +1,5 @@
 package general;
 
-import java.security.Policy.Parameters;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,26 +18,37 @@ public class BlocksFromSymbolsFactory {
     private Map<String, Integer> spacerWidths;
     private Map<String, BlocksCreator> blockCreators;
 
+    public BlocksFromSymbolsFactory(Map<String, String> defaultDef, Map<String, String> blockDef,
+            Map<String, Integer> spaceDef) throws SerializationException {
+        setSpaceCreators(spaceDef);
+        setBlockCreators(defaultDef, blockDef);
+        // TODO Auto-generated constructor stub
+    }
     // returns true if 's' is a valid space symbol.
     public boolean isSpaceSymbol(String s) {
+        return spacerWidths.containsKey(s);
     }
     // returns true if 's' is a valid block symbol.
     public boolean isBlockSymbol(String s) {
+        return blockCreators.containsKey(s);
+    }
 
+    public int getBlockWidth(String s){
+        return blockCreators.get(s).getWidth();
     }
 
     // Return a block according to the definitions associated
     // with symbol s. The block will be located at position (xpos, ypos).
     public Block getBlock(String s, int xpos, int ypos) {
-
+        return blockCreators.get(s).create(xpos, ypos);
     }
 
     // Returns the width in pixels associated with the given spacer-symbol.
     public int getSpaceWidth(String s){
-
+        return spacerWidths.get(s);
     }
 
-    public void setBlockCreators(Map<String, String> defaultDef, TreeMap<String, String> blockDef) throws SerializationException{
+    public void setBlockCreators(Map<String, String> defaultDef, Map<String, String> blockDef) throws SerializationException{
         Map<String,String> parameters = new TreeMap<String,String>();
         parameters.put("symbol", null);
         parameters.put("width", null);
@@ -48,7 +58,7 @@ public class BlocksFromSymbolsFactory {
         parameters.put("fill", null);
         parameters.putAll(defaultDef);
 
-        Set<Entry<String, String>> values = parameters.entrySet();
+        Set<Entry<String, String>> values = blockDef.entrySet();
         Iterator<Entry<String, String>> i = values.iterator();
         Entry<String, String> value = i.next();
         parameters.put("symbol", value.getKey());
@@ -89,9 +99,9 @@ public class BlocksFromSymbolsFactory {
         }
     }
 
-    public void setSpaceCreators(Map<String, String> spaceDef) throws SerializationException{
-        Map<String,Integer> parameters = new TreeMap<String,Integer>();
-        Set<Entry<String, Integer>> values = parameters.entrySet();
+    public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException{
+        //Map<String,Integer> parameters = new TreeMap<String,Integer>();
+        Set<Entry<String, Integer>> values = spaceDef.entrySet();
         Iterator<Entry<String, Integer>> i = values.iterator();
         Entry<String, Integer> value = i.next();
         while (i.hasNext()) {

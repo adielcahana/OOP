@@ -14,9 +14,7 @@ public class BlockDefinitionsReader {
 
         Map <String,String> defaultDef = new TreeMap<String, String>();
         Map <String,String> blockDef = new TreeMap<String, String>();
-        Map <String,Integer> spaceDef = new TreeMap<String, Integer>();
-
-        BlocksFromSymbolsFactory blockFactory = new BlocksFromSymbolsFactory();;
+        Map <String,Integer> spaceDef = new TreeMap<String, Integer>(); 
         BufferedReader bufferReader = new BufferedReader(reader);
         try {
             String line = null;
@@ -58,12 +56,16 @@ public class BlockDefinitionsReader {
                     break;
                 }
             }
-
-
-
-
-            return blockFactory;
+            try{
+                return new BlocksFromSymbolsFactory(defaultDef, blockDef, spaceDef);    
+            } catch (SerializationException e) {
+                throw e;
+            }
+        }catch (SerializationException e){
+            throw e;
+            
         }
-
+    
 
     }
+}

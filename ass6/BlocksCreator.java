@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import gameobjects.Block;
+import geometry.Point;
+import geometry.Rectangle;
 
 public class BlocksCreator implements BlockCreator {
 
@@ -23,7 +25,12 @@ public class BlocksCreator implements BlockCreator {
 
     @Override
     public Block create(int xpos, int ypos) {
+        Point point = new Point(xpos, ypos);
+        return new Block(new Rectangle(point, width, height), hitPoints, stroke, fill);
     }
-
+    
+    public int getWidth(){
+        return this.width;
+    }
 }
 
