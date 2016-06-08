@@ -1,11 +1,19 @@
 package gameobjects;
 
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import animations.GameLevel;
 import biuoop.DrawSurface;
+import general.ColorsParser;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.HitListener;
@@ -17,33 +25,48 @@ import listeners.HitListener;
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle shape;
     private int maxHits;
-    private Color color;
+    private Color stroke;
     private List<HitListener> hitListeners;
-
+    private Map<Integer ,String> fill;
+    
+    /** Block constructor.
+     * <p>
+     * @param shape - the collision rectangle
+     * @param maxHits - hits available.
+     * @param stroke - the block stroke*/
+    public Block(Rectangle shape, int hitPoints, Color stroke, Map<Integer ,String> fill) {
+        this.shape = shape;
+        this.maxHits = hitPoints;
+        this.stroke = stroke;
+        this.fill = fill;
+        this.hitListeners = new ArrayList<HitListener>();
+    }
+    
     /** Block constructor.
      * <p>
      * @param upperLeft - coordinate
      * @param width - width of the rectangle
      * @param height - height of the rectangle
      * @param maxHits - hits available.
-     * @param color - the block color*/
-    public Block(Point upperLeft, double width, double height, int maxHits, Color color) {
+     * @param stroke - the block stroke*/
+    public Block(Point upperLeft, double width, double height, int maxHits, Color stroke) {
         this.shape = new Rectangle(upperLeft, width, height);
         this.maxHits = maxHits;
-        this.color = color;
+        this.stroke = stroke;
         this.hitListeners = new ArrayList<HitListener>();
     }
     /** Block constructor.
      * <p>
      * @param shape - the collision rectangle
      * @param maxHits - hits available.
-     * @param color - the block color*/
-    public Block(Rectangle shape, int maxHits, Color color) {
+     * @param stroke - the block stroke*/
+    public Block(Rectangle shape, int maxHits, Color stroke) {
         this.shape = shape;
         this.maxHits = maxHits;
-        this.color = color;
+        this.stroke = stroke;
         this.hitListeners = new ArrayList<HitListener>();
     }
+
 
     /** returns the remaining hits available.
      * <p>
@@ -119,12 +142,30 @@ public class Block implements Collidable, Sprite, HitNotifier {
     /** Block drawing method.
      * <p>
      * drawing to black with a black frame,
-     * filled with his set color.
+     * filled with his set stroke.
      * <p>
      * @param surface - the surface to be drew on*/
     public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        this.shape.drawOn(surface);
+        String s = this.fill.get(maxHits);
+        if (s == null) {
+            s = this.fill.get(1);
+        }
+        if (s.contains("image")) {
+            Image img = null;
+            try {
+                img = ImageIO.read(new File(s.substring(6, s.length() - 1)));
+                Point p = this.shape.getUpperLeft(); 
+                surface.drawImage((int) p.getX(),(int) p.getY(), img);
+            } catch (IOException e) {
+                // ...
+            }
+        } else {
+            ColorsParser cp = new ColorsParser();
+            surface.setColor(cp.colorFromString(s));
+            this.shape.drawOn(surface);
+        }
+        surface.setColor(this.stroke);
+        this.shape.fillOn(surface);
     }
 
     /** add the Block to the game Database.
