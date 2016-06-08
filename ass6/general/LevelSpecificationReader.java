@@ -57,21 +57,9 @@ public class LevelSpecificationReader{
                     continue;
                 }
                 if(key.equals("background")){
-                    if(value.startsWith("color(RGB)")){
-                        String cutvalue = value.substring(10);
-                        String[] splitCut = cutvalue.split(")");
-                        String[] colors = splitCut[0].split(",");
-                        int R = Integer.parseInt(colors[0]);
-                        int G = Integer.parseInt(colors[1]);
-                        int B = Integer.parseInt(colors[2]);
-                        Color color = new Color(R, G, B);
-                        level.background = new ColorBackground(color);
-                        continue;
-                    } else if(value.startsWith("color")){
-                        String colorLine = value.substring(6);
-                        String color2 = colorLine.substring(0, colorLine.length() - 1);                
-                        ColorsParser colorParser = new ColorsParser();
-                        Color color = colorParser.colorFromString(color2);
+                    ColorsParser colorParser = new ColorsParser();
+                    if(value.startsWith("color")){
+                        Color color = colorParser.colorFromString(value);
                         level.background = new ColorBackground(color);
                         continue;
                     } else if(value.startsWith("image")){

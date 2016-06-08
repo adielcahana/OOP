@@ -13,10 +13,10 @@ public class BlocksCreator implements BlockCreator {
     private int width;
     private int height;
     private int hitPoints;
-    private List<String> fill;
+    private Map <Integer, String> fill;
     private Color stroke;
 
-    public BlocksCreator(Map<String, String> block, List<String> fills){
+    public BlocksCreator(Map<String, String> block, Map<Integer, String> fills){
         this.width = Integer.parseInt(block.get("width"));
         this.height = Integer.parseInt(block.get("height"));
         this.hitPoints = Integer.parseInt(block.get("hitPoints"));

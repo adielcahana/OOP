@@ -1,8 +1,6 @@
 package general;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -83,10 +81,14 @@ public class BlocksFromSymbolsFactory {
                     parameters.put("stroke", parts1[1]);
                 default:
                     if (parts1[0].contains("fill")) {
+                        String fillNum;
                         if(parts1[0].length() < 4){
-                            
+                            fillNum = parts1[0].substring(5);
                         }
-                        fills.add(parts1[0] + parts1[1]);
+                        else{
+                            fillNum = "1";
+                        }
+                        fills.put(Integer.parseInt(fillNum), parts1[1]);
                     }
                     else{
                         throw new SerializationException("Wrong parameters");
@@ -103,7 +105,6 @@ public class BlocksFromSymbolsFactory {
     }
 
     public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException{
-        //Map<String,Integer> parameters = new TreeMap<String,Integer>();
         Set<Entry<String, Integer>> values = spaceDef.entrySet();
         Iterator<Entry<String, Integer>> i = values.iterator();
         Entry<String, Integer> value = i.next();
