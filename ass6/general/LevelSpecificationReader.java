@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 
 import backgrounds.ColorBackground;
 import backgrounds.ImgeBackground;
-import gameobjects.Ball;
 import gameobjects.Block;
 import gameobjects.Sprite;
 import gameobjects.Velocity;
@@ -56,6 +55,7 @@ public class LevelSpecificationReader{
                 if (readBlockLines){
                     for (int i = 0; i < line.length(); ++i) {
                         String symbol = Character.toString(line.charAt(i));
+                        System.out.println(symbol);
                         if(factory.isSpaceSymbol(symbol)){
                             xPosition += factory.getSpaceWidth(symbol);
                         }else if(factory.isBlockSymbol(symbol)){
@@ -82,6 +82,7 @@ public class LevelSpecificationReader{
                         String[] velocity = velocities[i].split(",");
                         level.velocities.add(Velocity.fromAngleAndSpeed(Double.parseDouble(velocity[0]), (Double.parseDouble(velocity[1]))));
                     }
+                    level.numberOfBalls = level.velocities.size();
                     continue;
                 }
                 if(key.equals("background")){
