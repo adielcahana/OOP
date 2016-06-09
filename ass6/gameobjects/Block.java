@@ -157,7 +157,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
             Image img = null;
             try {
                 img = ImageIO.read(new File(s.substring(6, s.length() - 1)));
-                Point p = this.shape.getUpperLeft(); 
+                Point p = this.shape.getUpperLeft();
                 surface.drawImage((int) p.getX(),(int) p.getY(), img);
             } catch (IOException e) {
                 // ...
@@ -167,8 +167,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
             try {
                 surface.setColor(cp.colorFromString(s));
             } catch (SerializationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("Failed converting color from string");
                 System.exit(0);
             }
             this.shape.fillOn(surface);
