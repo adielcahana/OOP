@@ -128,12 +128,7 @@ public class GameLevel implements Animation {
      * Run one turn (one live) of the game.
      * Create the balls and the paddle and run the level. */
     public void playOneTurn() {
-        // Get list of balls from the level information and add them to the game.
-        List<Ball> ballList = new ArrayList<Ball>(this.level.balls());
-        for (Ball ball : ballList) {
-            ball.setGameEnvironment(this.environment);
-            ball.addToGame(this);
-        }
+        createTheBallsOnTheTopOfThePaddle();
         // Add the number of balls to the balls counter.
         this.ballsCounter.increase(level.numberOfBalls());
         // Create the paddle and add it to the game.
@@ -148,6 +143,15 @@ public class GameLevel implements Animation {
         this.runner.run(this);
         // remove the paddle to create new paddle in the middle.
         paddle.removeFromGame(this);
+    }
+
+    private void createTheBallsOnTheTopOfThePaddle() {
+        for(int i = 0; i < this.level.numberOfBalls(); i++){
+            Ball ball = new Ball (400, 575, 5, Color.WHITE);
+            ball.setVelocity(this.level.initialBallVelocities().get(i));
+            ball.setGameEnvironment(this.environment);
+            ball.addToGame(this);    
+        }
     }
 
     /**
