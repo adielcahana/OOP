@@ -158,11 +158,11 @@ public class GameLevel implements Animation {
      * Create the border.
      * Create 4 blocks for the border and add them to the game. */
     public void createBorder() {
-        Block upFrame = new Block(new Point(0, 20), 800, 20, -1, Color.GRAY);
-        Block lowFrame = new Block(new Point(0, 600), 800, 20, -1, Color.GRAY);
+        Block upFrame = new Block(new Point(0, 20), 800, 20, -1, Color.BLACK);
+        Block lowFrame = new Block(new Point(0, 600), 800, 20, -1, Color.BLACK);
         lowFrame.addHitListener(new BallRemover(this, this.ballsCounter));
-        Block lFrame = new Block(new Point(0, 40), 20, 580, -1, Color.GRAY);
-        Block rFrame = new Block(new Point(780, 40), 20, 580, -1, Color.GRAY);
+        Block lFrame = new Block(new Point(0, 40), 20, 580, -1, Color.BLACK);
+        Block rFrame = new Block(new Point(780, 40), 20, 580, -1, Color.BLACK);
         lFrame.addToGame(this);
         rFrame.addToGame(this);
         upFrame.addToGame(this);
