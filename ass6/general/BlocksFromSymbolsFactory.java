@@ -64,7 +64,6 @@ public class BlocksFromSymbolsFactory {
             Map <Integer,String> fills = new TreeMap <Integer,String>();
             value = i.next();
             String line = value.getValue();
-            System.out.println(line);
             String[] parts = line.split(" ");
             for (int j = 0; j < parts.length; j++) {
                 String[] parts1 = parts[j].split(":");

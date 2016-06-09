@@ -81,8 +81,4 @@ public class LevelSetReader {
         }
         return menu;
     }
-
-
-    public void getLevelSetMenu(KeyboardSensor keyboard, File levelSet) throws FileNotFoundException{
-    }
 }

@@ -184,7 +184,7 @@ public class LevelSpecificationReader{
         public List<Block> blocks() {
             return blockList;
         }
-        
+
         @Override
         public int numberOfBlocksToRemove() {
             return this.numberOfBlocksToRemove;
