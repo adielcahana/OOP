@@ -12,7 +12,6 @@ import java.util.TreeMap;
 import javax.imageio.ImageIO;
 
 import animations.GameLevel;
-import biuoop.AlphaChannelNotSupportedException;
 import biuoop.DrawSurface;
 import general.ColorsParser;
 import geometry.Point;
@@ -30,7 +29,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Color stroke;
     private List<HitListener> hitListeners;
     private Map<Integer ,String> fill;
-    
+
     /** Block constructor.
      * <p>
      * @param shape - the collision rectangle
@@ -41,10 +40,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.maxHits = hitPoints;
         this.stroke = stroke;
         this.fill = new TreeMap<Integer ,String>();
-        fill.putAll(fill);
+        this.fill.putAll(fill);
         this.hitListeners = new ArrayList<HitListener>();
     }
-    
+
     /** Block constructor.
      * <p>
      * @param upperLeft - coordinate
@@ -149,6 +148,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * <p>
      * @param surface - the surface to be drew on*/
     public void drawOn(DrawSurface surface) {
+        if (maxHits == -1){
+            surface.setColor(Color.GRAY);
+            this.shape.fillOn(surface);
+            return;
+        }
         String s = this.fill.get(maxHits);
         if (s == null) {
             s = this.fill.get(1);
@@ -160,7 +164,6 @@ public class Block implements Collidable, Sprite, HitNotifier {
                 Point p = this.shape.getUpperLeft();
                 surface.drawImage((int) p.getX(),(int) p.getY(), img);
             } catch (IOException e) {
-                // ...
             }
         } else {
             ColorsParser cp = new ColorsParser();
