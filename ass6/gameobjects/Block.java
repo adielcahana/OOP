@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
@@ -39,7 +40,8 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.shape = shape;
         this.maxHits = hitPoints;
         this.stroke = stroke;
-        this.fill = fill;
+        this.fill = new TreeMap<Integer ,String>();
+        fill.putAll(fill);
         this.hitListeners = new ArrayList<HitListener>();
     }
     

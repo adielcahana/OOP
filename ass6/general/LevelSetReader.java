@@ -16,7 +16,7 @@ import levels.LevelInformation;
 
 public class LevelSetReader {
     private GameFlow game;
-    
+
     public LevelSetReader(GameFlow game) {
         this.game = game;
     }
@@ -39,44 +39,36 @@ public class LevelSetReader {
         LineNumberReader reader = null;
         Menu<Task<Void>> menu = new LevelsetMenu<Task<Void>>(new BackgroundLevelFour(), keyboard);
         try {
-            reader = new LineNumberReader(
-                    new InputStreamReader( // bytes to characters wrapper0
-                            new FileInputStream(levelSet)));
+            // bytes to characters wrapper0
+            reader = new LineNumberReader(new InputStreamReader(new FileInputStream(levelSet)));
             int linenum = reader.getLineNumber();
             String line = reader.readLine();
             String[] parts = null;
             List<LevelInformation> levelList = null;
-
             while(line != null) {
+                System.out.println(line);
                 if (linenum % 2 == 0) {
                     parts = line.split(":");
                 } else {
                     File levelSpecification = new File(line);
-                    try {
-                        LevelSpecificationReader LSReader = new LevelSpecificationReader();
-                        levelList = LSReader.fromReader(new BufferedReader(
-                                new InputStreamReader( // bytes to characters wrapper
-                                        new FileInputStream(levelSpecification))));
-                        Selection<Task<Void>> select = new Selection<Task<Void>>(parts[0], parts[1], new LevelTask<Void>(levelList));
-                        menu.addSelection(select);
-                    } catch (FileNotFoundException e) {
-                        System.err.println("Unable to find file: " + levelSpecification.getName());
-                        throw e;
-                    } catch (IOException e) {
-                        System.err.println("Failed reading file: " + levelSpecification.getName()
-                        + ", message:" + e.getMessage());
-                        e.printStackTrace(System.err);
-                    }
+                    LevelSpecificationReader lsReader = new LevelSpecificationReader();
+                    //bytes to characters wrapper
+                    levelList = lsReader.fromReader(
+                            new BufferedReader(
+                                    new InputStreamReader(
+                                            new FileInputStream(levelSpecification))));
+                    Selection<Task<Void>> select =
+                            new Selection<Task<Void>>(parts[0], parts[1], new LevelTask<Void>(levelList));
+                    menu.addSelection(select);
                 }
                 linenum = reader.getLineNumber();
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Unable to find file: " + levelSet.getName());
+            System.err.println("Unable to find file");
             throw e;
         } catch (IOException e) {
-            System.err.println("Failed reading file: " + levelSet.getName()
-            + ", message:" + e.getMessage());
+            System.err.println("Failed reading file"+ ", message:" + e.getMessage());
             e.printStackTrace(System.err);
         } finally {
             try {
@@ -88,5 +80,9 @@ public class LevelSetReader {
             }
         }
         return menu;
+    }
+
+
+    public void getLevelSetMenu(KeyboardSensor keyboard, File levelSet) throws FileNotFoundException{
     }
 }

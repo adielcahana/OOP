@@ -2,6 +2,7 @@ package general;
 
 import java.awt.Color;
 import java.util.Map;
+import java.util.TreeMap;
 
 import gameobjects.Block;
 import geometry.Point;
@@ -21,7 +22,8 @@ public class BlocksCreator implements BlockCreator {
         this.height = Integer.parseInt(block.get("height"));
         this.hitPoints = Integer.parseInt(block.get("hit_points"));
         setStroke(block.get("stroke"));  
-        this.fill = fills;
+        this.fill = new TreeMap<Integer, String>();
+        fill.putAll(fills);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class LevelSpecificationReader{
     private int rowHeight;
     private boolean readBlockLines;
 
-    public List<LevelInformation> fromReader(java.io.Reader reader) throws IOException {
+    public List<LevelInformation> fromReader(java.io.Reader reader) throws FileNotFoundException {
         List<LevelInformation> levels = new ArrayList<LevelInformation>();
         Level level = null;
         BlocksFromSymbolsFactory factory = null;
@@ -135,15 +135,12 @@ public class LevelSpecificationReader{
                     level.numberOfBlocksToRemove = Integer.parseInt(value);
                     continue;
                 }
-
-
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Unable to find file: "); 
-            e.printStackTrace(System.err);
+            System.err.println("Unable to find level specs file ");
+            throw e;
         } catch (IOException e) {
-            System.err.println("Failed reading file: " + ", message:" + e.getMessage());
-            e.printStackTrace(System.err);
+            System.err.println("Failed reading level specs file " + ", message:" + e.getMessage());
         }
         return levels;
     }
