@@ -65,7 +65,7 @@ public class BlocksFromSymbolsFactory {
             value = i.next();
             String line = value.getValue();
             String[] parts = line.split(" ");
-            for (int j = 0; j < parts.length; j++){
+            for (int j = 0; j < parts.length; j++) {
                 String[] parts1 = parts[j].split(":");
                 switch (parts1[0]) {
                 case "width":
@@ -87,28 +87,24 @@ public class BlocksFromSymbolsFactory {
                 default:
                     if (parts1[0].contains("fill")) {
                         String fillNum = null;
-                        if(parts1[0].length() > 4){
+                        if(parts1[0].length() > 4) {
                             fillNum = parts1[0].substring(5);
                         } else {
                             fillNum = "1";
                         }
                         fills.put(Integer.parseInt(fillNum), parts1[1]);
                     } else {
-                        //System.out.println(parts1[0]);
                         throw new SerializationException("Wrong parameters");
                     }
                     break;
                 }
             }
             if(parameters.containsValue(null)){
-                System.out.println(parameters.keySet());
-                System.out.println(parameters.values());
                 throw new SerializationException("Not enough parameters");
             }
             BlocksCreator block = new BlocksCreator(parameters, fills);
             blockCreators.put(parameters.get("symbol"), block);
         }
-
     }
 
     public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException{

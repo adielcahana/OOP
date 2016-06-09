@@ -30,7 +30,7 @@ public class BackgroundLevelOne implements Sprite {
     public void drawOn(DrawSurface surface) {
         // Draw the background.
         surface.setColor(this.color);
-        this.frame.drawOn(surface);
+        this.frame.fillOn(surface);
         // Draw a scope.
         surface.setColor(Color.blue);
         surface.drawLine(520, 210, 420, 210);

@@ -7,9 +7,9 @@ import java.util.List;
 import biuoop.DrawSurface;
 
 /**
-* @author Adiel Chana <adielcahana@gmail.com>
-* @version 1.0
-* @since 2016-03-27 */
+ * @author Adiel Chana <adielcahana@gmail.com>
+ * @version 1.0
+ * @since 2016-03-27 */
 public class Rectangle {
     private Point upperLeft;
     private double width;
@@ -103,14 +103,22 @@ public class Rectangle {
         return this.upperLeft;
     }
 
-    /** draws the rectangle with a black frame on a given DrawSurface.
+    /** draws the rectangle on a given DrawSurface.
+     * <p>
+     * @param surface - the DrawSurface*/
+    public void fillOn(DrawSurface surface) {
+        surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
+                (int) this.width, (int) this.height);
+        surface.setColor(Color.BLACK);
+
+    }
+
+    /** draws the rectangle frame on a given DrawSurface.
      * <p>
      * @param surface - the DrawSurface*/
     public void drawOn(DrawSurface surface) {
-        surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
-                              (int) this.width, (int) this.height);
-        surface.setColor(Color.BLACK);
         surface.drawRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
                 (int) this.width, (int) this.height);
     }
+
 }

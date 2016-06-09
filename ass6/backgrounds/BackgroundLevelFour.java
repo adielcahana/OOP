@@ -31,7 +31,7 @@ public class BackgroundLevelFour implements Sprite {
     public void drawOn(DrawSurface surface) {
         // Draw the background.
         surface.setColor(this.color);
-        this.frame.drawOn(surface);
+        this.frame.fillOn(surface);
         // Draw 2 clouds.
         Cloud cloud1 = new Cloud(600, 500, 30, 100);
         cloud1.drawOnCloud1(surface);

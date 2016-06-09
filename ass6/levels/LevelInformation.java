@@ -38,11 +38,6 @@ public interface LevelInformation {
      * @return a list of blocks. */
     List<Block> blocks();
 
-    /** Create ArrayList of balls and put all the balls in it.
-     * <p>
-     * @return a list of velocity for all the balls in the level. */
-    List<Ball> balls();
-
     /** @return the starting number of the blocks in the level. */
     int numberOfBlocksToRemove();
 }

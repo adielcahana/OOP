@@ -6,6 +6,7 @@ import java.util.Map;
 import gameobjects.Block;
 import geometry.Point;
 import geometry.Rectangle;
+import score.SerializationException;
 
 public class BlocksCreator implements BlockCreator {
 
@@ -15,7 +16,7 @@ public class BlocksCreator implements BlockCreator {
     private Map <Integer, String> fill;
     private Color stroke;
 
-    public BlocksCreator(Map<String, String> block, Map<Integer, String> fills){
+    public BlocksCreator(Map<String, String> block, Map<Integer, String> fills) throws SerializationException{
         this.width = Integer.parseInt(block.get("width"));
         this.height = Integer.parseInt(block.get("height"));
         this.hitPoints = Integer.parseInt(block.get("hit_points"));
@@ -33,9 +34,9 @@ public class BlocksCreator implements BlockCreator {
         return this.width;
     }
     
-    public Color setStroke(String color){
+    public void setStroke(String color) throws SerializationException{
         ColorsParser colorParser = new ColorsParser();
-        return this.stroke = colorParser.colorFromString(color);
+        this.stroke = colorParser.colorFromString(color);
     }
 }
 

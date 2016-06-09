@@ -31,7 +31,7 @@ public class BackgroundLevelTwo implements Sprite {
     public void drawOn(DrawSurface surface) {
         // Draw the background.
         surface.setColor(this.color);
-        this.frame.drawOn(surface);
+        this.frame.fillOn(surface);
         int x = 150;
         int y = 150;
         // Draw a sun

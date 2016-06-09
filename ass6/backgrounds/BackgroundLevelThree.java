@@ -31,7 +31,7 @@ public class BackgroundLevelThree implements Sprite {
     public void drawOn(DrawSurface surface) {
         // Draw the background.
         surface.setColor(this.color);
-        this.frame.drawOn(surface);
+        this.frame.fillOn(surface);
         // Draw a building.
         surface.setColor(Color.WHITE);
         surface.fillRectangle(50, 450, 110, 200);

@@ -206,7 +206,7 @@ public class Paddle implements Sprite, Collidable {
      * @param surface - the surface of the paddle that draw. */
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
-        this.shape.drawOn(surface);
+        this.shape.fillOn(surface);
         }
 
     }

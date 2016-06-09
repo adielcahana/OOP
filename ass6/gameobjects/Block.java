@@ -11,11 +11,13 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import animations.GameLevel;
+import biuoop.AlphaChannelNotSupportedException;
 import biuoop.DrawSurface;
 import general.ColorsParser;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.HitListener;
+import score.SerializationException;
 
 /**
  * @author Adiel cahana <adiel.cahana@gmail.com>
@@ -23,7 +25,7 @@ import listeners.HitListener;
  * @since 2016-04-02 */
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle shape;
-    private int maxHits;
+    private Integer maxHits;
     private Color stroke;
     private List<HitListener> hitListeners;
     private Map<Integer ,String> fill;
@@ -160,8 +162,14 @@ public class Block implements Collidable, Sprite, HitNotifier {
             }
         } else {
             ColorsParser cp = new ColorsParser();
-            surface.setColor(cp.colorFromString(s));
-            this.shape.drawOn(surface);
+            try {
+                surface.setColor(cp.colorFromString(s));
+            } catch (SerializationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.exit(0);
+            }
+            this.shape.fillOn(surface);
         }
         surface.setColor(this.stroke);
         this.shape.fillOn(surface);

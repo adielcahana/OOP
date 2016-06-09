@@ -13,6 +13,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import backgrounds.ColorBackground;
+import backgrounds.ImgeBackground;
 import gameobjects.Ball;
 import gameobjects.Block;
 import gameobjects.Sprite;
@@ -150,7 +152,6 @@ public class LevelSpecificationReader{
 
         private List<Velocity> velocities = new ArrayList<Velocity>();
         private List<Block> blockList = new ArrayList<Block>();
-        private List<Ball> balls = new ArrayList<Ball>();
         private int numberOfBlocksToRemove;
         private int paddleSpeed;
         private int paddleWidth;
@@ -186,10 +187,7 @@ public class LevelSpecificationReader{
         public List<Block> blocks() {
             return blockList;
         }
-        @Override
-        public List<Ball> balls() {
-            return balls;
-        }
+        
         @Override
         public int numberOfBlocksToRemove() {
             return this.numberOfBlocksToRemove;

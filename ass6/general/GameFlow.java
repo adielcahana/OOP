@@ -9,6 +9,7 @@ import animations.EndGameAnimation;
 import animations.GameLevel;
 import animations.HighScoresAnimation;
 import animations.KeyPressStoppableAnimation;
+import animations.LevelsetMenu;
 import animations.MenuAnimation;
 import backgrounds.BackgroundLevelFour;
 import biuoop.KeyboardSensor;
@@ -43,7 +44,10 @@ public class GameFlow {
             public Void run() {
                 LevelSetReader reader = new LevelSetReader(game);
                 try {
-                    animationRunner.run(reader.getLevelSetMenu(keyboard, new File("./resources/level_sets.txt")));
+                    Menu<Task<Void>> subMenu = reader.getLevelSetMenu(keyboard, new File("./resources/level_sets.txt"));
+                    animationRunner.run(subMenu);
+                    Task<Void> t = subMenu.getStatus();
+                    t.run();
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

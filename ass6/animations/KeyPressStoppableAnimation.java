@@ -27,7 +27,7 @@ public class KeyPressStoppableAnimation implements Animation {
             if(!this.isAlreadyPressed ){
                 this.stop = true;
             }
-        } else{
+        } else {
             this.isAlreadyPressed  = false;
         }
     }

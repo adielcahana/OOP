@@ -58,7 +58,7 @@ public class LevelSetReader {
                                 new InputStreamReader( // bytes to characters wrapper
                                         new FileInputStream(levelSpecification))));
                         Selection<Task<Void>> select = new Selection<Task<Void>>(parts[0], parts[1], new LevelTask<Void>(levelList));
-                        menu.addSelection(select);    
+                        menu.addSelection(select);
                     } catch (FileNotFoundException e) {
                         System.err.println("Unable to find file: " + levelSpecification.getName());
                         throw e;
