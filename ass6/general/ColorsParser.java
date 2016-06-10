@@ -8,11 +8,10 @@ public class ColorsParser {
 
     public Color colorFromString(String line) throws SerializationException{
         Color color;
-        if(line.startsWith("color(RGB)"))
+        if(line.startsWith("color(RGB"))
         {
-            String cutLine = line.substring(10);
-            String[] splitCut = cutLine.split(")");
-            String[] colors = splitCut[0].split(",");
+            String cutLine = line.substring(10, line.length() - 2);
+            String[] colors = cutLine.split(",");
             int R = Integer.parseInt(colors[0]);
             int G = Integer.parseInt(colors[1]);
             int B = Integer.parseInt(colors[2]);
