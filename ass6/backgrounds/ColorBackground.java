@@ -17,7 +17,7 @@ public class ColorBackground implements Sprite {
     @Override
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
-        surface.fillRectangle(0, 0, surface.getWidth(), surface.getHeight());
+        surface.fillRectangle(20, 20, surface.getWidth(), surface.getHeight());
     }
 
     @Override

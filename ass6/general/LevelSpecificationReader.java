@@ -52,6 +52,10 @@ public class LevelSpecificationReader{
                     readBlockLines = true;
                     continue;
                 }
+                if(key.equals("END_BLOCKS")){
+                    readBlockLines = false;
+                    continue;
+                }
                 if (readBlockLines){
                     for (int i = 0; i < line.length(); ++i) {
                         String symbol = Character.toString(line.charAt(i));
@@ -65,10 +69,6 @@ public class LevelSpecificationReader{
                         }
                     }
                     yPosition += rowHeight;
-                    continue;
-                }
-                if(key.equals("END_BLOCKS")){
-                    readBlockLines = false;
                     continue;
                 }
                 String value = parts[1];

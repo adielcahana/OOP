@@ -102,6 +102,8 @@ public class GameLevel implements Animation {
         // Create the HitListener for blocks and score.
         HitListener blockRemover = new BlockRemover(this, this.blocksCounter);
         HitListener scoreListener = new ScoreTrackingListener(this.scoreCounter);
+        // Add the background of the level.
+        level.getBackground().addToGame(this);
         // Create the borders.
         this.createBorder();
         // Create the sprites that show the score lives and the level name.
@@ -111,8 +113,6 @@ public class GameLevel implements Animation {
         lives.addToGame(this);
         LevelName name = new LevelName(this.level.levelName());
         name.addToGame(this);
-        // Add the background of the level.
-        level.getBackground().addToGame(this);
         // Get list of blocks from the level information and add them to the game.
         List<Block> blockList = new ArrayList<Block>(this.level.blocks());
         for (Block block : blockList) {

@@ -12,17 +12,15 @@ import score.SerializationException;
 public class BlocksFromSymbolsFactory {
 
 
-    private Map<String, Integer> spacerWidths;
-    private Map<String, BlocksCreator> blockCreators;
+    private Map<String, Integer> spacerWidths = new TreeMap<String, Integer>();
+    private Map<String, BlocksCreator> blockCreators= new TreeMap<String, BlocksCreator>();
 
     public BlocksFromSymbolsFactory(Map<String, String> defaultDef, Map<String, String> blockDef,
             Map<String, Integer> spaceDef) throws SerializationException {
-        this.spacerWidths = new TreeMap<String, Integer>();
-        this.blockCreators = new TreeMap<String, BlocksCreator>();
         setSpaceCreators(spaceDef);
         setBlockCreators(defaultDef, blockDef);
-        // TODO Auto-generated constructor stub
     }
+
     // returns true if 's' is a valid space symbol.
     public boolean isSpaceSymbol(String s) {
         return spacerWidths.containsKey(s);
@@ -103,7 +101,7 @@ public class BlocksFromSymbolsFactory {
                 throw new SerializationException("Not enough parameters");
             }
             BlocksCreator block = new BlocksCreator(parameters, fills);
-            blockCreators.put(parameters.get("symbol"), block);
+            blockCreators.put(value.getKey(), block);
         }
     }
 
@@ -115,10 +113,5 @@ public class BlocksFromSymbolsFactory {
             value = i.next();
             spacerWidths.put(value.getKey(), value.getValue());
         }
-
     }
-
-
-
-
 }

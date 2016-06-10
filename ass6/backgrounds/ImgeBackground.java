@@ -16,7 +16,7 @@ public class ImgeBackground implements Sprite {
 
     @Override
     public void drawOn(DrawSurface surface) {
-        surface.drawImage(0, 0, imge);
+        surface.drawImage(20, 20, imge);
     }
 
     @Override
