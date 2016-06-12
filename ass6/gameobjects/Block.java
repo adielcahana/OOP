@@ -1,7 +1,7 @@
 package gameobjects;
 
 import java.awt.Color;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -160,11 +160,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
             s = this.fill.get(1);
         }
         if (s.contains("image")) {
-            Image img = null;
+            BufferedImage imge = null;
             try {
-                img = ImageIO.read(new File(s.substring(6, s.length() - 1)));
+                imge = ImageIO.read(new File(s.substring(6, s.length() - 1)));
                 Point p = this.shape.getUpperLeft();
-                surface.drawImage((int) p.getX(),(int) p.getY(), img);
+                surface.drawImage((int) p.getX(),(int) p.getY(), imge);
             } catch (IOException e) {
             }
         } else {

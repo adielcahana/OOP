@@ -96,15 +96,15 @@ public class LevelSpecificationReader{
                         level.background = new ColorBackground(color);
                         continue;
                     } else if(value.startsWith("image")){
-                        String imgeLine = value.substring(5, value.length() -1);
+                        String imgeLine = value.substring(6, value.length() -1);
                         BufferedImage imge = null;
                         try {
                             imge = ImageIO.read(new File(imgeLine));
+                            level.background = new ImgeBackground(imge);
+                            continue;
                         } catch (IOException e) {
 
                         }
-                        level.background = new ImgeBackground(imge);
-                        continue;
                     }
                 }
                 if(key.equals("paddle_speed")){

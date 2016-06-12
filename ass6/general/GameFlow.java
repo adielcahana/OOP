@@ -9,7 +9,6 @@ import animations.EndGameAnimation;
 import animations.GameLevel;
 import animations.HighScoresAnimation;
 import animations.KeyPressStoppableAnimation;
-import animations.LevelsetMenu;
 import animations.MenuAnimation;
 import backgrounds.BackgroundLevelFour;
 import biuoop.KeyboardSensor;
@@ -40,7 +39,7 @@ public class GameFlow {
     public void showMenu() {
         MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new BackgroundLevelFour(), keyboard);
         final GameFlow game = this;
-        menu.addSelection("s", "Play", new Task<Void>() {
+        menu.addSelection("s", "Start Game", new Task<Void>() {
             public Void run() {
                 LevelSetReader reader = new LevelSetReader(game);
                 try {
@@ -55,7 +54,7 @@ public class GameFlow {
                 return null;
             }
         });
-        menu.addSelection("h", "High Score Table", new Task<Void>(){
+        menu.addSelection("h", "High Scores", new Task<Void>(){
             public Void run() {
                 File file = new File("./highscore.txt");
                 HighScoresTable table = HighScoresTable.loadFromFile(file);
@@ -70,7 +69,7 @@ public class GameFlow {
                 return null;
             }
         });
-        menu.addSelection("q", "Quit", new Task<Void>(){
+        menu.addSelection("e", "Exit", new Task<Void>(){
             public Void run() {
                 System.exit(0);
                 return null;
