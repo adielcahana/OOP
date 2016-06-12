@@ -44,6 +44,10 @@ public class LevelSpecificationReader{
                 }
                 if("END_LEVEL".equals(line)) {
                     levels.add(level);
+                    xPosition = 0;
+                    yPosition = 0;
+                    rowHeight = 0;
+                    factory = null;
                     continue;
                 }
                 String[] parts = line.split(":");
@@ -102,7 +106,6 @@ public class LevelSpecificationReader{
                         level.background = new ImgeBackground(imge);
                         continue;
                     }
-
                 }
                 if(key.equals("paddle_speed")){
                     level.paddleSpeed = Integer.parseInt(value);

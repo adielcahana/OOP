@@ -33,7 +33,7 @@ public class LevelName implements Sprite {
         String name = "levelName: " + this.levelName;
         surface.setColor(this.color);
         //draw the level name.
-        surface.drawText(550, 17, name, 20);
+        surface.drawText(500, 17, name, 20);
     }
 
     @Override
