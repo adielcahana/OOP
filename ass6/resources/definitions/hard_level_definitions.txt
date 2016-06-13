@@ -5,10 +5,10 @@
 START_LEVEL
 level_name:Welcome to the Jungle
 ball_velocities:45,550 -45,550 -30,550 30,550
-background:image(./resources/background_images/jungle.jpg)
+background:image(./background_images/jungle.jpg)
 paddle_speed:650
 paddle_width:160
-block_definitions:./resources/definitions/jungle_block_definitions.txt
+block_definitions:./definitions/jungle_block_definitions.txt
 blocks_start_x:25
 blocks_start_y:80
 row_height:25
@@ -32,7 +32,7 @@ ball_velocities:45,550 46,550 47,550
 background:color(RGB(142,0,0))
 paddle_speed:650
 paddle_width:250
-block_definitions:./resources/definitions/arrows_block_definitions.txt
+block_definitions:./definitions/arrows_block_definitions.txt
 blocks_start_x:25
 blocks_start_y:80
 row_height:25
@@ -59,10 +59,10 @@ END_LEVEL
 START_LEVEL
 level_name: Final Four (V2)
 ball_velocities:45,550
-background:image(./resources/background_images/clouds.png)
+background:image(./background_images/clouds.png)
 paddle_speed:650
 paddle_width:160
-block_definitions:./resources/definitions/standard_block_definitions.txt
+block_definitions:./definitions/standard_block_definitions.txt
 blocks_start_x:25
 blocks_start_y:80
 row_height:25
