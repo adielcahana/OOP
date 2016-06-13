@@ -1,8 +1,10 @@
 package animations;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import biuoop.DrawSurface;
@@ -162,13 +164,14 @@ public class GameLevel implements Animation {
      * Create the border.
      * Create 4 blocks for the border and add them to the game. */
     public void createBorder() {
-        TreeMap<Integer, String> fill = new TreeMap<Integer, String>();
-        fill.put(1, "color(gray)");
-        Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 25), -1, Color.BLACK, fill);
-        Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 25), -1, Color.BLACK, fill);
+        TreeMap<Integer, Color> fillColor = new TreeMap<Integer, Color>();
+        TreeMap<Integer, BufferedImage> fillImage =new TreeMap<Integer, BufferedImage>();
+        fillColor.put(1, Color.GRAY);
+        Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 25), -1, Color.BLACK, fillColor, fillImage);
+        Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 25), -1, Color.BLACK, fillColor, fillImage);
         lowFrame.addHitListener(new BallRemover(this, this.ballsCounter));
-        Block lFrame = new Block(new Rectangle(new Point(0, 40), 25, 575), -1, Color.BLACK, fill);
-        Block rFrame = new Block(new Rectangle(new Point(775, 40), 25, 575), -1, Color.BLACK, fill);
+        Block lFrame = new Block(new Rectangle(new Point(0, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
+        Block rFrame = new Block(new Rectangle(new Point(775, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
         lFrame.addToGame(this);
         rFrame.addToGame(this);
         upFrame.addToGame(this);
