@@ -16,7 +16,7 @@ public class MenuAnimation<T> implements Menu<T> {
     private boolean stop;
     private KeyboardSensor keyboard;
     private AnimationRunner runner;
-    
+
     public MenuAnimation(Sprite background, KeyboardSensor keyboard) {
         this.background = background;
         this.selections = new ArrayList<Selection<T>>();
@@ -24,7 +24,7 @@ public class MenuAnimation<T> implements Menu<T> {
         this.stop = false;
         this.keyboard = keyboard;
     }
-    
+
     @Override
     public void doOneFrame(DrawSurface d, double dt) {
         this.background.drawOn(d);
@@ -37,7 +37,7 @@ public class MenuAnimation<T> implements Menu<T> {
             i += 50;
         }
         for (Selection<T> select : this.selections) {
-            if (this.keyboard.isPressed(select.getKey())){
+            if (this.keyboard.isPressed(select.getKey())) {
                 this.status = select.getReturnVal();
                 this.stop = true;
             }
@@ -53,23 +53,23 @@ public class MenuAnimation<T> implements Menu<T> {
     public void addSelection(String key, String message, T returnVal) {
         this.selections.add(new Selection<T>(key, message, returnVal));
     }
-    
+
     @Override
     public void addSelection(Selection<T> select) {
-        this.selections.add(select);    
+        this.selections.add(select);
     }
-    
-//    @Override
-//    public void addSubMenu(String key, String message,final Menu<T> subMenu) {
-//        this.addSelection("s", "Play", new T<T>(){
-//            @Override
-//            public T run() {
-//                runner.run(subMenu);
-//                return null;
-//            }
-//        });
-//    }
-    
+
+    //    @Override
+    //    public void addSubMenu(String key, String message,final Menu<T> subMenu) {
+    //        this.addSelection("s", "Play", new T<T>(){
+    //            @Override
+    //            public T run() {
+    //                runner.run(subMenu);
+    //                return null;
+    //            }
+    //        });
+    //    }
+
     @Override
     public T getStatus() {
         return this.status;
@@ -79,7 +79,4 @@ public class MenuAnimation<T> implements Menu<T> {
         this.status = null;
         this.stop = false;
     }
-
-
-    
 }

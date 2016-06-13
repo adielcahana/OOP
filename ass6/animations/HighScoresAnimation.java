@@ -13,8 +13,7 @@ public class HighScoresAnimation implements Animation {
     private String endKey;
     private boolean stop;
     private KeyboardSensor keyboard;
-    
-    
+
     public HighScoresAnimation(HighScoresTable table, String endKey, KeyboardSensor keyboard) {
         this.table = table;
         this.endKey = endKey;
@@ -45,7 +44,7 @@ public class HighScoresAnimation implements Animation {
             this.stop = true;
         }
     }
-    
+
     @Override
     public boolean shouldStop() {
         return this.stop;

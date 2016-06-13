@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 import biuoop.DrawSurface;
@@ -165,7 +164,7 @@ public class GameLevel implements Animation {
      * Create 4 blocks for the border and add them to the game. */
     public void createBorder() {
         TreeMap<Integer, Color> fillColor = new TreeMap<Integer, Color>();
-        TreeMap<Integer, BufferedImage> fillImage =new TreeMap<Integer, BufferedImage>();
+        TreeMap<Integer, BufferedImage> fillImage = new TreeMap<Integer, BufferedImage>();
         fillColor.put(1, Color.GRAY);
         Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 25), -1, Color.BLACK, fillColor, fillImage);
         Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 25), -1, Color.BLACK, fillColor, fillImage);

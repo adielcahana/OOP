@@ -28,9 +28,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * <p>
      * @param shape - the collision rectangle.
      * @param hitPoints - hits available.
-     * @param stroke - the block stroke
-     * @param fill - map of the fills. */
-    public Block(Rectangle shape, int hitPoints, Color stroke, Map<Integer, Color> fillColor ,Map<Integer, BufferedImage> fillImage) {
+     * @param stroke - the block stroke.
+     * @param fillColor - map of the fills from colors.
+     * @param fillImage - map of the fills from images. */
+    public Block(Rectangle shape, int hitPoints, Color stroke,
+            Map<Integer, Color> fillColor , Map<Integer, BufferedImage> fillImage) {
         this.shape = shape;
         this.maxHits = hitPoints;
         this.stroke = stroke;
@@ -137,14 +139,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /** Block drawing method.
-     * <p>
-     * drawing to black with a black frame,
-     * filled with his set stroke.
+     * Draw the block frame and fills it.
      * <p>
      * @param surface - the surface to be drew on */
     public void drawOn(DrawSurface surface) {
         Color color = null;
         BufferedImage image = null;
+        // If block have no hit points go to 1 (not to max hit).
         if (maxHits == -1) {
             color = this.fillColor.get(1);
             image = this.fillImage.get(1);
@@ -153,15 +154,18 @@ public class Block implements Collidable, Sprite, HitNotifier {
             image = this.fillImage.get(maxHits);
         }
         if (color != null) {
+            // If the fill is color.
             surface.setColor(color);
             this.shape.fillOn(surface);
         } else {
+            // if the fill is image.
             Point p = this.shape.getUpperLeft();
-            surface.drawImage((int) p.getX(),(int) p.getY(), image);
+            surface.drawImage((int) p.getX(), (int) p.getY(), image);
         }
+        // Draw the stroke.
         if (this.stroke != null) {
             surface.setColor(this.stroke);
-            this.shape.drawOn(surface);    
+            this.shape.drawOn(surface);
         }
     }
 
