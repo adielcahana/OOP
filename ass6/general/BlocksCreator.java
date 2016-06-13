@@ -1,9 +1,16 @@
 package general;
 
 import java.awt.Color;
-
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
+
+import javax.imageio.ImageIO;
 
 import gameobjects.Block;
 import geometry.Point;
@@ -19,7 +26,8 @@ public class BlocksCreator implements BlockCreator {
     private int width;
     private int height;
     private int hitPoints;
-    private Map<Integer, String> fill;
+    private Map<Integer, Color> fillColor;
+    private Map<Integer, BufferedImage> fillImage;
     private Color stroke;
 
     /** BlocksCreator constructor - give the block all his parameters.
@@ -32,8 +40,9 @@ public class BlocksCreator implements BlockCreator {
         this.height = Integer.parseInt(block.get("height"));
         this.hitPoints = Integer.parseInt(block.get("hit_points"));
         setStroke(block.get("stroke"));
-        this.fill = new TreeMap<Integer, String>();
-        fill.putAll(fills);
+        this.fillColor = new TreeMap<Integer, Color>();
+        this.fillImage = new TreeMap<Integer, BufferedImage>();
+        this.setFills(fills);
     }
 
     @Override
@@ -46,7 +55,7 @@ public class BlocksCreator implements BlockCreator {
      * */
     public Block create(int xpos, int ypos) {
         Point point = new Point(xpos, ypos);
-        return new Block(new Rectangle(point, width, height), hitPoints, stroke, fill);
+        return new Block(new Rectangle(point, width, height), hitPoints, stroke, this.fillColor, this.fillImage);
     }
 
     /**
@@ -62,11 +71,35 @@ public class BlocksCreator implements BlockCreator {
      * @throws SerializationException if failed read stroke color. */
     public void setStroke(String color) throws SerializationException {
         if (color.isEmpty()) {
-            this.stroke = Color.BLACK;
+            this.stroke = null;
             return;
         }
         ColorsParser colorParser = new ColorsParser();
         this.stroke = colorParser.colorFromString(color);
     }
-}
 
+    public void setFills(Map<Integer, String> fills) {
+        Set<Entry<Integer, String>> values = fills.entrySet();
+        Iterator<Entry<Integer, String>> i = values.iterator();
+        Entry<Integer, String> value = null;
+        while (i.hasNext()) {
+            value = i.next();
+            String s = value.getValue();
+            if (s.contains("image")) {
+                try {
+                    BufferedImage image = ImageIO.read(new File(s.substring(6, s.length() - 1)));
+                    fillImage.put(value.getKey(), image);
+                } catch (IOException e) {
+                }
+            } else {
+                ColorsParser cp = new ColorsParser();
+                try {
+                    fillColor.put(value.getKey(), cp.colorFromString(s));
+                } catch (SerializationException e) {
+                    System.out.println("Failed converting color from string");
+                    System.exit(0);
+                }
+            }
+        }
+    }
+}
