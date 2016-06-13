@@ -22,6 +22,7 @@ import levels.LevelInformation;
 
 public class LevelSpecificationReader{
 
+    private int startX;
     private int xPosition;
     private int yPosition;
     private int rowHeight;
@@ -63,16 +64,17 @@ public class LevelSpecificationReader{
                 if (readBlockLines){
                     for (int i = 0; i < line.length(); ++i) {
                         String symbol = Character.toString(line.charAt(i));
-                        System.out.println(symbol);
                         if(factory.isSpaceSymbol(symbol)){
                             xPosition += factory.getSpaceWidth(symbol);
                         }else if(factory.isBlockSymbol(symbol)){
+                            //System.out.println(symbol);
                             Block block = factory.getBlock(symbol, xPosition, yPosition);
                             level.blockList.add(block);
                             xPosition += factory.getBlockWidth(symbol);
                         }
                     }
                     yPosition += rowHeight;
+                    xPosition = startX;
                     continue;
                 }
                 String value = parts[1];
@@ -122,6 +124,7 @@ public class LevelSpecificationReader{
 
                 if(key.equals("blocks_start_x")){
                     this.xPosition = Integer.parseInt(value);
+                    startX = xPosition;
                     continue;
                 }
 
@@ -145,6 +148,14 @@ public class LevelSpecificationReader{
             throw e;
         } catch (IOException e) {
             System.err.println("Failed reading level specs file " + ", message:" + e.getMessage());
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Failed closing file");
+            }
         }
         return levels;
     }

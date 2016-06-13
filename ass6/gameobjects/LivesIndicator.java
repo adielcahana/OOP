@@ -29,6 +29,8 @@ public class LivesIndicator implements Sprite {
      * <p>
      * @param surface - the given DrawSurface. */
     public void drawOn(DrawSurface surface) {
+        surface.setColor(Color.white);
+        surface.fillRectangle(0, 0, 200, 20);
         String live = "lives: " + Integer.toString(this.lives.getValue());
         surface.setColor(this.color);
         surface.drawText(100, 17, live, 20);

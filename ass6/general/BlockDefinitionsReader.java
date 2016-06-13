@@ -64,6 +64,14 @@ public class BlockDefinitionsReader {
         }catch (SerializationException e){
             throw e;
             
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Failed closing file");
+            }
         }
     }
 }

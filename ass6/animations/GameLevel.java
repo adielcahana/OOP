@@ -3,6 +3,7 @@ package animations;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import biuoop.DrawSurface;
 import biuoop.GUI;
@@ -134,7 +135,7 @@ public class GameLevel implements Animation {
         // Create the paddle and add it to the game.
         Point paddlePoint = new Point(400 - (level.paddleWidth() / 2), 580);
         Paddle paddle = new Paddle(new Rectangle(paddlePoint, level.paddleWidth(), 20),
-                Color.YELLOW, level.paddleSpeed(), this.keyboard, 20, 780);
+                Color.YELLOW, level.paddleSpeed(), this.keyboard, 25, 775);
         paddle.addToGame(this);
         this.running = true;
         // Countdown before turn starts.
@@ -158,11 +159,13 @@ public class GameLevel implements Animation {
      * Create the border.
      * Create 4 blocks for the border and add them to the game. */
     public void createBorder() {
-        Block upFrame = new Block(new Point(0, 20), 800, 20, -1, Color.BLACK);
-        Block lowFrame = new Block(new Point(0, 600), 800, 20, -1, Color.BLACK);
+        TreeMap<Integer, String> fill = new TreeMap<Integer, String>();
+        fill.put(1, "color(gray)");
+        Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 25), -1, Color.BLACK, fill);
+        Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 25), -1, Color.BLACK, fill);
         lowFrame.addHitListener(new BallRemover(this, this.ballsCounter));
-        Block lFrame = new Block(new Point(0, 40), 20, 580, -1, Color.BLACK);
-        Block rFrame = new Block(new Point(780, 40), 20, 580, -1, Color.BLACK);
+        Block lFrame = new Block(new Rectangle(new Point(0, 40), 25, 575), -1, Color.BLACK, fill);
+        Block rFrame = new Block(new Rectangle(new Point(775, 40), 25, 575), -1, Color.BLACK, fill);
         lFrame.addToGame(this);
         rFrame.addToGame(this);
         upFrame.addToGame(this);

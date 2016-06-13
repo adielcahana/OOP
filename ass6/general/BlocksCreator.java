@@ -31,12 +31,16 @@ public class BlocksCreator implements BlockCreator {
         Point point = new Point(xpos, ypos);
         return new Block(new Rectangle(point, width, height), hitPoints, stroke, fill);
     }
-    
+
     public int getWidth(){
         return this.width;
     }
-    
+
     public void setStroke(String color) throws SerializationException{
+        if(color.isEmpty()){
+            this.stroke = Color.BLACK;
+            return;
+        }
         ColorsParser colorParser = new ColorsParser();
         this.stroke = colorParser.colorFromString(color);
     }

@@ -30,10 +30,12 @@ public class LevelName implements Sprite {
      * <p>
      * @param surface - the given DrawSurface. */
     public void drawOn(DrawSurface surface) {
+        surface.setColor(Color.white);
+        surface.fillRectangle(450, 0, 350, 20);
         String name = "levelName: " + this.levelName;
         surface.setColor(this.color);
         //draw the level name.
-        surface.drawText(500, 17, name, 20);
+        surface.drawText(450, 17, name, 20);
     }
 
     @Override

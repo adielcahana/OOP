@@ -89,7 +89,7 @@ public class GameFlow {
     public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
-        Counter numberOfLives = new Counter(3);
+        Counter numberOfLives = new Counter(7);
         File file = new File("./highscore.txt");
         HighScoresTable table = HighScoresTable.loadFromFile(file);
         try {

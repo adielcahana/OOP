@@ -23,9 +23,11 @@ public class ScoreIndicator implements Sprite {
 
     @Override
     public void drawOn(DrawSurface surface) {
+        surface.setColor(Color.white);
+        surface.fillRectangle(200, 0, 300, 20);
         String hits = "Score: " + Integer.toString(this.scoreCounter.getValue());
         surface.setColor(this.color);
-        surface.drawText(350, 17, hits, 20);
+        surface.drawText(300, 17, hits, 20);
     }
 
     @Override

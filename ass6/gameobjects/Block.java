@@ -148,13 +148,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * <p>
      * @param surface - the surface to be drew on*/
     public void drawOn(DrawSurface surface) {
-        surface.setColor(this.stroke);
-        this.shape.drawOn(surface);
-        if (maxHits == -1){
+        /*if (maxHits == -1){
             surface.setColor(Color.GRAY);
             this.shape.fillOn(surface);
             return;
-        }
+        }*/
         String s = this.fill.get(maxHits);
         if (s == null) {
             s = this.fill.get(1);
@@ -176,6 +174,8 @@ public class Block implements Collidable, Sprite, HitNotifier {
                 System.exit(0);
             }
             this.shape.fillOn(surface);
+            surface.setColor(this.stroke);
+            this.shape.drawOn(surface);
         }
     }
 

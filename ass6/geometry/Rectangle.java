@@ -109,8 +109,6 @@ public class Rectangle {
     public void fillOn(DrawSurface surface) {
         surface.fillRectangle((int) this.upperLeft.getX(), (int) this.upperLeft.getY(),
                 (int) this.width, (int) this.height);
-        surface.setColor(Color.BLACK);
-
     }
 
     /** draws the rectangle frame on a given DrawSurface.

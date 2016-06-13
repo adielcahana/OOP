@@ -52,15 +52,15 @@ public class BlocksFromSymbolsFactory {
         parameters.put("height", null);
         parameters.put("hit_points", null);
         parameters.put("stroke", "");
-        parameters.putAll(defaultDef);
 
         Set<Entry<String, String>> values = blockDef.entrySet();
         Iterator<Entry<String, String>> i = values.iterator();
-        Entry<String, String> value = i.next();
-        parameters.put("symbol", value.getKey());
+        Entry<String, String> value = null;
         while (i.hasNext()) {
             Map <Integer,String> fills = new TreeMap <Integer,String>();
             value = i.next();
+            parameters.putAll(defaultDef);
+            parameters.put("symbol", value.getKey());
             String line = value.getValue();
             String[] parts = line.split(" ");
             for (int j = 0; j < parts.length; j++) {
@@ -68,19 +68,16 @@ public class BlocksFromSymbolsFactory {
                 switch (parts1[0]) {
                 case "width":
                     parameters.put("width", parts1[1]);
-                    System.out.println(parameters.get("width"));
                     break;
                 case "height":
                     parameters.put("height", parts1[1]);
-                    System.out.println(parameters.get("height"));
                     break;
                 case "hit_points":
                     parameters.put("hit_points", parts1[1]);
-                    System.out.println(parameters.get("hit_points"));
+                    System.out.println(parts1[1]);
                     break;
                 case "stroke":
                     parameters.put("stroke", parts1[1]);
-                    System.out.println(parameters.get("stroke"));
                     break;
                 default:
                     if (parts1[0].contains("fill")) {
@@ -108,7 +105,7 @@ public class BlocksFromSymbolsFactory {
     public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException{
         Set<Entry<String, Integer>> values = spaceDef.entrySet();
         Iterator<Entry<String, Integer>> i = values.iterator();
-        Entry<String, Integer> value = i.next();
+        Entry<String, Integer> value = null;
         while (i.hasNext()) {
             value = i.next();
             spacerWidths.put(value.getKey(), value.getValue());
