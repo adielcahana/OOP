@@ -12,10 +12,16 @@ import score.SerializationException;
 public class ColorsParser {
 
     /**
-     * */
-    public Color colorFromString(String line) throws SerializationException{
+     * Return a color from a string of color name.
+     * <p>
+     * @param line - the line with the color name.
+     * @return the color.
+     * @throws SerializationException if failed read the color. */
+    public Color colorFromString(String line) throws SerializationException {
         Color color;
+        // Check if the color is created by RBG.
         if (line.startsWith("color(RGB")) {
+            // Cut the line and give split to r, g, b.
             String colorLine = line.substring(10, line.length() - 2);
             String[] colors = colorLine.split(",");
             int r = Integer.parseInt(colors[0]);
@@ -23,6 +29,7 @@ public class ColorsParser {
             int b = Integer.parseInt(colors[2]);
             return new Color(r, g, b);
         }
+        // else, check if the color is one of specific colors, if not throw exception.
         String cutLine = line.substring(6);
         String colorLine = cutLine.substring(0, cutLine.length() - 1);
         switch (colorLine) {
