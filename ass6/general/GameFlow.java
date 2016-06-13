@@ -12,8 +12,8 @@ import animations.KeyPressStoppableAnimation;
 import animations.MenuAnimation;
 import backgrounds.MenuBackground;
 import biuoop.KeyboardSensor;
+import levelcreator.LevelInformation;
 import levelcreator.LevelSetReader;
-import levels.LevelInformation;
 import listeners.Counter;
 import score.HighScoresTable;
 
@@ -39,22 +39,14 @@ public class GameFlow {
 
     public void showMenu() {
         MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new MenuBackground(), keyboard);
-        final GameFlow game = this;
-        menu.addSelection("s", "Start Game", new Task<Void>() {
-            public Void run() {
-                LevelSetReader reader = new LevelSetReader(game);
-                try {
-                    Menu<Task<Void>> subMenu = reader.getLevelSetMenu(keyboard, new File("./resources/level_sets.txt"));
-                    animationRunner.run(subMenu);
-                    Task<Void> t = subMenu.getStatus();
-                    t.run();
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        });
+        LevelSetReader reader = new LevelSetReader(this);
+        try {
+            Menu<Task<Void>> subMenu = reader.getLevelSetMenu(keyboard, new File("./resources/level_sets.txt"));
+            menu.addSubMenu("s", "Start Game", subMenu);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         menu.addSelection("h", "High Scores", new Task<Void>(){
             public Void run() {
                 File file = new File("./highscore.txt");
@@ -76,10 +68,18 @@ public class GameFlow {
                 return null;
             }
         });
-        while (true){
+        while (true) {
             this.animationRunner.run(menu);
             Task<Void> t = menu.getStatus();
-            t.run();
+            Menu<Task<Void>> subMenu = menu.getMenuStatus();
+            if (t != null) {
+                t.run();
+            } else {
+                this.animationRunner.run(subMenu);
+                t = subMenu.getStatus();
+                t.run();
+                subMenu.resetStatus();
+            }
             menu.resetStatus();
         }
     }
