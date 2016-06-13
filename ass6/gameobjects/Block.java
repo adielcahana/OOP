@@ -2,22 +2,15 @@ package gameobjects;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-
-import javax.imageio.ImageIO;
 
 import animations.GameLevel;
 import biuoop.DrawSurface;
-import general.ColorsParser;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.HitListener;
-import score.SerializationException;
 
 /**
  * @author Adiel cahana <adiel.cahana@gmail.com>
@@ -28,7 +21,8 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Integer maxHits;
     private Color stroke;
     private List<HitListener> hitListeners;
-    private Map<Integer, String> fill;
+    private Map<Integer, Color> fillColor;
+    private Map<Integer, BufferedImage> fillImage;
 
     /** Block constructor.
      * <p>
@@ -36,12 +30,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @param hitPoints - hits available.
      * @param stroke - the block stroke
      * @param fill - map of the fills. */
-    public Block(Rectangle shape, int hitPoints, Color stroke, Map<Integer, String> fill) {
+    public Block(Rectangle shape, int hitPoints, Color stroke, Map<Integer, Color> fillColor ,Map<Integer, BufferedImage> fillImage) {
         this.shape = shape;
         this.maxHits = hitPoints;
         this.stroke = stroke;
-        this.fill = new TreeMap<Integer, String>();
-        this.fill.putAll(fill);
+        this.fillColor = fillColor;
+        this.fillImage = fillImage;
         this.hitListeners = new ArrayList<HitListener>();
     }
 
@@ -149,31 +143,28 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * <p>
      * @param surface - the surface to be drew on */
     public void drawOn(DrawSurface surface) {
-        String s = this.fill.get(maxHits);
-        if (s == null) {
-            s = this.fill.get(1);
-        }
-        if (s.contains("image")) {
-            BufferedImage image = null;
-            try {
-                image = ImageIO.read(new File(s.substring(6, s.length() - 1)));
-                Point p = this.shape.getUpperLeft();
-                surface.drawImage((int) p.getX(),(int) p.getY(), image);
-            } catch (IOException e) {
-            }
+        Color color = null;
+        BufferedImage image = null;
+        if (maxHits == -1) {
+            color = this.fillColor.get(1);
+            image = this.fillImage.get(1);
         } else {
-            ColorsParser cp = new ColorsParser();
-            try {
-                surface.setColor(cp.colorFromString(s));
-            } catch (SerializationException e) {
-                System.out.println("Failed converting color from string");
-                System.exit(0);
-            }
+            color = this.fillColor.get(maxHits);
+            image = this.fillImage.get(maxHits);
+        }
+        if (color != null) {
+            surface.setColor(color);
             this.shape.fillOn(surface);
+        } else {
+            Point p = this.shape.getUpperLeft();
+            surface.drawImage((int) p.getX(),(int) p.getY(), image);
+        }
+        if (this.stroke != null) {
             surface.setColor(this.stroke);
-            this.shape.drawOn(surface);
+            this.shape.drawOn(surface);    
         }
     }
+
 
     /** add the Block to the game Database.
      * <p>
