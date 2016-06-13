@@ -30,9 +30,10 @@ public class KeyPressStoppableAnimation implements Animation {
     @Override
     /**
      * Do one frame of the animation.
+     * Check if the key is already pressed and stop if it's pressed.
      * <p>
      * @param d - the given surface.
-     * @param dt - @param dt - the speed per frame. */
+     * @param dt - the speed per frame. */
     public void doOneFrame(DrawSurface d, double dt) {
         animation.doOneFrame(d, dt);
         if (this.sensor.isPressed(this.key)) {
