@@ -1,6 +1,5 @@
 package levelcreator;
 
-import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,59 +18,86 @@ public class BlocksFromSymbolsFactory {
     private Map<String, BlocksCreator> blockCreators = new TreeMap<String, BlocksCreator>();
 
     /**
-     * Read file with level definition and create the levels.
+     * Constructor - create map for the blocks and map for the spaces.
      * <p>
-     * @param reader - the file to read.
-     * @return list of levels.
-     * @throws FileNotFoundException - if can't find/read the file.
+     * @param defaultDef - the map of the default parameters for block.
+     * @param blockDef - the parameters of the blocks by symbols.
+     * @param spaceDef - the width of the spaces by symbols.
+     * @throws SerializationException - if can't find/read the file.
      * */
     public BlocksFromSymbolsFactory(Map<String, String> defaultDef, Map<String, String> blockDef,
-            Map<String, Integer>spaceDef) throws SerializationException {
+            Map<String, Integer> spaceDef) throws SerializationException {
         setSpaceCreators(spaceDef);
         setBlockCreators(defaultDef, blockDef);
     }
 
-    // returns true if 's' is a valid space symbol.
+    /**
+     * @param s - the given symbol of space.
+     * @return true if the given symbol belong to the spaces map. */
     public boolean isSpaceSymbol(String s) {
         return spacerWidths.containsKey(s);
     }
-    // returns true if 's' is a valid block symbol.
+
+    /**
+     * @param s - the given symbol of block.
+     * @return true if the given symbol belong to the blocks map. */
     public boolean isBlockSymbol(String s) {
         return blockCreators.containsKey(s);
     }
 
-    public int getBlockWidth(String s){
+    /**
+     * @param s - the given symbol of block.
+     * @return the width of the given block. */
+    public int getBlockWidth(String s) {
         return blockCreators.get(s).getWidth();
     }
 
-    // Return a block according to the definitions associated
-    // with symbol s. The block will be located at position (xpos, ypos).
+    /**
+     * Create new block by symbol and coordinate.
+     * <p>
+     * @param s - the given symbol of block.
+     * @param xpos - the x value of the block upper left point.
+     * @param ypos - the y value of the block upper left point.
+     * @return new block. */
     public Block getBlock(String s, int xpos, int ypos) {
         return blockCreators.get(s).create(xpos, ypos);
     }
 
-    // Returns the width in pixels associated with the given spacer-symbol.
-    public int getSpaceWidth(String s){
+    /**
+     * @param s - the given symbol of space.
+     * @return the width of the given space. */
+    public int getSpaceWidth(String s) {
         return spacerWidths.get(s);
     }
 
-    public void setBlockCreators(Map<String, String> defaultDef, Map<String, String> blockDef) throws SerializationException{
-        Map<String,String> parameters = new TreeMap<String,String>();
+    /**
+     * Create the blocks creator map.
+     * put for each block symbol all the parameters.
+     * <p>
+     * @param defaultDef - the map of the default parameters for block
+     * @param blockDef - the parameters of the blocks by symbols.
+     * @throws SerializationException - if can't find/read the file. */
+    public void setBlockCreators(Map<String, String> defaultDef,
+            Map<String, String> blockDef) throws SerializationException {
+        // Temporary map with empty keys.
+        Map<String, String> parameters = new TreeMap<String, String>();
         parameters.put("symbol", null);
         parameters.put("width", null);
         parameters.put("height", null);
         parameters.put("hit_points", null);
         parameters.put("stroke", "");
-
+        // Run of all the blockDef map with iterator.
         Set<Entry<String, String>> values = blockDef.entrySet();
         Iterator<Entry<String, String>> i = values.iterator();
         Entry<String, String> value = null;
         while (i.hasNext()) {
-            Map <Integer,String> fills = new TreeMap <Integer,String>();
+            Map<Integer, String> fills = new TreeMap<Integer, String>();
             value = i.next();
+            // Every block symbol get the default map.
             parameters.putAll(defaultDef);
             parameters.put("symbol", value.getKey());
             String line = value.getValue();
+            // Split and put the value to every key parameter.
             String[] parts = line.split(" ");
             for (int j = 0; j < parts.length; j++) {
                 String[] parts1 = parts[j].split(":");
@@ -91,7 +117,8 @@ public class BlocksFromSymbolsFactory {
                 default:
                     if (parts1[0].contains("fill")) {
                         String fillNum = null;
-                        if(parts1[0].length() > 4) {
+                        // If fill have no number.
+                        if (parts1[0].length() > 4) {
                             fillNum = parts1[0].substring(5);
                         } else {
                             fillNum = "1";
@@ -103,15 +130,22 @@ public class BlocksFromSymbolsFactory {
                     break;
                 }
             }
-            if(parameters.containsValue(null)){
+            if (parameters.containsValue(null)) {
                 throw new SerializationException("Not enough parameters");
             }
+            // Create BlocksCreator and add it to the map with his symbol.
             BlocksCreator block = new BlocksCreator(parameters, fills);
             blockCreators.put(value.getKey(), block);
         }
     }
 
-    public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException{
+    /**
+     * Create the spaces map.
+     * put for each space symbol his width.
+     * <p>
+     * @param spaceDef - the width of the spaces by symbols.
+     * @throws SerializationException - if can't find/read the file. */
+    public void setSpaceCreators(Map<String, Integer> spaceDef) throws SerializationException {
         Set<Entry<String, Integer>> values = spaceDef.entrySet();
         Iterator<Entry<String, Integer>> i = values.iterator();
         Entry<String, Integer> value = null;
