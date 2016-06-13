@@ -96,7 +96,9 @@ public class BlocksCreator implements BlockCreator {
             if (s.contains("image")) {
                 // If it's image put in images map.
                 try {
-                    BufferedImage image = ImageIO.read(new File(s.substring(6, s.length() - 1)));
+                    String imageLine = s.substring(6, s.length() - 1);
+                    //InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(imageLine);
+                    BufferedImage image = ImageIO.read(new File(imageLine));
                     fillImage.put(value.getKey(), image);
                 } catch (IOException e) {
                     System.out.println("Failed read the image");

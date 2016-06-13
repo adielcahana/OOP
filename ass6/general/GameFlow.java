@@ -2,6 +2,7 @@ package general;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 
 import animations.AnimationRunner;
@@ -37,17 +38,17 @@ public class GameFlow {
         this.keyboard = gui.getKeyboardSensor();
     }
 
-    public void showMenu() {
+    public void showMenu(String levelSet) {
         MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new MenuBackground(), keyboard);
         LevelSetReader reader = new LevelSetReader(this);
         try {
-            Menu<Task<Void>> subMenu = reader.getLevelSetMenu(keyboard, new File("./resources/level_sets.txt"));
+            Menu<Task<Void>> subMenu = reader.getLevelSetMenu(keyboard, levelSet);
             menu.addSubMenu("s", "Start Game", subMenu);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        menu.addSelection("h", "High Scores", new Task<Void>(){
+        menu.addSelection("h", "High Scores", new Task<Void>() {
             public Void run() {
                 File file = new File("./highscore.txt");
                 HighScoresTable table = HighScoresTable.loadFromFile(file);
@@ -122,7 +123,7 @@ public class GameFlow {
                 break;
             }
         }
-        if (i > levels.size()) {
+        if (i == levels.size()) {
             this.animationRunner.run(
                     new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
                             new EndGameAnimation(true, scoreCounter, this.keyboard)));

@@ -1,5 +1,6 @@
 package levelcreator;
 
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -8,15 +9,24 @@ import java.util.TreeMap;
 
 import gameobjects.Block;
 import score.SerializationException;
-
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-06-7 */
 public class BlocksFromSymbolsFactory {
 
-
     private Map<String, Integer> spacerWidths = new TreeMap<String, Integer>();
-    private Map<String, BlocksCreator> blockCreators= new TreeMap<String, BlocksCreator>();
+    private Map<String, BlocksCreator> blockCreators = new TreeMap<String, BlocksCreator>();
 
+    /**
+     * Read file with level definition and create the levels.
+     * <p>
+     * @param reader - the file to read.
+     * @return list of levels.
+     * @throws FileNotFoundException - if can't find/read the file.
+     * */
     public BlocksFromSymbolsFactory(Map<String, String> defaultDef, Map<String, String> blockDef,
-            Map<String, Integer> spaceDef) throws SerializationException {
+            Map<String, Integer>spaceDef) throws SerializationException {
         setSpaceCreators(spaceDef);
         setBlockCreators(defaultDef, blockDef);
     }

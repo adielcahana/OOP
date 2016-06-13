@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.List;
@@ -16,7 +17,6 @@ import general.GameFlow;
 import general.Menu;
 import general.Selection;
 import general.Task;
-import levels.LevelInformation;
 
 public class LevelSetReader {
     private GameFlow game;
@@ -39,17 +39,19 @@ public class LevelSetReader {
         }
     }
 
-    public Menu<Task<Void>> getLevelSetMenu(KeyboardSensor keyboard, File levelSet) throws FileNotFoundException{
+    public Menu<Task<Void>> getLevelSetMenu(KeyboardSensor keyboard, String levelSet) throws FileNotFoundException{
         LineNumberReader reader = null;
         Menu<Task<Void>> menu = new LevelsetMenu<Task<Void>>(new MenuBackground(), keyboard);
         try {
             // bytes to characters wrapper0
-            reader = new LineNumberReader(new InputStreamReader(new FileInputStream(levelSet)));
+            System.out.println(levelSet);
+            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(levelSet);
+            reader = new LineNumberReader(new InputStreamReader(is));
             int linenum = reader.getLineNumber();
             String line = reader.readLine();
             String[] parts = null;
             List<LevelInformation> levelList = null;
-            while(line != null) {
+            while (line != null) {
                 System.out.println(line);
                 if (linenum % 2 == 0) {
                     parts = line.split(":");
@@ -80,7 +82,7 @@ public class LevelSetReader {
                     reader.close();
                 }
             } catch (IOException e) {
-                System.err.println("Failed closing file: " + levelSet.getName());
+                System.err.println("Failed closing file: " + levelSet);
             }
         }
         return menu;

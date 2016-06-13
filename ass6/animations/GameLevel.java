@@ -21,7 +21,7 @@ import gameobjects.SpriteCollection;
 import general.GameEnvironment;
 import geometry.Point;
 import geometry.Rectangle;
-import levels.LevelInformation;
+import levelcreator.LevelInformation;
 import listeners.BallRemover;
 import listeners.BlockRemover;
 import listeners.Counter;

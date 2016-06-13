@@ -1,9 +1,13 @@
 package general;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import levels.LevelInformation;
+import levelcreator.LevelInformation;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -35,12 +39,12 @@ public class Ass6Game {
     }
 
     /**
-    * cast a string type to int type.
-    * <p>
-    * gets a string array and returns its elements as int array
-    * <p>
-    * @param numbers - the string of numbers.
-    * @return intNums - array of int. */
+     * cast a string type to int type.
+     * <p>
+     * gets a string array and returns its elements as int array
+     * <p>
+     * @param numbers - the string of numbers.
+     * @return intNums - array of int. */
     public static List<Integer> stringsToInts(String[] numbers) {
         int size = numbers.length;
         List<Integer> intNums = new ArrayList<Integer>();
@@ -61,8 +65,12 @@ public class Ass6Game {
      * <p>
      * @param args - string of arguments to the main.*/
     public static void main(String[] args) {
-        // Create a new GameFlow and run it.
+        if (args.length < 1) {
+            System.out.println("Expected parameters: fileName");
+            return;
+        }
+        String levelSet = args[0];
         GameFlow game = new GameFlow();
-        game.showMenu();
+        game.showMenu(levelSet);
     }
 }
