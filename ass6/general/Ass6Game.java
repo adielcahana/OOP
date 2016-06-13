@@ -3,11 +3,7 @@ package general;
 import java.util.ArrayList;
 import java.util.List;
 
-import levels.LevelFour;
 import levels.LevelInformation;
-import levels.LevelOne;
-import levels.LevelThree;
-import levels.LevelTwo;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -22,10 +18,10 @@ public class Ass6Game {
     public static List<LevelInformation> levels(List<Integer> order) {
         List<LevelInformation> levels = new ArrayList<LevelInformation>();
         // Add all the levels to the ArrayList.
-        levels.add(new LevelOne());
-        levels.add(new LevelTwo());
-        levels.add(new LevelThree());
-        levels.add(new LevelFour());
+        //levels.add(new LevelOne());
+        //levels.add(new LevelTwo());
+        //levels.add(new LevelThree());
+        //levels.add(new LevelFour());
         List<LevelInformation> playLevels = new ArrayList<LevelInformation>();
         if (order.isEmpty()) {
             return levels;

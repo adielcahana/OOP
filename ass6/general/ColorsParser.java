@@ -4,21 +4,27 @@ import java.awt.Color;
 
 import score.SerializationException;
 
+
+/**
+ * @author Ori Engelberg <turht50@gmail.com>
+ * @version 1.0
+ * @since 2016-06-8 */
 public class ColorsParser {
 
+    /**
+     * */
     public Color colorFromString(String line) throws SerializationException{
         Color color;
-        if(line.startsWith("color(RGB"))
-        {
+        if (line.startsWith("color(RGB")) {
             String colorLine = line.substring(10, line.length() - 2);
             String[] colors = colorLine.split(",");
-            int R = Integer.parseInt(colors[0]);
-            int G = Integer.parseInt(colors[1]);
-            int B = Integer.parseInt(colors[2]);
-            return new Color(R, G, B); 
+            int r = Integer.parseInt(colors[0]);
+            int g = Integer.parseInt(colors[1]);
+            int b = Integer.parseInt(colors[2]);
+            return new Color(r, g, b);
         }
         String cutLine = line.substring(6);
-        String colorLine = cutLine.substring(0, cutLine.length() - 1);  
+        String colorLine = cutLine.substring(0, cutLine.length() - 1);
         switch (colorLine) {
         case "black":
             color = Color.black;
@@ -28,10 +34,10 @@ public class ColorsParser {
             break;
         case "cyan":
             color = Color.cyan;
-            break;     
+            break;
         case "gray":
             color = Color.gray;
-            break;  
+            break;
         case "lightGray":
             color = Color.lightGray;
             break;

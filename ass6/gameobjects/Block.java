@@ -28,18 +28,19 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Integer maxHits;
     private Color stroke;
     private List<HitListener> hitListeners;
-    private Map<Integer ,String> fill;
+    private Map<Integer, String> fill;
 
     /** Block constructor.
      * <p>
-     * @param shape - the collision rectangle
-     * @param maxHits - hits available.
-     * @param stroke - the block stroke*/
-    public Block(Rectangle shape, int hitPoints, Color stroke, Map<Integer ,String> fill) {
+     * @param shape - the collision rectangle.
+     * @param hitPoints - hits available.
+     * @param stroke - the block stroke
+     * @param fill - map of the fills. */
+    public Block(Rectangle shape, int hitPoints, Color stroke, Map<Integer, String> fill) {
         this.shape = shape;
         this.maxHits = hitPoints;
         this.stroke = stroke;
-        this.fill = new TreeMap<Integer ,String>();
+        this.fill = new TreeMap<Integer, String>();
         this.fill.putAll(fill);
         this.hitListeners = new ArrayList<HitListener>();
     }
@@ -146,23 +147,18 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * drawing to black with a black frame,
      * filled with his set stroke.
      * <p>
-     * @param surface - the surface to be drew on*/
+     * @param surface - the surface to be drew on */
     public void drawOn(DrawSurface surface) {
-        /*if (maxHits == -1){
-            surface.setColor(Color.GRAY);
-            this.shape.fillOn(surface);
-            return;
-        }*/
         String s = this.fill.get(maxHits);
         if (s == null) {
             s = this.fill.get(1);
         }
         if (s.contains("image")) {
-            BufferedImage imge = null;
+            BufferedImage image = null;
             try {
-                imge = ImageIO.read(new File(s.substring(6, s.length() - 1)));
+                image = ImageIO.read(new File(s.substring(6, s.length() - 1)));
                 Point p = this.shape.getUpperLeft();
-                surface.drawImage((int) p.getX(),(int) p.getY(), imge);
+                surface.drawImage((int) p.getX(),(int) p.getY(), image);
             } catch (IOException e) {
             }
         } else {
@@ -197,7 +193,9 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
-     * notify the block that the main animation loop continued.*/
+     * notify the block that the main animation loop continued.
+     * <p>
+     * @param dt - the speed per frame. */
     public void timePassed(double dt) {
     }
 

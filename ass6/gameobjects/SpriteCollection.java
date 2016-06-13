@@ -36,7 +36,9 @@ public class SpriteCollection {
 
 
     /**
-     * Notify all the sprites in the list that time passed. */
+     * Notify all the sprites in the list that time passed.
+     * <p>
+     * @param dt - the speed per frame. */
     public void notifyAllTimePassed(Double dt) {
         for (int i = 0; i < this.spriteCollection.size(); i++) {
             Sprite s = this.spriteCollection.get(i);

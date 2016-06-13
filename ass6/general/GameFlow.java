@@ -10,7 +10,7 @@ import animations.GameLevel;
 import animations.HighScoresAnimation;
 import animations.KeyPressStoppableAnimation;
 import animations.MenuAnimation;
-import backgrounds.BackgroundLevelFour;
+import backgrounds.MenuBackground;
 import biuoop.KeyboardSensor;
 import levels.LevelInformation;
 import listeners.Counter;
@@ -37,7 +37,7 @@ public class GameFlow {
     }
 
     public void showMenu() {
-        MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new BackgroundLevelFour(), keyboard);
+        MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new MenuBackground(), keyboard);
         final GameFlow game = this;
         menu.addSelection("s", "Start Game", new Task<Void>() {
             public Void run() {

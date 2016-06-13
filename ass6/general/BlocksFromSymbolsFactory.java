@@ -74,7 +74,6 @@ public class BlocksFromSymbolsFactory {
                     break;
                 case "hit_points":
                     parameters.put("hit_points", parts1[1]);
-                    System.out.println(parts1[1]);
                     break;
                 case "stroke":
                     parameters.put("stroke", parts1[1]);

@@ -35,15 +35,15 @@ public class LevelSpecificationReader{
         BufferedReader bufferReader = new BufferedReader(reader);
         try {
             String line = null;
-            while (( line = bufferReader.readLine ()) != null ){
-                if(line.isEmpty() || line.startsWith("#")) {
+            while ((line = bufferReader.readLine ()) != null ) {
+                if (line.isEmpty() || line.startsWith("#")) {
                     continue;
                 }
-                if("START_LEVEL".equals(line)) {
+                if ("START_LEVEL".equals(line)) {
                     level = new Level();
                     continue;
                 }
-                if("END_LEVEL".equals(line)) {
+                if ("END_LEVEL".equals(line)) {
                     levels.add(level);
                     xPosition = 0;
                     yPosition = 0;
@@ -98,11 +98,11 @@ public class LevelSpecificationReader{
                         level.background = new ColorBackground(color);
                         continue;
                     } else if(value.startsWith("image")){
-                        String imgeLine = value.substring(6, value.length() -1);
-                        BufferedImage imge = null;
+                        String imageLine = value.substring(6, value.length() -1);
+                        BufferedImage image = null;
                         try {
-                            imge = ImageIO.read(new File(imgeLine));
-                            level.background = new ImgeBackground(imge);
+                            image = ImageIO.read(new File(imageLine));
+                            level.background = new ImgeBackground(image);
                             continue;
                         } catch (IOException e) {
 

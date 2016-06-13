@@ -2,7 +2,6 @@ package levels;
 
 import java.util.List;
 
-import gameobjects.Ball;
 import gameobjects.Block;
 import gameobjects.Sprite;
 import gameobjects.Velocity;

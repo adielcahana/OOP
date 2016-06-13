@@ -37,6 +37,7 @@ public class Velocity {
         * with position (x + dx, y + dy).
         * <p>
         * @param point - the point to be changed.
+        * @param dt - the speed per frame.
         * @return new Point - the new point after the change */
        public Point applyToPoint(Point point, double dt) {
            return new Point(point.getX() + this.dx * dt, point.getY() + this.dy * dt);

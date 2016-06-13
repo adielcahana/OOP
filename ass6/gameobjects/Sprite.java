@@ -15,7 +15,9 @@ public interface Sprite {
    void drawOn(DrawSurface sprite);
 
    /**
-    * Notify the sprite that the time passed. */
+    * Notify the sprite that the time passed.
+    * <p>
+    * @param dt - the speed per frame. */
    void timePassed(double dt);
 
    /** add the Sprite to the game Database.

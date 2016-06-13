@@ -165,7 +165,9 @@ public class Ball implements Sprite {
      * <p>
      * changes the center according to the velocity
      * <p>
-     * keeps the ball moving correctly in the environment*/
+     * keeps the ball moving correctly in the environment
+     * <p>
+     * @param dt - the speed per frame. */
     public void moveOneStep(double dt) {
         Line trajectory = this.getTrajectory();
         CollisionInfo info = this.enviroment.getClosestCollision(trajectory);
@@ -197,7 +199,9 @@ public class Ball implements Sprite {
         game.removeSprite(this);
     }
     /**
-     * notify the ball that the main animation loop continued.*/
+     * notify the ball that the main animation loop continued.
+     * <p>
+     * @param dt - the speed per frame. */
     public void timePassed(double dt) {
         this.moveOneStep(dt);
     }

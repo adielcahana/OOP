@@ -29,7 +29,7 @@ import listeners.ScoreTrackingListener;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
- * @version 1.1
+ * @version 1.2
  * @since 2016-04-03 */
 public class GameLevel implements Animation {
     private SpriteCollection sprites;
@@ -146,12 +146,15 @@ public class GameLevel implements Animation {
         paddle.removeFromGame(this);
     }
 
+    /**
+     * Create the balls on the top of the paddle.
+     * Create balls and give any ball a velocity from the list of velocities. */
     private void createTheBallsOnTheTopOfThePaddle() {
-        for(int i = 0; i < this.level.numberOfBalls(); i++){
-            Ball ball = new Ball (400, 575, 5, Color.WHITE);
+        for (int i = 0; i < this.level.numberOfBalls(); i++) {
+            Ball ball = new Ball(400, 575, 5, Color.WHITE);
             ball.setVelocity(this.level.initialBallVelocities().get(i));
             ball.setGameEnvironment(this.environment);
-            ball.addToGame(this);    
+            ball.addToGame(this);
         }
     }
 
@@ -183,11 +186,12 @@ public class GameLevel implements Animation {
      * Do one step of the game ( draw all the sprites and notify that time past).
      * <p>
      * @param d - the given surface.
-     */
+     * @param dt - @param dt - the speed per frame. */
     public void doOneFrame(DrawSurface d, double dt) {
         // Pause the game.
         if (this.keyboard.isPressed("p")) {
-            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY, new PauseScreen(keyboard)));
+            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
+                    new PauseScreen(keyboard)));
         }
         // Draw all the sprites.
         this.environment.setSurface(d);

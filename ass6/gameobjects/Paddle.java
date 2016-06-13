@@ -41,7 +41,9 @@ public class Paddle implements Sprite, Collidable {
         }
 
     /**
-     * The paddle move left. */
+     * The paddle move left.
+     * <p>
+     * @param dt - the speed per frame. */
     public void moveLeft(double dt) {
         double x  = this.shape.getUpperLeft().getX();
         double y  = this.shape.getUpperLeft().getY();
@@ -57,7 +59,9 @@ public class Paddle implements Sprite, Collidable {
         }
 
     /**
-     * The paddle move right. */
+     * The paddle move right.
+     * <p>
+     * @param dt - the speed per frame. */
     public void moveRight(double dt) {
         double x  = this.shape.getUpperLeft().getX();
         double y  = this.shape.getUpperLeft().getY();
@@ -74,7 +78,9 @@ public class Paddle implements Sprite, Collidable {
 
     /**
      * Move the paddle when notify that time passed.
-     * If pressed left arrow move left, if pressed right arrow move right. */
+     * If pressed left arrow move left, if pressed right arrow move right.
+     * <p>
+     * @param dt - the speed per frame. */
     public void timePassed(double dt) {
         if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
             this.moveLeft(dt);
