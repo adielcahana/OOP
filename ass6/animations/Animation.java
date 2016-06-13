@@ -8,7 +8,8 @@ import biuoop.DrawSurface;
 public interface Animation {
     /** draw one frame of the animation.
     * <p>
-    * @param d - a draw surface to draw the frame on. */
+    * @param d - a draw surface to draw the frame on.
+    * @param dt - @param dt - the speed per frame. */
     void doOneFrame(DrawSurface d, double dt);
 
     /** returns information about the continuation of the animation.
