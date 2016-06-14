@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.List;
 
-import animations.LevelsetMenu;
+import animations.MenuAnimation;
 import backgrounds.MenuBackground;
 import biuoop.KeyboardSensor;
 import general.GameFlow;
@@ -39,7 +39,7 @@ public class LevelSetReader {
 
     public Menu<Task<Void>> getLevelSetMenu(KeyboardSensor keyboard, String levelSet) throws FileNotFoundException{
         LineNumberReader reader = null;
-        Menu<Task<Void>> menu = new LevelsetMenu<Task<Void>>(new MenuBackground(), keyboard);
+        Menu<Task<Void>> menu = new MenuAnimation<Task<Void>>(new MenuBackground(), keyboard);
         try {
             // bytes to characters wrapper0
             InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(levelSet);
