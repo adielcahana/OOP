@@ -43,6 +43,7 @@ public class LevelSetReader {
         try {
             // bytes to characters wrapper0
             InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(levelSet);
+            System.out.println(levelSet);
             reader = new LineNumberReader(new InputStreamReader(is));
             int linenum = reader.getLineNumber();
             String line = reader.readLine();

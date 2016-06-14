@@ -61,7 +61,7 @@ public class Ass6Game {
             game.showMenu("level_sets.txt");
             return;
         } else {
-            game.showMenu(args[0]);    
+            game.showMenu(args[0]);
         }
     }
 }
