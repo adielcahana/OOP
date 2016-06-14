@@ -1,9 +1,5 @@
 package general;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +17,6 @@ public class Ass6Game {
      * @return list of the levels. */
     public static List<LevelInformation> levels(List<Integer> order) {
         List<LevelInformation> levels = new ArrayList<LevelInformation>();
-        // Add all the levels to the ArrayList.
-        //levels.add(new LevelOne());
-        //levels.add(new LevelTwo());
-        //levels.add(new LevelThree());
-        //levels.add(new LevelFour());
         List<LevelInformation> playLevels = new ArrayList<LevelInformation>();
         if (order.isEmpty()) {
             return levels;
@@ -65,12 +56,12 @@ public class Ass6Game {
      * <p>
      * @param args - string of arguments to the main.*/
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Expected parameters: fileName");
-            return;
-        }
-        String levelSet = args[0];
         GameFlow game = new GameFlow();
-        game.showMenu(levelSet);
+        if (args.length == 0) {
+            game.showMenu("level_sets.txt");
+            return;
+        } else {
+            game.showMenu(args[0]);    
+        }
     }
 }

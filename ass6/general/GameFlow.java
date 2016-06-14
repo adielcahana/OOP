@@ -2,7 +2,6 @@ package general;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.List;
 
 import animations.AnimationRunner;
@@ -29,7 +28,6 @@ public class GameFlow {
     private biuoop.GUI gui;
 
 
-
     /**
      * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game.. */
     public GameFlow() {
@@ -49,7 +47,7 @@ public class GameFlow {
             e.printStackTrace();
         }
         menu.addSelection("h", "High Scores", new Task<Void>() {
-            public Void run() {
+           public Void run() {
                 File file = new File("./highscore.txt");
                 HighScoresTable table = HighScoresTable.loadFromFile(file);
                 try {

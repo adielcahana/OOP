@@ -2,8 +2,8 @@ package levelcreator;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -97,8 +97,8 @@ public class BlocksCreator implements BlockCreator {
                 // If it's image put in images map.
                 try {
                     String imageLine = s.substring(6, s.length() - 1);
-                    //InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(imageLine);
-                    BufferedImage image = ImageIO.read(new File(imageLine));
+                    InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(imageLine);
+                    BufferedImage image = ImageIO.read(is);
                     fillImage.put(value.getKey(), image);
                 } catch (IOException e) {
                     System.out.println("Failed read the image");

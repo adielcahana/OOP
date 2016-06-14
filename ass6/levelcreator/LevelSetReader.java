@@ -1,8 +1,6 @@
 package levelcreator;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +42,6 @@ public class LevelSetReader {
         Menu<Task<Void>> menu = new LevelsetMenu<Task<Void>>(new MenuBackground(), keyboard);
         try {
             // bytes to characters wrapper0
-            System.out.println(levelSet);
             InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(levelSet);
             reader = new LineNumberReader(new InputStreamReader(is));
             int linenum = reader.getLineNumber();
@@ -56,13 +53,12 @@ public class LevelSetReader {
                 if (linenum % 2 == 0) {
                     parts = line.split(":");
                 } else {
-                    File levelSpecification = new File(line);
                     LevelSpecificationReader lsReader = new LevelSpecificationReader();
+                    InputStream is1 = ClassLoader.getSystemClassLoader().getResourceAsStream(line);
                     //bytes to characters wrapper
                     levelList = lsReader.fromReader(
                             new BufferedReader(
-                                    new InputStreamReader(
-                                            new FileInputStream(levelSpecification))));
+                                    new InputStreamReader(is1)));
                     Selection<Task<Void>> select =
                             new Selection<Task<Void>>(parts[0], parts[1], new LevelTask<Void>(levelList));
                     menu.addSelection(select);

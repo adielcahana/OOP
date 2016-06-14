@@ -131,9 +131,9 @@ public class LevelSpecificationReader {
                         } else if (key.equals("block_definitions")) {
                             // Create blocks factory (send the block definition file).
                             try {
+                                InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(value);
                                 reader = new BufferedReader(
-                                        new InputStreamReader(
-                                                new FileInputStream(value)));
+                                        new InputStreamReader(is));
                                 factory = BlockDefinitionsReader.fromReader(reader);
                             } catch (IOException e) {
                                 System.err.println("Failed reading the file ");
