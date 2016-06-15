@@ -59,7 +59,6 @@ public class Ass6Game {
         GameFlow game = new GameFlow();
         if (args.length == 0) {
             game.showMenu("level_sets.txt");
-            return;
         } else {
             game.showMenu(args[0]);
         }

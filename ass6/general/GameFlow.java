@@ -29,23 +29,28 @@ public class GameFlow {
 
 
     /**
-     * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game.. */
+     * Constructor - Create the GUI the AnimationRunner and KeyboardSensor of the game. */
     public GameFlow() {
         this.gui = new biuoop.GUI("title", 800, 600);
         this.animationRunner = new AnimationRunner(this.gui, 60);
         this.keyboard = gui.getKeyboardSensor();
     }
 
+    /** show the main menu.
+     * <p>
+     * @param levelSet - path to the level set file */
     public void showMenu(String levelSet) {
         MenuAnimation<Task<Void>> menu = new MenuAnimation<Task<Void>>(new MenuBackground(), keyboard);
         LevelSetReader reader = new LevelSetReader(this);
+        // read the level set file and return a menu with the available sets
         try {
             Menu<Task<Void>> subMenu = reader.getLevelSetMenu(keyboard, levelSet);
             menu.addSubMenu("s", "Start Game", subMenu);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            System.exit(1);
         }
+        // add the high score option
         menu.addSelection("h", "High Scores", new Task<Void>() {
            public Void run() {
                 File file = new File("./highscore.txt");
@@ -61,7 +66,8 @@ public class GameFlow {
                 return null;
             }
         });
-        menu.addSelection("e", "Exit", new Task<Void>(){
+        // add the exit option
+        menu.addSelection("e", "Exit", new Task<Void>() {
             public Void run() {
                 System.exit(0);
                 return null;
@@ -69,10 +75,13 @@ public class GameFlow {
         });
         while (true) {
             this.animationRunner.run(menu);
+            //try to get status or submenu from the menu
             Task<Void> t = menu.getStatus();
             Menu<Task<Void>> subMenu = menu.getMenuStatus();
+            //the menu result is a task
             if (t != null) {
                 t.run();
+            //the menu result is a sub-menu
             } else {
                 this.animationRunner.run(subMenu);
                 t = subMenu.getStatus();
@@ -85,7 +94,8 @@ public class GameFlow {
     /**
      * Run the game.
      * <p>
-     * run the levels in a loop as long left lives*/
+     * run the levels in a loop as long left lives
+     * @param levels - list of levels*/
     public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();

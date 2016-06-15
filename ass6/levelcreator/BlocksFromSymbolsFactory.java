@@ -8,10 +8,13 @@ import java.util.TreeMap;
 
 import gameobjects.Block;
 import score.SerializationException;
+
+
 /**
  * @author Ori Engelberg <turht50@gmail.com>
  * @version 1.0
- * @since 2016-06-7 */
+ * @since 2016-06-7
+ */
 public class BlocksFromSymbolsFactory {
 
     private Map<String, Integer> spacerWidths = new TreeMap<String, Integer>();
@@ -32,22 +35,31 @@ public class BlocksFromSymbolsFactory {
     }
 
     /**
+     * Checks if is space symbol.
+     *
      * @param s - the given symbol of space.
-     * @return true if the given symbol belong to the spaces map. */
+     * @return true if the given symbol belong to the spaces map.
+     */
     public boolean isSpaceSymbol(String s) {
         return spacerWidths.containsKey(s);
     }
 
     /**
+     * Checks if is block symbol.
+     *
      * @param s - the given symbol of block.
-     * @return true if the given symbol belong to the blocks map. */
+     * @return true if the given symbol belong to the blocks map.
+     */
     public boolean isBlockSymbol(String s) {
         return blockCreators.containsKey(s);
     }
 
     /**
+     * Gets the block width.
+     *
      * @param s - the given symbol of block.
-     * @return the width of the given block. */
+     * @return the width of the given block.
+     */
     public int getBlockWidth(String s) {
         return blockCreators.get(s).getWidth();
     }
@@ -64,8 +76,11 @@ public class BlocksFromSymbolsFactory {
     }
 
     /**
+     * Gets the space width.
+     *
      * @param s - the given symbol of space.
-     * @return the width of the given space. */
+     * @return the width of the given space.
+     */
     public int getSpaceWidth(String s) {
         return spacerWidths.get(s);
     }
@@ -79,18 +94,13 @@ public class BlocksFromSymbolsFactory {
      * @throws SerializationException - if can't find/read the file. */
     public void setBlockCreators(Map<String, String> defaultDef,
             Map<String, String> blockDef) throws SerializationException {
-        // Temporary map with empty keys.
-        Map<String, String> parameters = new TreeMap<String, String>();
-        parameters.put("symbol", null);
-        parameters.put("width", null);
-        parameters.put("height", null);
-        parameters.put("hit_points", null);
-        parameters.put("stroke", "");
         // Run of all the blockDef map with iterator.
         Set<Entry<String, String>> values = blockDef.entrySet();
         Iterator<Entry<String, String>> i = values.iterator();
         Entry<String, String> value = null;
         while (i.hasNext()) {
+            // Temporary map with empty keys.
+            Map<String, String> parameters = this.getEmptyParametersMap();
             Map<Integer, String> fills = new TreeMap<Integer, String>();
             value = i.next();
             // Every block symbol get the default map.
@@ -154,4 +164,20 @@ public class BlocksFromSymbolsFactory {
             spacerWidths.put(value.getKey(), value.getValue());
         }
     }
+
+    /**
+     * Gets empty parameters map.
+     *
+     * @return Temporary map with empty keys.
+     */
+    public Map<String, String> getEmptyParametersMap() {
+        Map<String, String> parameters = new TreeMap<String, String>();
+        parameters.put("symbol", null);
+        parameters.put("width", null);
+        parameters.put("height", null);
+        parameters.put("hit_points", null);
+        parameters.put("stroke", "");
+        return parameters;
+    }
+
 }

@@ -1,20 +1,15 @@
 package animations;
 
 import biuoop.DrawSurface;
-import biuoop.KeyboardSensor;
 /**
  * @author Adiel cahana <adiel.cahana@gmail.com>
  * @version 1.0
  * @since 2016-05-16 */
 public class PauseScreen implements Animation {
-    private KeyboardSensor keyboard;
     private boolean stop;
 
-    /** PauseScreen constructor.
-     * <p>
-     * @param k - keyboard sensor. */
-    public PauseScreen(KeyboardSensor k) {
-        this.keyboard = k;
+    /** PauseScreen constructor. */
+    public PauseScreen() {
         this.stop = false;
     }
 
@@ -25,6 +20,7 @@ public class PauseScreen implements Animation {
     public void doOneFrame(DrawSurface d, double dt) {
         d.drawText((d.getWidth() / 5) + 2, d.getHeight() / 2, "paused -- press space to continue", 32);
     }
+
     @Override
     /** returns information about the continuation of the animation.
      * <p>

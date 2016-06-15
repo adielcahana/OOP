@@ -19,8 +19,8 @@ public class CountdownAnimation implements Animation {
     /** CountdownAnimation constructor.
      * <p>
      * will display the given gameScreen,
-    // for numOfSeconds seconds, and on top of them it will show
-    // a countdown from countFrom back to 1
+     * for numOfSeconds seconds, and on top of them it will show
+     * a countdown from countFrom back to 1
      * <p>
      * @param numOfSeconds - amount of sec to display the countdown.
      * @param countFrom - the num to count from.
@@ -34,6 +34,7 @@ public class CountdownAnimation implements Animation {
     }
     /** draw one frame of the animation.
     * <p>
+    * @param dt - the speed per frame.
     * @param d - a draw surface to draw the frame on. */
     public void doOneFrame(DrawSurface d, double dt) {
         // timing

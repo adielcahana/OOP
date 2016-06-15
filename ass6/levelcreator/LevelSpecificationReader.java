@@ -98,6 +98,7 @@ public class LevelSpecificationReader {
                             String[] velocities = value.split(" ");
                             for (int i = 0; i < velocities.length; i++) {
                                 String[] velocity = velocities[i].split(",");
+                                System.out.println(line);
                                 level.velocities.add(Velocity.fromAngleAndSpeed(Double.parseDouble(velocity[0]),
                                         (Double.parseDouble(velocity[1]))));
                             }

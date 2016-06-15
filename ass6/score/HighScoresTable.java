@@ -16,19 +16,31 @@ import biuoop.DialogManager;
 import biuoop.GUI;
 import listeners.Counter;
 
+/**
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-05-06*/
 public class HighScoresTable implements Serialization<HighScoresTable> {
+
     private Integer maxSize;
     private List<ScoreInfo> highScores;
-    
-    // Create an empty high-scores table with the specified size.
-    // The size means that the table holds up to size top scores.
+
+    /**
+     * Instantiates a new high scores table.
+     * <p>
+     * Create an empty high-scores table with the specified size.
+     * @param size - the table holds up to size top scores*/
     public HighScoresTable(int size) {
         this.maxSize = size;
-        this.highScores = new ArrayList<ScoreInfo>(); 
+        this.highScores = new ArrayList<ScoreInfo>();
     }
 
-    // Add a high-score.
-    public void add(ScoreInfo score) { 
+    /**
+     * Adds a high-score.
+     * <p>
+     * @param score - highScore information
+     */
+    public void add(ScoreInfo score) {
         this.highScores.add(score);
         Collections.sort(this.highScores);
         if (this.highScores.size() > this.size()) {
@@ -36,24 +48,28 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
         }
     }
 
-    // Return table size.
+    /**
+     * @return the current table size*/
     public int size() {
         return this.highScores.size();
     }
 
-    // Return the current high scores.
-    // The list is sorted such that the highest
-    // scores come first.
+
+    /**
+     * Gets the high scores as a sorted list.
+     * <p>
+     * @return list of high scores*/
     public List<ScoreInfo> getHighScores() {
         return this.highScores;
     }
 
-    // return the rank of the current score: where will it
-    // be on the list if added?
-    // Rank 1 means the score will be highest on the list.
-    // Rank `size` means the score will be lowest.
-    // Rank > `size` means the score is too low and will not
-    //      be added to the list.
+    /**
+     * Gets the rank of the current score.
+     * <p>
+     * where will it be on the list if added
+     * @param score the score
+     * @return the rank
+     */
     public int getRank(int score) {
         ScoreInfo temp = new ScoreInfo("temp", score);
         this.highScores.add(temp);
@@ -63,22 +79,24 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
         return rank;
     }
 
-    // Clears the table
-    public void clear() { 
+    /**
+     * Clears the table.*/
+    public void clear() {
         this.highScores.removeAll(highScores);
     }
 
-    // Load table data from file.
-    // Current table data is cleared.
+    /**
+     * Load table data from file.
+     * <p>
+     * @param filename - the  a table file
+     * @throws IOException Signals that an I/O exception has occurred.*/
     public void load(File filename) throws IOException {
         this.clear();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader( // buffered reader - has readLine()
-                    new InputStreamReader( // bytes to characters wrapper
-                            new FileInputStream(filename))); // binary file stream
-
-            // print each read line
+            reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(filename)));
             String line = reader.readLine();
             if (line != null) {
                 HighScoresTable table = this.deserialize(line);
@@ -92,7 +110,7 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
             System.err.println("Unable to find file: " + filename.getName());
         } catch (IOException e) {
             System.err.println("Failed reading file: " + filename.getName()
-                    + ", message:" + e.getMessage());
+            + ", message:" + e.getMessage());
             e.printStackTrace(System.err);
         } finally {
             try {
@@ -105,7 +123,12 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
         }
     }
 
-    // Save table data to the specified file.
+    /**
+     * Save table data to the specified file.
+     *
+     * @param filename - the  a table file
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public void save(File filename) throws IOException {
         PrintWriter writer = null;
         try {
@@ -120,9 +143,15 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
         }
     }
 
-    // Read a table from file and return it.
-    // If the file does not exist, or there is a problem with
-    // reading it, an empty table is returned.
+    /**
+     * Read a table from file and return it.
+     * <p>
+     * If the file does not exist, or there is a problem with
+     * reading it, an empty table is returned.
+     *
+     * @param filename the filename
+     * @return the high scores table*/
+
     public static HighScoresTable loadFromFile(File filename) {
         HighScoresTable table = new HighScoresTable(1);
         try {
@@ -131,12 +160,15 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
             System.err.println("Unable to find file: " + filename.getName());
         } catch (IOException e) {
             System.err.println("Failed reading file: " + filename.getName()
-                    + ", message:" + e.getMessage());
+            + ", message:" + e.getMessage());
             e.printStackTrace(System.err);
         }
         return table;
     }
 
+    /* (non-Javadoc)
+     * @see score.Serialization#serialize()
+     */
     @Override
     public String serialize() {
         StringBuilder sb = new StringBuilder();
@@ -148,6 +180,9 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
         return sb.toString();
     }
 
+    /* (non-Javadoc)
+     * @see score.Serialization#deserialize(java.lang.String)
+     */
     @Override
     public HighScoresTable deserialize(String s) throws SerializationException {
         String[] parts = s.split(":");
@@ -163,7 +198,14 @@ public class HighScoresTable implements Serialization<HighScoresTable> {
             throw new SerializationException(e);
         }
     }
-    public void newScore(GUI gui, Counter scoreCounter){
+
+    /**
+     * New score.
+     *
+     * @param gui the gui
+     * @param scoreCounter the score counter
+     */
+    public void newScore(GUI gui, Counter scoreCounter) {
         int currentScore = scoreCounter.getValue();
         if (this.getRank(currentScore) <= 5) {
             DialogManager dialog = gui.getDialogManager();

@@ -58,3 +58,31 @@ START_BLOCKS
 --mmmmmmmmmmm
 END_BLOCKS
 END_LEVEL
+
+# Level 3
+# Frames
+
+START_LEVEL
+level_name:Frames
+ball_velocities:50,500 -50,500 25,500 -25,500 0,500
+background:image(background_images/maze.jpg)
+paddle_speed:650
+paddle_width:160
+block_definitions:definitions/frames_block_definitions.txt
+blocks_start_x:25
+blocks_start_y:80
+row_height:25
+num_blocks:69
+START_BLOCKS
+-
+--bbbbbbbbbbb
+--biiiiiiiiib
+--bi-------ib
+--bi--eie--ib
+--bi--ibi--ib
+--bi--eie--ib
+--bi-------ib
+--biiiiiiiiib
+--bbbbbbbbbbb
+END_BLOCKS
+END_LEVEL

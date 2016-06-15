@@ -13,7 +13,7 @@ public class EndGameAnimation implements Animation {
     private KeyboardSensor keyboard;
     private Counter scoreCounter;
 
-    /** Circle constructor.
+    /** End Game Animation constructor.
      * <p>
      * @param win - game situation (winner or looser).
      * @param scoreCounter - score.
@@ -28,6 +28,7 @@ public class EndGameAnimation implements Animation {
     @Override
     /** draw one frame of the animation.
     * <p>
+    * @param dt - the speed per frame.
     * @param d - a draw surface to draw the frame on. */
     public void doOneFrame(DrawSurface d, double dt) {
         if (win) {
