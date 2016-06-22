@@ -7,11 +7,9 @@ import animations.GameLevel;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 import general.GameEnvironment;
-import geometry.Line;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.HitListener;
-import listeners.SpaceshipRemover;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>

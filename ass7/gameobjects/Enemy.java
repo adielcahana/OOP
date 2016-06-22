@@ -76,13 +76,11 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     @Override
     public void addToGame(GameLevel game) {
         game.addCollidable(this);
-        game.addSprite(this);
     }
 
     @Override
     public void removeFromGame(GameLevel game) {
         game.removeCollidable(this);
-        game.removeSprite(this);
     }
 
     @Override

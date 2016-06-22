@@ -116,6 +116,7 @@ public class GameLevel implements Animation {
         level.getBackground().addToGame(this);
         // Create the borders.
         this.createBorder(ballRemover);
+        this.createShields(blockRemover, ballRemover);
         // Create the sprites that show the score lives and the level name.
         ScoreIndicator score = new ScoreIndicator(this.scoreCounter);
         score.addToGame(this);
@@ -145,6 +146,29 @@ public class GameLevel implements Animation {
         this.blocksCounter.increase(level.numberOfBlocksToRemove());
     }
 
+    private void createShields(HitListener blockRemover, HitListener ballRemover) {
+        TreeMap<Integer, Color> fillColor = new TreeMap<Integer, Color>();
+        TreeMap<Integer, BufferedImage> fillImage = new TreeMap<Integer, BufferedImage>();
+        fillColor.put(1, Color.CYAN);
+        int x = 100;
+        int y = 500;
+        for(int i = 0; i < 3; i++){
+            for(int k = 0; k < 3; k++){
+                for(int j = 0; j < 50; j++){
+                    Block shield = new Block(new Rectangle(new Point (x, y), 3, 3), 1, null, fillColor, fillImage);
+                    shield.addHitListener(blockRemover);
+                    shield.addHitListener(ballRemover);
+                    shield.addToGame(this);
+                x += 3;
+                }
+                y += 3;
+                x -= 150;
+            }
+            x += 250;
+            y = 500;
+        }
+    }
+
     /**
      * Run one turn (one live) of the game.
      * Create the balls and the paddle and run the level. */
@@ -171,26 +195,14 @@ public class GameLevel implements Animation {
     }
 
     /**
-     * Create the balls on the top of the paddle.
-     * Create balls and give any ball a velocity from the list of velocities. */
-    private void createTheBallsOnTheTopOfThePaddle() {
-        for (int i = 0; i < this.level.numberOfBalls(); i++) {
-            Ball ball = new Ball(400, 575, 5, Color.WHITE);
-            ball.setVelocity(this.level.initialBallVelocities().get(i));
-            ball.setGameEnvironment(this.environment);
-            ball.addToGame(this);
-        }
-    }
-
-    /**
      * Create the border.
      * Create 4 blocks for the border and add them to the game. */
     public void createBorder(HitListener ballRemover) {
         TreeMap<Integer, Color> fillColor = new TreeMap<Integer, Color>();
         TreeMap<Integer, BufferedImage> fillImage = new TreeMap<Integer, BufferedImage>();
-        fillColor.put(1, Color.GRAY);
-        Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 25), -1, Color.BLACK, fillColor, fillImage);
-        Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 25), -1, Color.BLACK, fillColor, fillImage);
+        fillColor.put(1, Color.BLACK);
+        Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 1), -1, Color.BLACK, fillColor, fillImage);
+        Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 1), -1, Color.BLACK, fillColor, fillImage);
         Block lFrame = new Block(new Rectangle(new Point(0, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
         Block rFrame = new Block(new Rectangle(new Point(775, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
         upFrame.addHitListener(ballRemover);
@@ -214,7 +226,7 @@ public class GameLevel implements Animation {
      * Do one step of the game ( draw all the sprites and notify that time past).
      * <p>
      * @param d - the given surface.
-     * @param dt - @param dt - the speed per frame. */
+     * @param dt - the speed per frame. */
     public void doOneFrame(DrawSurface d, double dt) {
         // Pause the game.
         if (this.keyboard.isPressed("p")) {
