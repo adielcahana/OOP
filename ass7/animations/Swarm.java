@@ -102,9 +102,8 @@ public class Swarm implements Sprite {
                     Enemy enemy = enemyColumn.get(enemyColumn.size() -1);
                     if(this.lowBorder <= this.velocity.applyToPoint(enemy.getLocation(), dt).getY() + 30) {
                         this.spaceShipCounter.decrease(1);
-                        resetSwarm();
                     }
-                 }         
+                }         
             }
         } else {
             this.velocity.setDy(0);     
@@ -136,9 +135,12 @@ public class Swarm implements Sprite {
     }
 
     public void removeEnemy(Enemy enemy) {
-        for(ArrayList<Enemy> enemyColumn : this.enemySwarm){
-           enemyColumn.remove(enemy);
+        for(int i = 0; i < this.enemySwarm.size(); i++){
+            ArrayList<Enemy> enemyColumn = this.enemySwarm.get(i);
+            enemyColumn.remove(enemy);
+            if(enemyColumn.isEmpty()) {
+                this.enemySwarm.remove(enemyColumn);
+            }
         }
     }
-
 }

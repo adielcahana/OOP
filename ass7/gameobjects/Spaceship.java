@@ -101,7 +101,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
             this.moveRight(dt);
         }
         if (keyboard.isPressed(KeyboardSensor.SPACE_KEY) &&
-                ((System.currentTimeMillis() - this.lastShootTime) / 1000 >= 0.35)) {
+                ((System.currentTimeMillis() - this.lastShootTime) / 400 >= 0.35)) {
             this.shoot();
             this.lastShootTime = System.currentTimeMillis();
         }
