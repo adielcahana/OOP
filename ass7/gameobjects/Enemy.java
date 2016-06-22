@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import animations.GameLevel;
+import animations.Swarm;
 import biuoop.DrawSurface;
 import general.GameEnvironment;
 import geometry.Point;
@@ -70,7 +71,6 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     @Override
     public void timePassed(double dt) {
         this.shape = new Rectangle(this.velocity.applyToPoint(this.shape.getUpperLeft(), dt), this.shape.getWidth(), this.shape.getHeight());
-        this.shoot();
     }
 
     @Override
@@ -118,5 +118,10 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     
     public Point getLocation() {
         return this.shape.getUpperLeft();
+    }
+
+    public void removeFromSwarm(Swarm swarm) {
+        swarm.removeEnemy(this);
+        
     }
 }

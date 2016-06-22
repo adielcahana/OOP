@@ -13,17 +13,14 @@ import javax.imageio.ImageIO;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.KeyboardSensor;
-import gameobjects.Ball;
 import gameobjects.Block;
 import gameobjects.Collidable;
-import gameobjects.Enemy;
 import gameobjects.LevelName;
 import gameobjects.LivesIndicator;
 import gameobjects.Spaceship;
 import gameobjects.ScoreIndicator;
 import gameobjects.Sprite;
 import gameobjects.SpriteCollection;
-import gameobjects.Velocity;
 import general.GameEnvironment;
 import geometry.Point;
 import geometry.Rectangle;
@@ -129,9 +126,8 @@ public class GameLevel implements Animation {
         try {
             BufferedImage image1 = ImageIO.read(is1);
             BufferedImage image2 = ImageIO.read(is2);
-            Enemy enemy = new Enemy(new Rectangle(new Point(50,80), 40, 30), this, image1, image2, this.blocksCounter, Velocity.fromAngleAndSpeed(90, 40));
-            enemy.addHitListener(ballRemover);
-            enemy.addToGame(this);
+            Swarm swarm = new Swarm(image1, image2, this, environment, scoreListener);
+            swarm.addToGame(this);
         } catch (IOException e) {
         }
         // Get list of blocks from the level information and add them to the game.

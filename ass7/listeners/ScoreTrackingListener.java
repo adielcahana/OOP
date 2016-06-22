@@ -25,10 +25,6 @@ public class ScoreTrackingListener implements HitListener {
      * @param beingHit - the block that hit.
      * @param hitter - the ball that hit. */
     public void hitEvent(HitNotifier beingHit, Ball hitter) {
-        this.currentScore.increase(5);
-        if (((Block) beingHit).getMaxHits() == 0) {
-            this.currentScore.increase(10);
-        }
+        this.currentScore.increase(100);
     }
-
 }
