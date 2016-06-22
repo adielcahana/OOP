@@ -25,8 +25,10 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     private int imageNum;
     private Velocity velocity;
     private List<HitListener> hitListeners;
+    private int line;
+    private int column;
 
-    public Enemy(Rectangle shape, GameLevel game, BufferedImage image1, BufferedImage image2, Counter enemyCounter, Velocity velocity, GameEnvironment environmet) {
+    public Enemy(Rectangle shape, GameLevel game, BufferedImage image1, BufferedImage image2, Counter enemyCounter, Velocity velocity, GameEnvironment environmet, int line, int column) {
         this.shape = shape;
         this.game = game;
         this.image1 = image1;
@@ -36,6 +38,8 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
         this.velocity = velocity;
         this.hitListeners = new ArrayList<HitListener>();
         this.environment = environmet;
+        this.line = line;
+        this.column = column;
     }
     @Override
     public void addHitListener(HitListener hl) {
@@ -110,7 +114,7 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     
     public void shoot() {
         Ball shot = new Ball((int) (this.shape.getUpperLeft().getX() + this.shape.getWidth() / 2),
-                (int) (this.shape.getUpperLeft().getY() + this.shape.getHeight() + 1), 3, Color.RED);
+                (int) (this.shape.getUpperLeft().getY() + this.shape.getHeight() + 1), 5, Color.RED);
         shot.setVelocity(Velocity.fromAngleAndSpeed(180, 400));
         shot.setGameEnvironment(this.environment);
         shot.addToGame(this.game);
@@ -123,5 +127,8 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     public void removeFromSwarm(Swarm swarm) {
         swarm.removeEnemy(this);
         
+    }
+    public void setNewPlace(int x, int y) {
+        this.shape = new Rectangle(new Point(x + (this.column * 50),  y + (this.line * 40)), 40, 30);
     }
 }

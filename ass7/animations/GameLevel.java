@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
@@ -47,6 +45,8 @@ public class GameLevel implements Animation {
     private Counter numberOfSpaceships;
     private boolean running;
     private LevelInformation level;
+    private Swarm swarm;
+    private Counter enemyCounter;
 
     /**
      * Constructor - Create a list of sprites a new environment and a gui for the game.
@@ -126,20 +126,11 @@ public class GameLevel implements Animation {
         try {
             BufferedImage image1 = ImageIO.read(is1);
             BufferedImage image2 = ImageIO.read(is2);
-            Swarm swarm = new Swarm(image1, image2, this, environment, scoreListener);
+            this.swarm = new Swarm(image1, image2, this, environment, scoreListener, this.numberOfSpaceships);
             swarm.addToGame(this);
+            this.enemyCounter = this.swarm.enemyNum;
         } catch (IOException e) {
         }
-        // Get list of blocks from the level information and add them to the game.
-        List<Block> blockList = new ArrayList<Block>(this.level.blocks());
-        for (Block block : blockList) {
-            block.addToGame(this);
-            block.addHitListener(blockRemover);
-            block.addHitListener(ballRemover);
-            block.addHitListener(scoreListener);
-        }
-        // Add the number of blocks to the block counter.
-        this.blocksCounter.increase(level.numberOfBlocksToRemove());
     }
 
     private void createShields(HitListener blockRemover, HitListener ballRemover) {
@@ -155,7 +146,7 @@ public class GameLevel implements Animation {
                     shield.addHitListener(blockRemover);
                     shield.addHitListener(ballRemover);
                     shield.addToGame(this);
-                x += 3;
+                    x += 3;
                 }
                 y += 3;
                 x -= 150;
@@ -175,7 +166,7 @@ public class GameLevel implements Animation {
         // Create the paddle and add it to the game.
         Point paddlePoint = new Point(400 - (level.paddleWidth() / 2), 580);
         Spaceship paddle = new Spaceship(new Rectangle(paddlePoint, level.paddleWidth(), 20),
-                Color.YELLOW, level.paddleSpeed(), this.keyboard, 25, 775, this.environment, this);
+                Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800, this.environment, this);
         HitListener ballRemover = new BallRemover(this);
         HitListener spaceshipRemover = new SpaceshipRemover(this, this.numberOfSpaceships);
         paddle.addHitListener(ballRemover);
@@ -188,6 +179,7 @@ public class GameLevel implements Animation {
         this.runner.run(this);
         // remove the paddle to create new paddle in the middle.
         paddle.removeFromGame(this);
+        this.swarm.resetSwarm();
     }
 
     /**
@@ -199,8 +191,8 @@ public class GameLevel implements Animation {
         fillColor.put(1, Color.BLACK);
         Block upFrame = new Block(new Rectangle(new Point(0, 20), 800, 1), -1, Color.BLACK, fillColor, fillImage);
         Block lowFrame = new Block(new Rectangle(new Point(0, 600), 800, 1), -1, Color.BLACK, fillColor, fillImage);
-        Block lFrame = new Block(new Rectangle(new Point(0, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
-        Block rFrame = new Block(new Rectangle(new Point(775, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
+        Block lFrame = new Block(new Rectangle(new Point(-25, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
+        Block rFrame = new Block(new Rectangle(new Point(800, 40), 25, 575), -1, Color.BLACK, fillColor, fillImage);
         upFrame.addHitListener(ballRemover);
         lowFrame.addHitListener(ballRemover);
         lFrame.addHitListener(ballRemover);
@@ -234,7 +226,7 @@ public class GameLevel implements Animation {
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed(dt);
         // If the balls over lose one life
-        if (this.blocksCounter.getValue() == 0) {
+        if (this.enemyCounter.getValue() == 0) {
             // Else if win the level increase 100 points.
             this.scoreCounter.increase(100);
             this.running = false;
@@ -242,16 +234,5 @@ public class GameLevel implements Animation {
             this.numberOfLives.decrease(1);
             this.running = false;
         }
-    }
-
-    /**
-     * Check if left blocks in the level.
-     * <p>
-     * @return true if left blocks else return false. */
-    public boolean haveBlocks() {
-        if (blocksCounter.getValue() > 0) {
-            return true;
-        }
-        return false;
     }
 }

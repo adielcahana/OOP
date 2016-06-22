@@ -99,7 +99,7 @@ public class GameFlow {
     public void runLevels(List<LevelInformation> levels) {
         // Create the score counter and lives counter.
         Counter scoreCounter = new Counter();
-        Counter numberOfLives = new Counter(7);
+        Counter numberOfLives = new Counter(3);
         File file = new File("./highscore.txt");
         HighScoresTable table = HighScoresTable.loadFromFile(file);
         try {
@@ -118,7 +118,7 @@ public class GameFlow {
             level.initialize();
 
             // while the level left blocks and still have lives run one turn.
-            while (level.haveBlocks() && numberOfLives.getValue() > 0) {
+            while (numberOfLives.getValue() > 0) {
                 level.playOneTurn();
             }
 
