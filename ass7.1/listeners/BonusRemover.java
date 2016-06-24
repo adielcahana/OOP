@@ -2,9 +2,7 @@ package listeners;
 
 import animations.GameLevel;
 import gameobjects.Ball;
-import gameobjects.Enemy;
 import gameobjects.HitNotifier;
-import gameobjects.Swarm;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>

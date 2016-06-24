@@ -2,13 +2,9 @@ package animations;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-
-import javax.imageio.ImageIO;
 
 import biuoop.DrawSurface;
 import biuoop.GUI;
