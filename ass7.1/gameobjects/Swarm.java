@@ -135,7 +135,7 @@ public class Swarm implements Sprite {
         }
         if ((System.currentTimeMillis() - this.lastBonusTime) / 1000 >= 20) {
             //this.createBonusShip();
-            createBonusSpaceship();
+            this.createBonusSpaceship();
             this.lastBonusTime = System.currentTimeMillis();
         }
     }

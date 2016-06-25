@@ -91,6 +91,10 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
 
     @Override
     public Velocity hit(Ball ball, Point collisionPoint, Velocity currentVelocity) {
+        if(ball.getVelocity().getDy() > 0){
+            ball.removeFromGame(this.game);
+            return null;
+        }
         this.notifyHit(ball);
         this.removeFromGame(this.game);
         return null;
