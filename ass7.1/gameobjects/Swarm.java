@@ -24,7 +24,7 @@ public class Swarm implements Sprite {
     private Velocity velocity;
     public Counter enemyNum;
     private ArrayList<ArrayList<Enemy>> enemySwarm;
-    //private Enemy bonus;
+    private Enemy bonus;
     private GameLevel game;
     private GameEnvironment environment;
     private Boolean goDown;
@@ -33,6 +33,7 @@ public class Swarm implements Sprite {
     private long lastShootTime;
     private ArrayList<Ball> balls;
     private long lastBonusTime;
+    private int BonusCount;
     private BufferedImage bonusImage;
     private HitListener scoreListener;
 
@@ -86,10 +87,9 @@ public class Swarm implements Sprite {
                 ArrayList<Enemy> enemyColumn = new ArrayList<Enemy>();
                 for(int j = 0; j < 6; j++){
                     if (j % 2 == 0) {
-                        k += 2;
+                        k+=2;
                     }
-                    Enemy enemy = new Enemy((new Rectangle(new Point(x, y), 40, 30)), game, images.get(k),
-                            images.get(k+1), this.velocity, this.environment, this.enemyNum.getValue());
+                    Enemy enemy = new Enemy((new Rectangle(new Point(x, y), 40, 30)), game, images.get(k), images.get(k+1), this.velocity, this.environment, j, i);
                     y += 40;
                     this.enemyNum.increase(1);
                     enemy.addHitListener(ballRemover);
@@ -106,6 +106,7 @@ public class Swarm implements Sprite {
             System.out.println("Failed to load enemy pic");
             System.exit(1);
         }
+
         return swarm;
     }
 
@@ -133,9 +134,8 @@ public class Swarm implements Sprite {
             balls.add(b);
             this.lastShootTime = System.currentTimeMillis();
         }
-        if ((System.currentTimeMillis() - this.lastBonusTime) / 1000 >= 20) {
-            //this.createBonusShip();
-            this.createBonusSpaceship();
+        if ((System.currentTimeMillis() - this.lastBonusTime) / 1000 >= 20 && this.BonusCount <= 2) {
+            this.createBonusShip();
             this.lastBonusTime = System.currentTimeMillis();
         }
     }
@@ -172,10 +172,10 @@ public class Swarm implements Sprite {
         }
         this.velocity.setDx(Initialvelocity.getDx());
         this.velocity.setDy(Initialvelocity.getDy());
-        /*if (this.bonus != null) {
+        if (this.bonus != null) {
             this.bonus.removeFromGame(game);
             game.removeCollidable(this.bonus);
-        }*/
+        }
     }
 
     @Override
@@ -197,8 +197,6 @@ public class Swarm implements Sprite {
             }
         }
     }
-
-    /*
     private void createBonusShip() {
         if (this.bonus != null) {
             this.bonus.removeFromGame(game);
@@ -210,14 +208,5 @@ public class Swarm implements Sprite {
         bonus.addToGame(this.game);
         this.game.addSprite(bonus);
         this.BonusCount++;
-    }*/
-    
-    private void createBonusSpaceship() {
-     Enemy bonus  = new Enemy((new Rectangle(new Point(850, 50), 40, 22)), game, this.bonusImage,
-             this.bonusImage, Velocity.fromAngleAndSpeed(-90, 100), this.environment, 0);
-     bonus.addHitListener(new BonusRemover(game, this.scoreListener));
-     bonus.addHitListener(new BallRemover(game));
-     bonus.addToGame(this.game);
-     this.game.addSprite(bonus);
     }
 }

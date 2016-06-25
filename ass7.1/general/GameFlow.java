@@ -104,7 +104,7 @@ public class GameFlow {
         GameLevel level = null;
         Double turn = new Double(0);
         // while the level left blocks and still have lives run one turn.
-        while (numberOfLives.getValue() > 0) {
+        while (numberOfLives.getValue() > 0 ) {
             System.out.println(enemyCounter.getValue());
             if (enemyCounter.getValue() == 0) {
                 turn++;
