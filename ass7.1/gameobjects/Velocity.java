@@ -63,12 +63,20 @@ public class Velocity {
         double dy = speed * Math.sin(Math.toRadians(angle - 90));
         return new Velocity(dx, dy);
     }
-    
-    public void setDx(double dx) {
-        this.dx = dx;
+
+    /**
+     * Dx setter.
+     * <p>
+     * @param x - the change in x axis. */
+    public void setDx(double x) {
+        this.dx = x;
     }
-    
-    public void setDy(double dy){
-        this.dy = dy;
+
+    /**
+     * Dy setter.
+     * <p>
+     * @param y - the change in y axis. */
+    public void setDy(double y) {
+        this.dy = y;
     }
 }

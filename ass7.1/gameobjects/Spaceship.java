@@ -28,19 +28,16 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     private List<ShootListener> shootListeners;
 
     /**
-     * Contractor - Create the paddle as rectangle with color keyboard sensor and boundaries.
+     * Contractor - Create the Spaceship as rectangle with color keyboard sensor and boundaries.
      * <p>
-     * @param shape - the rectangle shape of the paddle.
-     * @param color - the color of the paddle.
-     * @param keyboard - the keyboard sensor of the paddle.
+     * @param shape - the rectangle shape of the Spaceship.
+     * @param keyboard - the keyboard sensor of the Spaceship.
+     * @param image - the spaceship image.
      * @param leftBoundary - the down left boundary of the frame.
      * @param rightBoundary - the down right boundary of the frame.
-     * @param speed - the paddle speed.
-     * @param image 
-     * @param gameLevel
-     * @param environment */
-    public Spaceship(Rectangle shape, Color color, int speed,
-            KeyboardSensor keyboard, double leftBoundary, double rightBoundary, BufferedImage image) {
+     * @param speed - the Spaceship speed. */
+    public Spaceship(Rectangle shape, int speed, KeyboardSensor keyboard,
+            double leftBoundary, double rightBoundary, BufferedImage image) {
         this.speed = speed;
         this.keyboard = keyboard;
         this.shape = shape;
@@ -52,7 +49,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     }
 
     /**
-     * The paddle move left.
+     * The Spaceship move left.
      * <p>
      * @param dt - the speed per frame. */
     public void moveLeft(double dt) {
@@ -60,7 +57,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
         double y  = this.shape.getUpperLeft().getY();
         double width = this.shape.getWidth();
         double height = this.shape.getHeight();
-        // If the paddle stay in the boundaries after the move, make the move left.
+        // If the Spaceship stay in the boundaries after the move, make the move left.
         if (x > this.leftBoundary) {
             this.shape = new Rectangle(new Point(x - (speed * dt), y), width, height);
         } else {
@@ -70,7 +67,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     }
 
     /**
-     * The paddle move right.
+     * The Spaceship move right.
      * <p>
      * @param dt - the speed per frame. */
     public void moveRight(double dt) {
@@ -78,7 +75,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
         double y  = this.shape.getUpperLeft().getY();
         double width = this.shape.getWidth();
         double height = this.shape.getHeight();
-        // If the paddle stay in the boundaries after the move, make the move right.
+        // If the Spaceship stay in the boundaries after the move, make the move right.
         if (x + width + (speed * dt) < this.rightBoundary) {
             this.shape = new Rectangle(new Point(x + (speed * dt), y), width, height);
         } else {
@@ -88,8 +85,9 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     }
 
     /**
-     * Move the paddle when notify that time passed.
+     * Move the Spaceship when notify that time passed.
      * If pressed left arrow move left, if pressed right arrow move right.
+     * if pressed space the Spaceship shoot.
      * <p>
      * @param dt - the speed per frame. */
     public void timePassed(double dt) {
@@ -103,6 +101,10 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
         }
     }
 
+    /**
+     * The spaceship shoot a little ball.
+     * <p>
+     * @return the ball that shoot by the spaceship. */
     private Ball shoot() {
         Ball shot = new Ball((int) (this.shape.getUpperLeft().getX() + this.shape.getWidth() / 2),
                 (int) this.shape.getUpperLeft().getY() - 10, 3, Color.WHITE);
@@ -117,13 +119,10 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     }
 
     /**
-     * Change the velocity of the ball when it hit the paddle.
-     * Check where the ball hit and return the velocity (like the block).
-     *  the upper part of the paddle divided to 5,
-     *  and every part return a different angle of the velocity.
+     * If a shot hit the spaceship, notify a hit.
      * <p>
-     * @param hitter - the ball that hit the paddle.
-     * @param collisionPoint - the collision point of the ball with the paddle.
+     * @param hitter - the shot that hit the spaceship.
+     * @param collisionPoint - the collision point of the ball with the spaceship.
      * @param currentVelocity - the current velocity of the point.
      * @return the new velocity vector of the ball. */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
@@ -132,34 +131,34 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     }
 
     /**
-     * Add the paddle to the game as sprite and as collidable.
+     * Add the spaceship to the game as sprite and as collidable.
      * <p>
-     * @param game - the game that the paddle added to. */
+     * @param game - the game that the spaceship added to. */
     public void addToGame(GameLevel game) {
         game.addSprite(this);
         game.addCollidable(this);
     }
 
     /**
-     * remove the paddle from the game as sprite and as collidable.
+     * remove the spaceship from the game as sprite and as collidable.
      * <p>
-     * @param game - the game that the paddle added to. */
+     * @param game - the game that the spaceship added to. */
     public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
         game.removeCollidable(this);
     }
 
     /**
-     * Draw the paddle.
+     * Draw the spaceship.
      * <p>
-     * @param surface - the surface of the paddle that draw. */
+     * @param surface - the surface of the spaceship that draw. */
     public void drawOn(DrawSurface surface) {
         surface.drawImage((int) this.shape.getUpperLeft().getX(), (int) this.shape.getUpperLeft().getY(), this.image);
     }
 
-    /** Notify all the listeners that about the event.
+    /** Notify all the listeners that about the hit.
      * <p>
-     * @param hitter - the ball that hit the block. */
+     * @param hitter - the ball that hit the spaceship. */
     private void notifyHit(Ball hitter) {
         // Copy the hitListeners before iterating over them.
         List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
@@ -168,7 +167,10 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
             hl.hitEvent(this, hitter);
         }
     }
-    
+
+    /** Notify all the listeners that about the shot.
+     * <p>
+     * @param shot - the ball that hit the spaceship. */
     private void notifyShoot(Ball shot) {
         // Copy the hitListeners before iterating over them.
         List<ShootListener> listeners = new ArrayList<ShootListener>(this.shootListeners);
@@ -179,21 +181,37 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
     }
 
     @Override
+    /**
+     * Add hit listener to the list of hit listeners.
+     * <p>
+     * @param hl - the hit listener. */
     public void addHitListener(HitListener hl) {
         this.hitListeners.add(hl);
     }
 
     @Override
+    /**
+     * remove the hit listener from the list of hit listeners.
+     * <p>
+     * @param hl - the hit listener. */
     public void removeHitListener(HitListener hl) {
         this.hitListeners.remove(hl);
     }
 
     @Override
+    /**
+    * Add shoot listener to the list of shot listeners.
+    * <p>
+    * @param sl - the shot listener. */
     public void addShootListener(ShootListener sl) {
         this.shootListeners.add(sl);
     }
 
     @Override
+    /**
+    * remove the shoot listener from the list of shot listeners.
+    * <p>
+    * @param sl - the shot listener. */
     public void removeShootListener(ShootListener sl) {
         this.shootListeners.add(sl);
     }
