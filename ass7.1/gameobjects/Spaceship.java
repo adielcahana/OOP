@@ -1,5 +1,6 @@
 package gameobjects;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
 
     private biuoop.KeyboardSensor keyboard;
     private Rectangle shape;
-    private Color color;
+    private BufferedImage image;
     private double leftBoundary;
     private double rightBoundary;
     private int speed;
@@ -35,14 +36,15 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
      * @param leftBoundary - the down left boundary of the frame.
      * @param rightBoundary - the down right boundary of the frame.
      * @param speed - the paddle speed.
+     * @param image 
      * @param gameLevel
      * @param environment */
     public Spaceship(Rectangle shape, Color color, int speed,
-            KeyboardSensor keyboard, double leftBoundary, double rightBoundary) {
+            KeyboardSensor keyboard, double leftBoundary, double rightBoundary, BufferedImage image) {
         this.speed = speed;
         this.keyboard = keyboard;
         this.shape = shape;
-        this.color = color;
+        this.image = image;
         this.leftBoundary = leftBoundary;
         this.rightBoundary = rightBoundary;
         this.hitListeners = new ArrayList<HitListener>();
@@ -152,8 +154,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier
      * <p>
      * @param surface - the surface of the paddle that draw. */
     public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        this.shape.fillOn(surface);
+        surface.drawImage((int) this.shape.getUpperLeft().getX(), (int) this.shape.getUpperLeft().getY(), this.image);
     }
 
     /** Notify all the listeners that about the event.
