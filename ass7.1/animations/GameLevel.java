@@ -172,7 +172,7 @@ public class GameLevel implements Animation {
         }
         Point spaceshipPoint = new Point(400 - (level.paddleWidth() / 2), 570);
         Spaceship spaceship = new Spaceship(new Rectangle(spaceshipPoint, level.paddleWidth(), 20),
-                Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800, spaceshipImage);
+                 level.paddleSpeed(), this.keyboard, 0, 800, spaceshipImage);
         HitListener ballRemover = new BallRemover(this);
         HitListener spaceshipRemover = new SpaceshipRemover(this, this.numberOfSpaceships);
         ShootListener shotListener = new SpaceShipShotListener(this.balls, this, environment);
