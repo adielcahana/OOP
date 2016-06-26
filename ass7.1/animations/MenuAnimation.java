@@ -44,7 +44,7 @@ public class MenuAnimation<T> implements Menu<T> {
      * @param d - a draw surface to draw the frame on. */
     public void doOneFrame(DrawSurface d, double dt) {
         this.background.drawOn(d);
-        d.drawText(50, 50, "Arknoid" , 50);
+        d.drawText(50, 50, "Space invaders" , 50);
         int i = 250;
         //draw the sub menus selections
         for (Selection<Menu<T>> select : this.subMenus) {
