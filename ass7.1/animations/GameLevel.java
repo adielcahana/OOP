@@ -1,7 +1,6 @@
 package animations;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,11 +52,11 @@ public class GameLevel implements Animation {
     private Counter scoreCounter;
     private Counter numberOfLives;
     private Counter numberOfSpaceships;
+    private Counter enemyCounter;
     private boolean running;
     private LevelInformation level;
-    private Swarm swarm;
     private ArrayList<Ball> balls;
-    private Counter enemyCounter;
+    private Swarm swarm;
     private Enemy bonusEnemy;
     private long lastBonusTime;
 
@@ -68,15 +67,16 @@ public class GameLevel implements Animation {
      * @param gui - the gui of the game.
      * @param numberOfLives - Counter with the lives that left for the game.
      * @param scoreCounter - Counter with the score of the player.
-     * @param level - the level that played. */
+     * @param enemyNum - Counter with num of enemys.
+     * @param level - the level that played.*/
     public GameLevel(LevelInformation level, KeyboardSensor keyboard, AnimationRunner animationRunner,
-            GUI gui, Counter scoreCounter, Counter numberOfLives, Counter enemyCounter) {
+            GUI gui, Counter scoreCounter, Counter numberOfLives, Counter enemyNum) {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment(new Point(800, 600) , new Point(0, 0));
         this.scoreCounter = scoreCounter;
         this.numberOfLives = numberOfLives;
         this.numberOfSpaceships = new Counter(numberOfLives.getValue());
-        this.enemyCounter = enemyCounter;
+        this.enemyCounter = enemyNum;
         this.runner = animationRunner;
         this.keyboard = keyboard;
         this.level = level;
@@ -120,7 +120,7 @@ public class GameLevel implements Animation {
      * Initialize the level.
      * Create the sprites for the current level. */
     public void initialize() {
-        // Create the HitListener for blocks and score.
+        // Create the HitListener for blocks, shots and score.
         HitListener blockRemover = new BlockRemover(this);
         HitListener scoreListener = new ScoreTrackingListener(this.scoreCounter);
         HitListener ballRemover = new BallRemover(this);
@@ -141,6 +141,7 @@ public class GameLevel implements Animation {
             block.addHitListener(ballRemover);
             block.addToGame(this);
         }
+        // add the enemy to the game with a enemyShot listener
         ShootListener sl = new EnemyShotListener(this.balls, this, environment);
         this.swarm = new Swarm(this.numberOfSpaceships, this.level.initialBallVelocities().get(0), this.enemyCounter);
         this.swarm.addShootListener(sl);
@@ -153,28 +154,40 @@ public class GameLevel implements Animation {
      * Run one turn (one live) of the game.
      * Create the balls and the paddle and run the level. */
     public void playOneTurn() {
-        // Create the paddle and add it to the game.
-        Point paddlePoint = new Point(400 - (level.paddleWidth() / 2), 580);
-        Spaceship paddle = new Spaceship(new Rectangle(paddlePoint, level.paddleWidth(), 20),
-                Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800);
+        // Create the spaceship and add it to the game.
+        InputStream is1 = ClassLoader.getSystemClassLoader().getResourceAsStream("spaceship.png");
+        BufferedImage spaceshipImage = null;
+        try {
+            spaceshipImage = ImageIO.read(is1);
+        } catch (IOException e) {
+            System.out.println("can't load spaceship pic");
+        } finally {
+            try {
+                is1.close();
+            } catch (IOException e) {
+                System.out.println("can't close spaceship img input stream");
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        Point spaceshipPoint = new Point(400 - (level.paddleWidth() / 2), 570);
+        Spaceship spaceship = new Spaceship(new Rectangle(spaceshipPoint, level.paddleWidth(), 20),
+                Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800, spaceshipImage);
         HitListener ballRemover = new BallRemover(this);
         HitListener spaceshipRemover = new SpaceshipRemover(this, this.numberOfSpaceships);
         ShootListener shotListener = new spaceShipShotListener(this.balls, this, environment);
-        paddle.addHitListener(ballRemover);
-        paddle.addHitListener(spaceshipRemover);
-        paddle.addShootListener(shotListener);
-        paddle.addToGame(this);
+        spaceship.addHitListener(ballRemover);
+        spaceship.addHitListener(spaceshipRemover);
+        spaceship.addShootListener(shotListener);
+        spaceship.addToGame(this);
         this.running = true;
         // Countdown before turn starts.
         this.runner.run(new CountdownAnimation(2, 3, this.sprites));
         // Use our runner to run the current animation -- which is one turn of the game.
-        //        Ball shot = new Ball(400, 0, 5, Color.RED);
-        //        shot.setVelocity(Velocity.fromAngleAndSpeed(180, 400));
-        //        shot.setGameEnvironment(environment);
-        //        shot.addToGame(this);
         this.runner.run(this);
-        // remove the paddle to create new paddle in the middle.
-        paddle.removeFromGame(this);
+        // remove the spaceship to create new spaceship in the middle.
+        spaceship.removeFromGame(this);
+        // reset the swarm and the balls pool to reorganize the frame
         this.swarm.resetSwarm();
         for (Ball ball : this.balls) {
             ball.removeFromGame(this);
@@ -182,28 +195,41 @@ public class GameLevel implements Animation {
         balls.clear();
     }
 
+    /**
+     * Creates the bonus ship.
+     */
     private void createBonusShip() {
+        // if the bonus already exists (the player didn't shoot it) ,reset its place
         if (this.bonusEnemy != null && this.bonusEnemy.getLocation().getX() < 0) {
             this.bonusEnemy.setNewPlace(850, 50);
-        } else {
+        } else { // create new bonus ship
             InputStream is1 = ClassLoader.getSystemClassLoader().getResourceAsStream("bonus enemy.png");
             try {
                 BufferedImage bonusEnemyImage = ImageIO.read(is1);
-                this.bonusEnemy = new Enemy((new Rectangle(new Point(850, 50), 40, 22)), bonusEnemyImage, bonusEnemyImage, Velocity.fromAngleAndSpeed(-90, 100), 0);
-                this.bonusEnemy.addHitListener(new BonusRemover(this, this.scoreCounter , is1));
+                this.bonusEnemy = new Enemy((new Rectangle(new Point(850, 50), 40, 22)),
+                        bonusEnemyImage, bonusEnemyImage, Velocity.fromAngleAndSpeed(-90, 200), 0);
+                this.bonusEnemy.addHitListener(new BonusRemover(this, this.scoreCounter));
                 this.bonusEnemy.addHitListener(new BallRemover(this));
                 this.bonusEnemy.addToGame(this);
                 this.addSprite(bonusEnemy);
             } catch (IOException e) {
-                System.out.println("can't load bonusEnemy enemy pic");
+                System.out.println("can't load bonusEnemy pic");
                 return;
+            } finally {
+                try {
+                    is1.close();
+                } catch (IOException e) {
+                    System.out.println("can't close bonus img input stream");
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     /**
      * Create the border.
-     * Create 4 blocks for the border and add them to the game. */
+     * Create 4 blocks for the border and add them to the game.
+     * @param ballRemover - listener for the borders, so they will remove balls */
     public void createBorder(HitListener ballRemover) {
         TreeMap<Integer, Color> fillColor = new TreeMap<Integer, Color>();
         TreeMap<Integer, BufferedImage> fillImage = new TreeMap<Integer, BufferedImage>();
@@ -240,6 +266,7 @@ public class GameLevel implements Animation {
             this.runner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
                     new PauseScreen()));
         }
+        // bonus enemy condition
         if ((System.currentTimeMillis() - this.lastBonusTime) / 1000 >= 20) {
             this.createBonusShip();
             this.lastBonusTime = System.currentTimeMillis();
@@ -251,7 +278,7 @@ public class GameLevel implements Animation {
         // If the balls over lose one life
         if (this.enemyCounter.getValue() == 0) {
             // Else if win the level increase 100 points.
-            this.scoreCounter.increase(100);
+            this.scoreCounter.increase(1000);
             this.running = false;
         } else if (this.numberOfLives.getValue() != this.numberOfSpaceships.getValue()) {
             this.numberOfLives.decrease(1);
