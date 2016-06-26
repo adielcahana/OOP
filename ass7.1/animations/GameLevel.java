@@ -1,6 +1,7 @@
 package animations;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import biuoop.KeyboardSensor;
 import gameobjects.Ball;
 import gameobjects.Block;
 import gameobjects.Collidable;
+import gameobjects.Enemy;
 import gameobjects.LevelName;
 import gameobjects.LivesIndicator;
 import gameobjects.ScoreIndicator;
@@ -23,16 +25,21 @@ import gameobjects.Spaceship;
 import gameobjects.Sprite;
 import gameobjects.SpriteCollection;
 import gameobjects.Swarm;
+import gameobjects.Velocity;
 import general.GameEnvironment;
 import geometry.Point;
 import geometry.Rectangle;
 import levels.LevelInformation;
 import listeners.BallRemover;
 import listeners.BlockRemover;
+import listeners.BonusRemover;
 import listeners.Counter;
+import listeners.EnemyShotListener;
 import listeners.HitListener;
 import listeners.ScoreTrackingListener;
+import listeners.ShootListener;
 import listeners.SpaceshipRemover;
+import listeners.spaceShipShotListener;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -51,6 +58,8 @@ public class GameLevel implements Animation {
     private Swarm swarm;
     private ArrayList<Ball> balls;
     private Counter enemyCounter;
+    private Enemy bonusEnemy;
+    private long lastBonusTime;
 
     /**
      * Constructor - Create a list of sprites a new environment and a gui for the game.
@@ -72,6 +81,7 @@ public class GameLevel implements Animation {
         this.keyboard = keyboard;
         this.level = level;
         this.balls = new ArrayList<Ball>();
+        this.lastBonusTime = 0;
     }
 
     /**
@@ -131,10 +141,11 @@ public class GameLevel implements Animation {
             block.addHitListener(ballRemover);
             block.addToGame(this);
         }
-        this.swarm = new Swarm(this, environment, scoreListener, this.numberOfSpaceships,
-                this.level.initialBallVelocities().get(0), this.enemyCounter , this.balls);
-        swarm.addToGame(this);
-        this.enemyCounter = this.swarm.enemyNum;
+        ShootListener sl = new EnemyShotListener(this.balls, this, environment);
+        this.swarm = new Swarm(this.numberOfSpaceships, this.level.initialBallVelocities().get(0), this.enemyCounter);
+        this.swarm.addShootListener(sl);
+        this.swarm.createEnemySwarm(scoreListener, this);
+        this.swarm.addToGame(this);
     }
 
 
@@ -145,16 +156,22 @@ public class GameLevel implements Animation {
         // Create the paddle and add it to the game.
         Point paddlePoint = new Point(400 - (level.paddleWidth() / 2), 580);
         Spaceship paddle = new Spaceship(new Rectangle(paddlePoint, level.paddleWidth(), 20),
-                Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800, this.environment, this , this.balls);
+                Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800);
         HitListener ballRemover = new BallRemover(this);
         HitListener spaceshipRemover = new SpaceshipRemover(this, this.numberOfSpaceships);
+        ShootListener shotListener = new spaceShipShotListener(this.balls, this, environment);
         paddle.addHitListener(ballRemover);
         paddle.addHitListener(spaceshipRemover);
+        paddle.addShootListener(shotListener);
         paddle.addToGame(this);
         this.running = true;
         // Countdown before turn starts.
         this.runner.run(new CountdownAnimation(2, 3, this.sprites));
         // Use our runner to run the current animation -- which is one turn of the game.
+        //        Ball shot = new Ball(400, 0, 5, Color.RED);
+        //        shot.setVelocity(Velocity.fromAngleAndSpeed(180, 400));
+        //        shot.setGameEnvironment(environment);
+        //        shot.addToGame(this);
         this.runner.run(this);
         // remove the paddle to create new paddle in the middle.
         paddle.removeFromGame(this);
@@ -163,6 +180,25 @@ public class GameLevel implements Animation {
             ball.removeFromGame(this);
         }
         balls.clear();
+    }
+
+    private void createBonusShip() {
+        if (this.bonusEnemy != null && this.bonusEnemy.getLocation().getX() < 0) {
+            this.bonusEnemy.setNewPlace(850, 50);
+        } else {
+            InputStream is1 = ClassLoader.getSystemClassLoader().getResourceAsStream("bonus enemy.png");
+            try {
+                BufferedImage bonusEnemyImage = ImageIO.read(is1);
+                this.bonusEnemy = new Enemy((new Rectangle(new Point(850, 50), 40, 22)), bonusEnemyImage, bonusEnemyImage, Velocity.fromAngleAndSpeed(-90, 100), 0);
+                this.bonusEnemy.addHitListener(new BonusRemover(this, this.scoreCounter , is1));
+                this.bonusEnemy.addHitListener(new BallRemover(this));
+                this.bonusEnemy.addToGame(this);
+                this.addSprite(bonusEnemy);
+            } catch (IOException e) {
+                System.out.println("can't load bonusEnemy enemy pic");
+                return;
+            }
+        }
     }
 
     /**
@@ -203,6 +239,10 @@ public class GameLevel implements Animation {
         if (this.keyboard.isPressed("p")) {
             this.runner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
                     new PauseScreen()));
+        }
+        if ((System.currentTimeMillis() - this.lastBonusTime) / 1000 >= 20) {
+            this.createBonusShip();
+            this.lastBonusTime = System.currentTimeMillis();
         }
         // Draw all the sprites.
         this.environment.setSurface(d);

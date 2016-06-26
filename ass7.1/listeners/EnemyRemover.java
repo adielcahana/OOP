@@ -32,6 +32,9 @@ public class EnemyRemover implements HitListener {
      * @param beingHit - the block that hit.
      * @param hitter - the ball that hit. */
     public void hitEvent(HitNotifier beingHit, Ball hitter) {
+        if(hitter.getVelocity().getDy() > 0){
+            return;
+        }
         ((Enemy)beingHit).removeFromSwarm(this.swarm);
         beingHit.removeFromGame(this.game);
         this.enemyCounter.decrease(1);

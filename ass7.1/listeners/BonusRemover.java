@@ -1,10 +1,11 @@
 package listeners;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import animations.GameLevel;
 import gameobjects.Ball;
-import gameobjects.Enemy;
 import gameobjects.HitNotifier;
-import gameobjects.Swarm;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -12,15 +13,17 @@ import gameobjects.Swarm;
  * @since 2016-04-10 */
 public class BonusRemover implements HitListener {
     private GameLevel game;
-    private HitListener scoreListener;
+    private Counter score;
+    private InputStream inputStrream;
 
     /** BlockRemover constructor.
      * <p>
      * @param game - the game to remove from.
      * @param blocksCounter - num of blocksCounter Counter. */
-    public BonusRemover(GameLevel game, HitListener scoreListener) {
+    public BonusRemover(GameLevel game, Counter score, InputStream is) {
         this.game = game;
-        this.scoreListener = scoreListener;
+        this.score = score;
+        this.inputStrream = is;
     }
 
     @Override
@@ -32,8 +35,11 @@ public class BonusRemover implements HitListener {
     public void hitEvent(HitNotifier beingHit, Ball hitter) {
         beingHit.removeFromGame(this.game);
         game.removeSprite(beingHit);
-        for(int i = 0; i < 5; i++) {
-            this.scoreListener.hitEvent(beingHit, hitter);
+        this.score.increase(500);
+        try {
+            this.inputStrream.close();
+        } catch (IOException e) {
+            System.out.println("couldn't close bonus image stream");
         }
     }
 }

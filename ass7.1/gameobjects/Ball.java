@@ -173,7 +173,6 @@ public class Ball implements Sprite {
         CollisionInfo info = this.enviroment.getClosestCollision(trajectory);
         //trajectory.drawOn(this.enviroment.getSurface(), Color.BLACK);
         if (info != null) {
-            //info.collisionPoint().drawOn(this.enviroment.getSurface(), Color.RED);
             //if a collision will occcure in the next step, change the ball velocity
             //checks if the ball next step will pass the collision point
             if (info.collisionPoint().distance(this.center) - (this.velocity.getSpeed() * 1.2) * dt <= this.getSize()) {

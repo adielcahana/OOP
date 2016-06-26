@@ -6,16 +6,16 @@ import java.util.List;
 import animations.GameLevel;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
-import general.GameEnvironment;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.HitListener;
+import listeners.ShootListener;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
  * @version 1.0
  * @since 2016-04-02 */
-public class Spaceship implements Sprite, Collidable, HitNotifier {
+public class Spaceship implements Sprite, Collidable, HitNotifier, ShootNotifier {
 
     private biuoop.KeyboardSensor keyboard;
     private Rectangle shape;
@@ -23,11 +23,8 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
     private double leftBoundary;
     private double rightBoundary;
     private int speed;
-    private long lastShootTime;
-    private GameEnvironment environment;
-    private GameLevel game;
     private List<HitListener> hitListeners;
-    private ArrayList<Ball> balls; 
+    private List<ShootListener> shootListeners;
 
     /**
      * Contractor - Create the paddle as rectangle with color keyboard sensor and boundaries.
@@ -37,23 +34,19 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
      * @param keyboard - the keyboard sensor of the paddle.
      * @param leftBoundary - the down left boundary of the frame.
      * @param rightBoundary - the down right boundary of the frame.
-     * @param speed - the paddle speed. 
-     * @param gameLevel 
+     * @param speed - the paddle speed.
+     * @param gameLevel
      * @param environment */
     public Spaceship(Rectangle shape, Color color, int speed,
-            KeyboardSensor keyboard, double leftBoundary, double rightBoundary,
-            GameEnvironment environment, GameLevel gameLevel, ArrayList<Ball> balls) {
+            KeyboardSensor keyboard, double leftBoundary, double rightBoundary) {
         this.speed = speed;
         this.keyboard = keyboard;
         this.shape = shape;
         this.color = color;
         this.leftBoundary = leftBoundary;
         this.rightBoundary = rightBoundary;
-        this.lastShootTime = System.currentTimeMillis();
-        this.environment = environment;
-        this.game = gameLevel;
         this.hitListeners = new ArrayList<HitListener>();
-        this.balls = balls;
+        this.shootListeners = new ArrayList<ShootListener>();
     }
 
     /**
@@ -103,11 +96,8 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
         } else if (keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
             this.moveRight(dt);
         }
-        if (keyboard.isPressed(KeyboardSensor.SPACE_KEY) &&
-                ((System.currentTimeMillis() - this.lastShootTime) / 400 >= 0.35)) {
-            Ball b = this.shoot();
-            this.balls.add(b);
-            this.lastShootTime = System.currentTimeMillis();
+        if (keyboard.isPressed(KeyboardSensor.SPACE_KEY)) {
+            this.notifyShoot(this.shoot());
         }
     }
 
@@ -115,8 +105,6 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
         Ball shot = new Ball((int) (this.shape.getUpperLeft().getX() + this.shape.getWidth() / 2),
                 (int) this.shape.getUpperLeft().getY() - 10, 3, Color.WHITE);
         shot.setVelocity(Velocity.fromAngleAndSpeed(0, 400));
-        shot.setGameEnvironment(this.environment);
-        shot.addToGame(this.game);
         return shot;
     }
 
@@ -167,7 +155,7 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
         surface.setColor(this.color);
         this.shape.fillOn(surface);
     }
-    
+
     /** Notify all the listeners that about the event.
      * <p>
      * @param hitter - the ball that hit the block. */
@@ -179,6 +167,15 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
             hl.hitEvent(this, hitter);
         }
     }
+    
+    private void notifyShoot(Ball shot) {
+        // Copy the hitListeners before iterating over them.
+        List<ShootListener> listeners = new ArrayList<ShootListener>(this.shootListeners);
+        // Notify all listeners about a hit event.
+        for (ShootListener hl : listeners) {
+            hl.shootEvent(shot);
+        }
+    }
 
     @Override
     public void addHitListener(HitListener hl) {
@@ -188,5 +185,15 @@ public class Spaceship implements Sprite, Collidable, HitNotifier {
     @Override
     public void removeHitListener(HitListener hl) {
         this.hitListeners.remove(hl);
+    }
+
+    @Override
+    public void addShootListener(ShootListener sl) {
+        this.shootListeners.add(sl);
+    }
+
+    @Override
+    public void removeShootListener(ShootListener sl) {
+        this.shootListeners.add(sl);
     }
 }

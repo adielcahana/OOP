@@ -24,8 +24,15 @@ public class MenuBackground implements Sprite {
         try {
             this.image = ImageIO.read(is);
         } catch (IOException e) {
-            System.out.println("can't load bonus enemy pic");
+            System.out.println("can't load background img");
             System.exit(1);
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                System.out.println("can't close background img");
+                System.exit(1);
+            }
         }
     }
 

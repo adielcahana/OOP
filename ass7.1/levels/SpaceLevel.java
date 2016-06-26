@@ -28,7 +28,7 @@ public class SpaceLevel implements LevelInformation {
     @Override
     public List<Velocity> initialBallVelocities() {
         ArrayList<Velocity> velocities = new ArrayList<Velocity>();
-        velocities.add(Velocity.fromAngleAndSpeed(90, (40 * Math.pow(1.1, turn))));
+        velocities.add(Velocity.fromAngleAndSpeed(90, (40 * turn)));
         return velocities;
     }
 
@@ -80,5 +80,4 @@ public class SpaceLevel implements LevelInformation {
     public int numberOfBlocksToRemove() {
         return 0;
     }
-
 }
