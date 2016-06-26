@@ -63,6 +63,7 @@ public class Velocity {
         double dy = speed * Math.sin(Math.toRadians(angle - 90));
         return new Velocity(dx, dy);
     }
+    
     public void setDx(double dx) {
         this.dx = dx;
     }

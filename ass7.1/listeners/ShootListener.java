@@ -3,15 +3,14 @@ package listeners;
 import gameobjects.Ball;
 
 /**
- * @author Ori Engelberg <turht50@gmail.com>
+ * @author Adiel cahana <adiel.cahana@gmail.com>
  * @version 1.0
- * @since 2016-04-10 */
+ * @since 2016-06-17 */
 public interface ShootListener {
 
     /**
-     * Called when beingHit object is hit.
+     * Called when a shot is made.
      * <p>
-     * @param beingHit - the block that hit.
-     * @param hitter - the ball that hit. */
+     * @param shot - the ball that been shot. */
    void shootEvent(Ball shot);
 }

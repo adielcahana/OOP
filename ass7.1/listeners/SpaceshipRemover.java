@@ -5,9 +5,9 @@ import gameobjects.Ball;
 import gameobjects.HitNotifier;
 
 /**
- * @author Ori Engelberg <turht50@gmail.com>
+ * @author Adiel cahana <adiel.cahana@gmail.com>
  * @version 1.0
- * @since 2016-04-10 */
+ * @since 2016-06-17 */
 public class SpaceshipRemover implements HitListener {
     private GameLevel game;
     private Counter numberOfSpaceships;
@@ -15,7 +15,7 @@ public class SpaceshipRemover implements HitListener {
     /** BlockRemover constructor.
      * <p>
      * @param game - the game to remove from.
-     * @param blocksCounter - num of blocksCounter Counter. */
+     * @param numberOfSpaceships - num of Spaceships Counter. */
     public SpaceshipRemover(GameLevel game, Counter numberOfSpaceships) {
         this.game = game;
         this.numberOfSpaceships = numberOfSpaceships;

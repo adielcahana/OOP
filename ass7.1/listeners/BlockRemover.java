@@ -13,8 +13,7 @@ public class BlockRemover implements HitListener {
 
     /** BlockRemover constructor.
      * <p>
-     * @param game - the game to remove from.
-     * @param blocksCounter - num of blocksCounter Counter. */
+     * @param game - the game to remove from.*/
     public BlockRemover(GameLevel game) {
         this.game = game;
     }
@@ -28,6 +27,5 @@ public class BlockRemover implements HitListener {
     public void hitEvent(HitNotifier beingHit, Ball hitter) {
         beingHit.removeHitListener(this);
         beingHit.removeFromGame(game);
-
     }
 }

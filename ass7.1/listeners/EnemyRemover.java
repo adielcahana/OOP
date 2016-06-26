@@ -7,18 +7,19 @@ import gameobjects.HitNotifier;
 import gameobjects.Swarm;
 
 /**
- * @author Ori Engelberg <turht50@gmail.com>
+ * @author Adiel cahana <adiel.cahana@gmail.com>
  * @version 1.0
- * @since 2016-04-10 */
+ * @since 2016-06-17 */
 public class EnemyRemover implements HitListener {
     private GameLevel game;
     private Swarm swarm;
     private Counter enemyCounter;
 
-    /** BlockRemover constructor.
+    /** Enemy Remover constructor.
      * <p>
      * @param game - the game to remove from.
-     * @param blocksCounter - num of blocksCounter Counter. */
+     * @param enemyCounter - num of enemys Counter.
+     * @param swarm - the swarm */
     public EnemyRemover(GameLevel game, Counter enemyCounter, Swarm swarm) {
         this.game = game;
         this.swarm = swarm;
@@ -27,15 +28,17 @@ public class EnemyRemover implements HitListener {
 
     @Override
     /**
-     * Called when beingHit object is hit.
+     * Called when Enemy object is hit.
      * <p>
-     * @param beingHit - the block that hit.
+     * @param beingHit - the Enemy that been hit.
      * @param hitter - the ball that hit. */
     public void hitEvent(HitNotifier beingHit, Ball hitter) {
-        if(hitter.getVelocity().getDy() > 0){
+        //downward moving balls are only from enemys
+        // if its an enemy shot' do nothing
+        if (hitter.getVelocity().getDy() > 0) {
             return;
         }
-        ((Enemy)beingHit).removeFromSwarm(this.swarm);
+        ((Enemy) beingHit).removeFromSwarm(this.swarm);
         beingHit.removeFromGame(this.game);
         this.enemyCounter.decrease(1);
     }

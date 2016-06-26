@@ -41,7 +41,6 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.hitListeners = new ArrayList<HitListener>();
     }
 
-    
 
     /** returns the remaining hits available.
      * <p>

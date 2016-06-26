@@ -11,11 +11,9 @@ import javax.imageio.ImageIO;
 
 import animations.GameLevel;
 import biuoop.DrawSurface;
-import general.GameEnvironment;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.BallRemover;
-import listeners.BonusRemover;
 import listeners.Counter;
 import listeners.EnemyRemover;
 import listeners.HitListener;

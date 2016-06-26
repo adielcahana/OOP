@@ -38,7 +38,7 @@ import listeners.HitListener;
 import listeners.ScoreTrackingListener;
 import listeners.ShootListener;
 import listeners.SpaceshipRemover;
-import listeners.spaceShipShotListener;
+import listeners.SpaceShipShotListener;
 
 /**
  * @author Ori Engelberg <turht50@gmail.com>
@@ -175,7 +175,7 @@ public class GameLevel implements Animation {
                 Color.YELLOW, level.paddleSpeed(), this.keyboard, 0, 800, spaceshipImage);
         HitListener ballRemover = new BallRemover(this);
         HitListener spaceshipRemover = new SpaceshipRemover(this, this.numberOfSpaceships);
-        ShootListener shotListener = new spaceShipShotListener(this.balls, this, environment);
+        ShootListener shotListener = new SpaceShipShotListener(this.balls, this, environment);
         spaceship.addHitListener(ballRemover);
         spaceship.addHitListener(spaceshipRemover);
         spaceship.addShootListener(shotListener);

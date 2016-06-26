@@ -24,7 +24,7 @@ public class ScoreTrackingListener implements HitListener {
      * @param beingHit - the block that hit.
      * @param hitter - the ball that hit. */
     public void hitEvent(HitNotifier beingHit, Ball hitter) {
-        if(hitter.getVelocity().getDy() > 0){
+        if (hitter.getVelocity().getDy() > 0) {
             return;
         }
         this.currentScore.increase(100);

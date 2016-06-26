@@ -7,12 +7,16 @@ import java.util.List;
 
 import animations.GameLevel;
 import biuoop.DrawSurface;
-import general.GameEnvironment;
 import geometry.Point;
 import geometry.Rectangle;
 import listeners.HitListener;
 
+/**
+ * @author Adiel cahana <adiel.cahana@gmail.com>
+ * @version 1.0
+ * @since 2016-06-17 */
 public class Enemy implements Collidable, Sprite, HitNotifier {
+
     private Rectangle shape;
     private BufferedImage image1;
     private BufferedImage image2;
@@ -22,8 +26,15 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     private List<HitListener> hitListeners;
     private int formationNum;
 
-    public Enemy(Rectangle shape, BufferedImage image1, BufferedImage image2,
-            Velocity velocity, int formationNum) {
+    /**
+     * Instantiates a new enemy.
+     *
+     * @param shape - the shape
+     * @param image1 - first image to draw
+     * @param image2  -  second image to draw
+     * @param velocity - the enemy velocity velocity
+     * @param formationNum - the place in the formation row*/
+    public Enemy(Rectangle shape, BufferedImage image1, BufferedImage image2, Velocity velocity, int formationNum) {
         this.shape = shape;
         this.image1 = image1;
         this.image2 = image2;
@@ -46,24 +57,33 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
     @Override
     public void drawOn(DrawSurface d) {
         long currentTime = System.currentTimeMillis();
-        switch(imageNum) {
+        // chekink which image was presented and which one should be presented now
+        switch (imageNum) {
         case 1:
             d.drawImage((int) this.shape.getUpperLeft().getX(), (int) this.shape.getUpperLeft().getY(), this.image1);
-            if ( (currentTime - this.imageTiming)/1000 >= 0.09) {
+            if ((currentTime - this.imageTiming) / 1000 >= 0.09) {
                 this.imageTiming = currentTime;
                 this.imageNum = 2;
             }
             break;
         case 2:
             d.drawImage((int) this.shape.getUpperLeft().getX(), (int) this.shape.getUpperLeft().getY(), this.image2);
-            if ( (currentTime - this.imageTiming)/1000 >= 0.9) {
+            if ((currentTime - this.imageTiming) / 1000 >= 0.9) {
                 this.imageTiming = currentTime;
                 this.imageNum = 1;
             }
             break;
+        default:
+            System.out.println("something wrong happend in drawOn of Enemy");
+            break;
         }
     }
 
+    /**
+     * Notify the sprite that the time passed.
+     * <p>
+     * change the shape to a new location acording to the velocity
+     * @param dt - the speed per frame. */
     @Override
     public void timePassed(double dt) {
         this.shape = new Rectangle(this.velocity.applyToPoint(this.shape.getUpperLeft(), dt),
@@ -103,6 +123,11 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
         }
     }
 
+    /**
+     * Shoot.
+     *
+     * @return the ball
+     */
     public Ball shoot() {
         Ball shot = new Ball((int) (this.shape.getUpperLeft().getX() + this.shape.getWidth() / 2),
                 (int) (this.shape.getUpperLeft().getY() + this.shape.getHeight() + 1), 5, Color.RED);
@@ -110,15 +135,31 @@ public class Enemy implements Collidable, Sprite, HitNotifier {
         return shot;
     }
 
+    /**
+     * Gets the Enemy location.
+     *
+     * @return the location
+     */
     public Point getLocation() {
         return this.shape.getUpperLeft();
     }
 
+    /**
+     * Removes the from swarm.
+     *
+     * @param swarm - the swarm
+     */
     public void removeFromSwarm(Swarm swarm) {
         swarm.removeEnemy(this);
 
     }
 
+    /**
+     * Sets the new place.
+     *
+     * @param x - the x axis coordinate
+     * @param y - the y axis coordinate
+     */
     public void setNewPlace(int x, int y) {
         int column = (this.formationNum / 6);
         int line = (this.formationNum % 6);
